@@ -33,11 +33,19 @@ public class Estacionamento {
 	}
 
 	public double totalArrecadado() {
-		
+		double valTotal = 0;
+		for (Cliente cliente : id) {
+			valTotal += cliente.arrecadadoTotal();
+		}
+		return valTotal;
 	}
 
 	public double arrecadacaoNoMes(int mes) {
-		
+		double valArrecadado = 0;
+		for (Cliente cliente : id) {
+			valArrecadado += cliente.arrecadadoNoMes(mes);
+		}
+		return valArrecadado;
 	}
 
 	public double valorMedioPorUso() {
