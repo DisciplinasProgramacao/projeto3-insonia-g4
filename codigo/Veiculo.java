@@ -1,12 +1,21 @@
-public class Veiculo {
+import java.io.Serializable;
 
+public class Vaga implements Serializable {
+    // Defina os atributos e métodos da classe Vaga
+}
+
+public class UsoDeVaga implements Serializable {
+    // Defina os atributos e métodos da classe UsoDeVaga
+}
+
+public class Veiculo implements Serializable {
     private String placa;
     private UsoDeVaga[] usos;
     private int totalUsos;
 
     public Veiculo(String placa) {
         this.placa = placa;
-        this.usos = new UsoDeVaga[100]; // Tamanho inicial do array de usos
+        this.usos = new UsoDeVaga[100];
         this.totalUsos = 0;
     }
 
