@@ -19,4 +19,14 @@ public class VagaTest {
             // Valor esperado com base na lógica de cálculo, 40.0 para representar 40 minutos
             assertEquals(12, vaga.calcularValorCobranca(40), 0.01); // (0.01) para números de ponto flutuante
         }
+
+        @Test
+        public void testEstacionar(){
+            assertEquals(false,vaga.estacionar(null)); 
+        }
+
+        @Test
+        public void testDisponivel(){
+            assertEquals(false,vaga.isDisponivel());
+        }
 }
