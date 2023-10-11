@@ -11,25 +11,113 @@ public class Estacionamento {
 	private int quantFileiras;
 	private int vagasPorFileira;
 
-	public Estacionamento(String ngitome, int fileiras, int vagasPorFila) {
 
+
+	//CONSTRUTORES
+	public Estacionamento(String ngitome, int fileiras, int vagasPorFila) {
+		this.nome = nome;
+        this.quantFileiras = quantFileiras;
+        this.vagasPorFileira = vagasPorFileira;
+        this.id = new Cliente[0]; // Inicialmente, nenhum cliente registrado
+        gerarVagas();
+	}
+
+	public Estacionamento() {
+		this.nome = "";
+		this.quantFileiras = 1;
+		this.vagasPorFileira = 1;
+		this.id = new Cliente[0];
+		gerarVagas();
 	}
 
 	public void addVeiculo(Veiculo veiculo, String idCli) {
-
+		// Encontrar o cliente com base no id
+		Cliente cliente = null;
+		for (Cliente c : id) {
+			if (c.getID().equals(idCli)) {
+				cliente = c;
+				break;
+			}
+		}
+		if (cliente != null) {
+			cliente.addVeiculo(veiculo);
+		} else {
+			throw new IllegalArgumentException("Erro - Cliente não encontrado.");
+		}
 	}
+
 
 	public void addCliente(Cliente cliente) {
-
+		 // Verificar se o cliente já existe com base no ID
+		 for (Cliente c : id) {
+			if (c.getID().equals(cliente.getID())) {
+				throw new IllegalArgumentException("Erro - Cliente com ID duplicado.");
+			}
+		}
+	
+		// Adicionar o novo cliente à lista de clientes
+		Cliente[] novaLista = new Cliente[id.length + 1];
+		for (int i = 0; i < id.length; i++) {
+			novaLista[i] = id[i];
+		}
+		novaLista[novaLista.length - 1] = cliente;
+		id = novaLista;
 	}
+
+
+
 
 	private void gerarVagas() {
-
+		if (quantFileiras <= 0 || vagasPorFileira <= 0) {
+			throw new IllegalArgumentException("Erro - Quantidade de fileiras e vagas por fileira deve ser maior que zero.");
+		}
+	
+		int totalVagas = quantFileiras * vagasPorFileira;
+		vagas = new Vaga[totalVagas];
+	
+		// Criar as vagas
+		for (int i = 0; i < totalVagas; i++) {
+			vagas[i] = new Vaga(i + 1); // Crie uma vaga com um número único
+		}
 	}
+
 
 	public void estacionar(String placa) {
-
+		// Procurar o veículo com base na placa
+		Veiculo veiculoParaEstacionar = null;
+		for (Cliente cliente : id) {
+			Veiculo veiculo = cliente.possuiVeiculo(placa);
+			if (veiculo != null) {
+				veiculoParaEstacionar = veiculo;
+				break;
+			}
+		}
+	
+		if (veiculoParaEstacionar != null) {
+			if (veiculoParaEstacionar.isEstacionado()) {
+				throw new IllegalArgumentException("Erro - O veículo já está estacionado.");
+			}
+	
+			// Procurar uma vaga disponível no estacionamento
+			Vaga vagaDisponivel = encontrarVagaDisponivel();
+			if (vagaDisponivel != null) {
+				// Estacionar o veículo na vaga
+				if (vagaDisponivel.estacionar()) {
+					veiculoParaEstacionar.setEstacionado(true);
+					// Pode incluir lógica adicional, como registrar o horário de entrada do veículo
+					System.out.println("Veículo com placa " + placa + " estacionado na vaga " + vagaDisponivel.getId());
+				} else {
+					throw new IllegalArgumentException("Erro - A vaga não está disponível.");
+				}
+			} else {
+				throw new IllegalArgumentException("Erro - Não há vagas disponíveis.");
+			}
+		} else {
+			throw new IllegalArgumentException("Erro - Veículo não encontrado.");
+		}
 	}
+	
+
 
 	public double sair(String placa) {
 
