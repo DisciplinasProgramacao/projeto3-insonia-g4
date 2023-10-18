@@ -1,13 +1,5 @@
 import java.io.Serializable;
 
-public class Vaga implements Serializable {
-    // Defina os atributos e métodos da classe Vaga
-}
-
-public class UsoDeVaga implements Serializable {
-    // Defina os atributos e métodos da classe UsoDeVaga
-}
-
 public class Veiculo implements Serializable {
     private String placa;
     private UsoDeVaga[] usos;
@@ -26,6 +18,10 @@ public class Veiculo implements Serializable {
         } else {
             System.out.println("Limite de usos atingido.");
         }
+    }
+
+    public String getPlaca(){
+        return placa;
     }
 
     public double sair() {

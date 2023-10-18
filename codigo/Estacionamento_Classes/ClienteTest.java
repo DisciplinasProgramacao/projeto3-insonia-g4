@@ -1,5 +1,6 @@
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+
 import static org.junit.Assert.*;
 
 public class ClienteTest {
@@ -7,11 +8,11 @@ public class ClienteTest {
     private Veiculo veiculo1;
     private Veiculo veiculo2;
 
-    @Beforeeach
+    @BeforeEach
     public void setUp() {
         cliente = new Cliente("Cliente Test", "123");
-        veiculo1 = new Veiculo("ABC123", "Modelo1");
-        veiculo2 = new Veiculo("XYZ789", "Modelo2");
+        veiculo1 = new Veiculo("ABC123");
+        veiculo2 = new Veiculo("XYZ789");
 
         cliente.addVeiculo(veiculo1);
         cliente.addVeiculo(veiculo2);

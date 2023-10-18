@@ -12,15 +12,15 @@ public class UsoDeVaga {
     private LocalDateTime saida;
     private double valorPago;
 
-    public UsoDeVaga(Vaga vaga) {
+    public UsoDeVaga(Vaga vaga, LocalDateTime entrada) {
         this.vaga = vaga;
-        this.entrada = LocalDateTime.now();
+        this.entrada = entrada;
         this.saida = null;
         this.valorPago = 0.0;
     }
 
-    public void sair() {
-        this.saida = LocalDateTime.now();
+    public void sair(LocalDateTime saida) {
+        this.saida = saida;
         long minutos = Duration.between(entrada, saida).toMinutes();
         
         if (minutos <= 15) {
@@ -39,5 +39,9 @@ public class UsoDeVaga {
 
     public double getValorPago() {
         return valorPago;
+    }
+
+    public int getMes() {
+        return entrada.getMonthValue();
     }
 }

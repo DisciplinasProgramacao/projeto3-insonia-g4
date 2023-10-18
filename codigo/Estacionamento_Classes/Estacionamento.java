@@ -15,9 +15,9 @@ public class Estacionamento {
 
 	//CONSTRUTORES
 	public Estacionamento(String ngitome, int fileiras, int vagasPorFila) {
-		this.nome = nome;
-        this.quantFileiras = quantFileiras;
-        this.vagasPorFileira = vagasPorFileira;
+		this.nome = ngitome;
+        this.quantFileiras = fileiras;
+        this.vagasPorFileira = vagasPorFila;
         this.id = new Cliente[0]; // Inicialmente, nenhum cliente registrado
         gerarVagas();
 	}
@@ -49,7 +49,7 @@ public class Estacionamento {
 
 	public void addCliente(Cliente cliente) {
 		 // Verificar se o cliente já existe com base no ID
-		 for (Cliente c : id) {
+		for (Cliente c : id) {
 			if (c.getID().equals(cliente.getID())) {
 				throw new IllegalArgumentException("Erro - Cliente com ID duplicado.");
 			}

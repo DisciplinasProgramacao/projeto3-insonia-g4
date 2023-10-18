@@ -1,33 +1,29 @@
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
-import java.time.Duration;
 
 class UsoDeVagaTest {
 
     @Test
     void testValorPago() {
-        Vaga vaga = new Vaga();
-        UsoDeVaga uso = new UsoDeVaga(vaga);
+        Vaga vaga = new Vaga(1, 1);
+        UsoDeVaga uso = new UsoDeVaga(vaga, LocalDateTime.now());
 
         // Simulando uma estadia de 30 minutos
-        LocalDateTime entrada = LocalDateTime.now().minusMinutes(30);
-        uso.setEntrada(entrada);
-        uso.sair();
+        LocalDateTime saida = LocalDateTime.now().plusMinutes(30);
+        uso.sair(saida);
         double valorEsperado = 4.0;
         assertEquals(valorEsperado, uso.getValorPago(), 0.01);
 
         // Simulando uma estadia de 10 horas
-        LocalDateTime outraEntrada = LocalDateTime.now().minusHours(10);
-        uso.setEntrada(outraEntrada);
-        uso.sair();
+        saida = LocalDateTime.now().plusHours(10);
+        uso.sair(saida);
         valorEsperado = 50.0;
         assertEquals(valorEsperado, uso.getValorPago(), 0.01);
 
         // Simulando uma estadia de menos de 15 minutos
-        LocalDateTime terceiraEntrada = LocalDateTime.now().minusMinutes(10);
-        uso.setEntrada(terceiraEntrada);
-        uso.sair();
+        saida = LocalDateTime.now().plusMinutes(10);
+        uso.sair(saida);
         valorEsperado = 0.0;
         assertEquals(valorEsperado, uso.getValorPago(), 0.01);
     }
