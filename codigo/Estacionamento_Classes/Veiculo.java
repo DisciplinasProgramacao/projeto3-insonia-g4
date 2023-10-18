@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 public class Veiculo implements Serializable {
     private String placa;
@@ -13,7 +14,7 @@ public class Veiculo implements Serializable {
 
     public void estacionar(Vaga vaga) {
         if (totalUsos < usos.length) {
-            usos[totalUsos] = new UsoDeVaga(vaga);
+            usos[totalUsos] = new UsoDeVaga(vaga, LocalDateTime.now());
             totalUsos++;
         } else {
             System.out.println("Limite de usos atingido.");
