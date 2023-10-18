@@ -1,5 +1,6 @@
-import java.time.LocalDateTime;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.Scanner;
 
 public class UsoDeVaga {
 
@@ -11,15 +12,26 @@ public class UsoDeVaga {
     private LocalDateTime entrada;
     private LocalDateTime saida;
     private double valorPago;
+    private Servicos servicoContratado;
 
     public UsoDeVaga(Vaga vaga, LocalDateTime entrada) {
         this.vaga = vaga;
         this.entrada = entrada;
         this.saida = null;
         this.valorPago = 0.0;
+        this.servicoContratado = null;
+    }
+
+    public void contratarServico() {
+        this.servicoContratado = Servicos.selecionarServico();
     }
 
     public void sair(LocalDateTime saida) {
+        if (servicoContratado != null && Duration.between(entrada, saida).toMinutes() < servicoContratado.getTempoMinimo()) {
+            long minutosRestantes = servicoContratado.getTempoMinimo() - Duration.between(entrada, saida).toMinutes();
+            throw new IllegalStateException("Seu veículo ainda está no(a) " + servicoContratado.getNomeDoServico() + "! Ele estará disponível em " + minutosRestantes + " minutos.");
+        }
+
         this.saida = saida;
         long minutos = Duration.between(entrada, saida).toMinutes();
         
@@ -34,6 +46,10 @@ public class UsoDeVaga {
             } else {
                 this.valorPago = VALOR_FRACAO + (horas - 1) * VALOR_FRACAO;
             }
+        }
+
+        if (servicoContratado != null) {
+            this.valorPago += servicoContratado.getCustoServico();
         }
     }
 
