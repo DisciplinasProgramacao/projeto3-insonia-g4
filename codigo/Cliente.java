@@ -29,13 +29,13 @@ public class Cliente{
 	//Metodo para adicionar veículos na lista do cliente;
 	public void addVeiculo(Veiculo veiculo){
 		for(Veiculo veiculoAtual : veiculos){
-			if(veiculoAtual.getPlaca() == veiculo.getPlaca()){
+			if(veiculoAtual.getPlaca().equals(veiculo.getPlaca())){
 				throw new IllegalArgumentException("Erro - Carro já inserido.");
 			}
 		}
 		veiculos.add(veiculo);
 	}
-	
+
 	//Verifica se o Cliente possui o veículo com base em sua placa;
 	public Veiculo possuiVeiculo(String placa){
 		for(Veiculo veiculo : veiculos){
