@@ -1,8 +1,9 @@
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Scanner;
+import java.io.Serializable;
 
-public class UsoDeVaga {
+public class UsoDeVaga implements Serializable{
 
     private static final double FRACAO_USO = 0.25;
     private static final double VALOR_FRACAO = 4.0;
