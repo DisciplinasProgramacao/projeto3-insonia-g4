@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
-public class Vaga {
+public class Vaga implements Serializable{
 
     protected String id;
     private boolean disponivel;
