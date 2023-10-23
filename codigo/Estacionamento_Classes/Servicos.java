@@ -1,6 +1,7 @@
 import java.util.Scanner;
+import java.io.Serializable;
 
-public class Servicos {
+public class Servicos implements Serializable{
     private int idServico;
     private String nomeDoServico;
     private double custoServico;
