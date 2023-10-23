@@ -1,12 +1,14 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
+
 /**
 * <h1>Cliente</h1>
 * Classe Cliente.
 * @author Gabriel Alejandro Figueiro Galindo
 * @since 10/10/2023
 */
-public class Cliente{
+public class Cliente implements Serializable{
 	private String nome;//Nome do cliente;
 	private String id;//identificador;
 	private List<Veiculo> veiculos;//Lista de veiculos;
@@ -58,7 +60,7 @@ public class Cliente{
         //Pega o total arrecadado pelo veículo;
 	public double arrecadadoPorVeiculo(String placa){
 		for(Veiculo veiculo : veiculos){
-			if(veiculo.getPlaca() == placa){
+			if(veiculo.getPlaca().equals(placa)){
 				return veiculo.totalArrecadado();
 			}
 		}
