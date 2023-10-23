@@ -1,3 +1,4 @@
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,15 +12,13 @@ public class Estacionamento {
 	private int quantFileiras;
 	private int vagasPorFileira;
 
-
-
-	//CONSTRUTORES
+	// CONSTRUTORES
 	public Estacionamento(String ngitome, int fileiras, int vagasPorFila) {
-		this.nome = nome;
-        this.quantFileiras = quantFileiras;
-        this.vagasPorFileira = vagasPorFileira;
-        this.id = new Cliente[0]; // Inicialmente, nenhum cliente registrado
-        gerarVagas();
+		this.nome = ngitome;
+		this.quantFileiras = fileiras;
+		this.vagasPorFileira = vagasPorFila;
+		this.id = new Cliente[0]; // Inicialmente, nenhum cliente registrado
+		gerarVagas();
 	}
 
 	public Estacionamento() {
@@ -46,15 +45,14 @@ public class Estacionamento {
 		}
 	}
 
-
 	public void addCliente(Cliente cliente) {
-		 // Verificar se o cliente já existe com base no ID
-		 for (Cliente c : id) {
+		// Verificar se o cliente já existe com base no ID
+		for (Cliente c : id) {
 			if (c.getID().equals(cliente.getID())) {
 				throw new IllegalArgumentException("Erro - Cliente com ID duplicado.");
 			}
 		}
-	
+
 		// Adicionar o novo cliente à lista de clientes
 		Cliente[] novaLista = new Cliente[id.length + 1];
 		for (int i = 0; i < id.length; i++) {
@@ -65,11 +63,10 @@ public class Estacionamento {
 	}
 
 
-
-
 	private void gerarVagas() {
 		if (quantFileiras <= 0 || vagasPorFileira <= 0) {
-			throw new IllegalArgumentException("Erro - Quantidade de fileiras e vagas por fileira deve ser maior que zero.");
+			throw new IllegalArgumentException(
+				"Erro - Quantidade de fileiras e vagas por fileira deve ser maior que zero.");
 		}
 	
 		int totalVagas = quantFileiras * vagasPorFileira;
@@ -77,35 +74,40 @@ public class Estacionamento {
 	
 		// Criar as vagas
 		for (int i = 0; i < totalVagas; i++) {
-			vagas[i] = new Vaga(i + 1); // Crie uma vaga com um número único
+			int fila = i / vagasPorFileira + 1; // Calcula a fila com base no número de vagas por fileira
+			int numero = i % vagasPorFileira + 1; // Calcula o número com base no número de vagas por fileira
+			vagas[i] = new Vaga(fila, numero); // Cria uma vaga com fila e número únicos
 		}
 	}
 
-
+	
 	public void estacionar(String placa) {
-		// Procurar o veículo com base na placa
 		Veiculo veiculoParaEstacionar = null;
+		Cliente clienteDoVeiculo = null;
+
 		for (Cliente cliente : id) {
 			Veiculo veiculo = cliente.possuiVeiculo(placa);
 			if (veiculo != null) {
 				veiculoParaEstacionar = veiculo;
+				clienteDoVeiculo = cliente;
 				break;
 			}
 		}
-	
+
 		if (veiculoParaEstacionar != null) {
-			if (veiculoParaEstacionar.isEstacionado()) {
-				throw new IllegalArgumentException("Erro - O veículo já está estacionado.");
+			Vaga vagaDisponivel = null;
+			for (Vaga vaga : vagas) {
+				if (vaga.isDisponivel()) {
+					vagaDisponivel = vaga;
+					break;
+				}
 			}
-	
-			// Procurar uma vaga disponível no estacionamento
-			Vaga vagaDisponivel = encontrarVagaDisponivel();
+
 			if (vagaDisponivel != null) {
-				// Estacionar o veículo na vaga
-				if (vagaDisponivel.estacionar()) {
-					veiculoParaEstacionar.setEstacionado(true);
-					// Pode incluir lógica adicional, como registrar o horário de entrada do veículo
-					System.out.println("Veículo com placa " + placa + " estacionado na vaga " + vagaDisponivel.getId());
+				if (vagaDisponivel.estacionar(clienteDoVeiculo)) {
+					LocalDateTime entrada = LocalDateTime.now(); // Obtém a hora de entrada do veículo
+					System.out.println("Veículo com placa " + placa + " estacionado na vaga " + vagaDisponivel.id);
+
 				} else {
 					throw new IllegalArgumentException("Erro - A vaga não está disponível.");
 				}
@@ -116,12 +118,21 @@ public class Estacionamento {
 			throw new IllegalArgumentException("Erro - Veículo não encontrado.");
 		}
 	}
-	
+
+
+
+
+
 
 
 	public double sair(String placa) {
 
 	}
+
+
+
+
+
 
 	public double totalArrecadado() {
 		double valTotal = 0;
