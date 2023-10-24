@@ -21,7 +21,7 @@ public class Veiculo implements Serializable {
         }
     }
 
-    public String getPlaca(){
+    public String getPlaca() {
         return placa;
     }
 

@@ -23,10 +23,11 @@ public class Servicos implements Serializable{
 
         Scanner scanner = new Scanner(System.in);
         int escolha = scanner.nextInt();
+        scanner.close();
 
         switch (escolha) {
             case 0:
-                return new Servicos(0, "Nenhum", 00.0, );
+                return new Servicos(0, "Nenhum", 0.0, 0);
             case 1:
                 return new Servicos(1, "Manobrista", 5.0, 0);
             case 2:

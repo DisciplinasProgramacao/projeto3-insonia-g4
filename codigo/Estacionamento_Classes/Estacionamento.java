@@ -113,7 +113,43 @@ public class Estacionamento implements Serializable{
 	}
 
 	public double sair(String placa) {
+		// Procurar o veículo com base na placa
+		Veiculo veiculoParaSair = null;
+		for (Cliente cliente : id) {
+			Veiculo veiculo = cliente.possuiVeiculo(placa);
+			if (veiculo != null) {
+				veiculoParaSair = veiculo;
+				break;
+			}
+		}
 
+		if (veiculoParaSair != null) {
+			if (!veiculoParaSair.isEstacionado()) {
+				throw new IllegalArgumentException("Erro - O veículo não está estacionado.");
+			}
+
+			// Procurar a vaga onde o veículo está estacionado
+			Vaga vagaOndeEstaEstacionado = null;
+			for (Vaga vaga : vagas) {
+				if (vaga.getVeiculo() != null && vaga.getVeiculo().equals(veiculoParaSair)) {
+					vagaOndeEstaEstacionado = vaga;
+					break;
+				}
+			}
+
+			if (vagaOndeEstaEstacionado != null) {
+				// Sair com o veículo da vaga
+				double valorCobrado = vagaOndeEstaEstacionado.sair();
+				veiculoParaSair.setEstacionado(false);
+				// Pode incluir lógica adicional, como registrar o horário de saída do veículo
+				System.out.println("Veículo com placa " + placa + " saiu da vaga " + vagaOndeEstaEstacionado.getId());
+				return valorCobrado;
+			} else {
+				throw new IllegalArgumentException("Erro - O veículo não está estacionado em nenhuma vaga.");
+			}
+		} else {
+			throw new IllegalArgumentException("Erro - Veículo não encontrado.");
+		}
 	}
 
 	public double totalArrecadado() {
@@ -167,6 +203,14 @@ public class Estacionamento implements Serializable{
 			i++;
 		}
 		return sb.toString();
+	}
+
+	public String getNome() {
+		return this.nome;
+	}
+
+	public int getVagas() {
+		return (this.vagasPorFileira * this.quantFileiras);
 	}
 
 }

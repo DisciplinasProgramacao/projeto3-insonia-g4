@@ -9,15 +9,18 @@ import java.io.Serializable;
 * @since 10/10/2023
 */
 public class Cliente implements Serializable{
-	private String nome;//Nome do cliente;
-	private String id;//identificador;
-	private List<Veiculo> veiculos;//Lista de veiculos;
+
+	private String nome; //Nome do cliente;
+	private String id; //identificador;
+	private List<Veiculo> veiculos; //Lista de veiculos;
+
 	//Construtor;
 	public Cliente(String nome, String id){
 		this.nome = nome;
 		this.id = id;
 		this.veiculos = new ArrayList<>();
 	}
+
 	//Getters;
 	public String getNome(){return nome;}
 	public String getID(){return id;}
@@ -53,8 +56,8 @@ public class Cliente implements Serializable{
 		int totalDeUsos = 0;
 		for(Veiculo veiculo : veiculos){
 			totalDeUsos += veiculo.totalDeUsos();
-			return totalDeUsos;
 		}
+		return totalDeUsos;
 	}
 	
         //Pega o total arrecadado pelo veículo;
@@ -72,8 +75,8 @@ public class Cliente implements Serializable{
 		double TotalArrecadado = 0;
 		for(Veiculo veiculo : veiculos){
 			TotalArrecadado += veiculo.totalArrecadado();
-			return TotalArrecadado;
 		}
+		return TotalArrecadado;
 	}
 
         //Arrecadado no mês pelo cliente;
@@ -81,7 +84,7 @@ public class Cliente implements Serializable{
 		double ArrecadadoMes = 0;
 		for(Veiculo veiculo : veiculos){
 			ArrecadadoMes += veiculo.arrecadadoNoMes(mes);
-			return ArrecadadoMes;
 		}
+		return ArrecadadoMes;
 	}
 }

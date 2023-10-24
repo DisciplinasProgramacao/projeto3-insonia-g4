@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
 
-public class Vaga implements Serializable{
+public class Vaga implements Serializable {
 
     protected String id;
     private boolean disponivel;
@@ -32,8 +32,8 @@ public class Vaga implements Serializable{
     public boolean sair() {
         if (!disponivel) {
             // Calcular o tempo em que o cliente ficou estacionado e calcular a cobrança
-            double tempoEstacionado = calcularTempoEstacionado(); 
-            double valorCobranca = calcularValorCobranca(tempoEstacionado); 
+            double tempoEstacionado = calcularTempoEstacionado();
+            double valorCobranca = calcularValorCobranca(tempoEstacionado);
 
             // Registre o uso da vaga no histórico
             RegistroHistorico registro = new RegistroHistorico(cliente, id, tempoEstacionado, valorCobranca);
@@ -55,32 +55,35 @@ public class Vaga implements Serializable{
         return historico;
     }
 
-    
-
     private double calcularTempoEstacionado() {
-        if (cliente == null){
-            return 0.0;}
-             long tempoSaidaMillis = System.currentTimeMillis();
+        if (cliente == null) {
+            return 0.0;
+        }
+        long tempoSaidaMillis = System.currentTimeMillis();
 
-            double tempoEstacionado = (tempoSaidaMillis - entradaMillis) / (1000.0 * 60.0); // Calcula o tempo estacionado em minutos
+        double tempoEstacionado = (tempoSaidaMillis - entradaMillis) / (1000.0 * 60.0); // Calcula o tempo estacionado
+                                                                                        // em minutos
 
-            return tempoEstacionado;
+        return tempoEstacionado;
     }
 
     double calcularValorCobranca(double tempoEstacionado) {
-        // Valor por fração de tempo (15 minutos), Limite máximo de cobrança, 
-        // Calcular o número de frações de tempo (15 minutos) arredondando para cima, 
-		// Calcular o valor da cobrança, Verificar se o valor ultrapassou o limite
-    double valorPorFracao = 4.0; 
-    double limiteCobranca = 50.0;
-    int numFracoes = (int) Math.ceil(tempoEstacionado / 15.0);
-    double valorCobranca = numFracoes * valorPorFracao;
-    
+        // Valor por fração de tempo (15 minutos), Limite máximo de cobrança,
+        // Calcular o número de frações de tempo (15 minutos) arredondando para cima,
+        // Calcular o valor da cobrança, Verificar se o valor ultrapassou o limite
+        double valorPorFracao = 4.0;
+        double limiteCobranca = 50.0;
+        int numFracoes = (int) Math.ceil(tempoEstacionado / 15.0);
+        double valorCobranca = numFracoes * valorPorFracao;
 
-    if (valorCobranca > limiteCobranca) {
-        valorCobranca = limiteCobranca;
+        if (valorCobranca > limiteCobranca) {
+            valorCobranca = limiteCobranca;
+        }
+
+        return valorCobranca;
     }
-    
-    return valorCobranca;
+
+    public String getUsuario() {
+        return this.cliente.getNome();
     }
 }
