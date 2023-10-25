@@ -125,9 +125,14 @@ public class Estacionamento {
 
 
 
-	public double sair(String placa) {
-
-	}
+public boolean existeVagaDisponivel() {
+        for (Vaga vaga : vagas) {
+            if (vaga.isDisponivel()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 
