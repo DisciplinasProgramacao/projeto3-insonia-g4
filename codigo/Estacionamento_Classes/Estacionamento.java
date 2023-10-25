@@ -1,10 +1,10 @@
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.io.Serializable;
 
-public class Estacionamento implements Serializable{
+public class Estacionamento {
 
 	private String nome;
 	private Cliente[] id;
@@ -73,34 +73,39 @@ public class Estacionamento implements Serializable{
 
 		// Criar as vagas
 		for (int i = 0; i < totalVagas; i++) {
-			vagas[i] = new Vaga(i + 1); // Crie uma vaga com um número único
+			int fila = i / vagasPorFileira + 1; // Calcula a fila com base no número de vagas por fileira
+			int numero = i % vagasPorFileira + 1; // Calcula o número com base no número de vagas por fileira
+			vagas[i] = new Vaga(fila, numero); // Cria uma vaga com fila e número únicos
 		}
 	}
 
 	public void estacionar(String placa) {
-		// Procurar o veículo com base na placa
 		Veiculo veiculoParaEstacionar = null;
+		Cliente clienteDoVeiculo = null;
+
 		for (Cliente cliente : id) {
 			Veiculo veiculo = cliente.possuiVeiculo(placa);
 			if (veiculo != null) {
 				veiculoParaEstacionar = veiculo;
+				clienteDoVeiculo = cliente;
 				break;
 			}
 		}
 
 		if (veiculoParaEstacionar != null) {
-			if (veiculoParaEstacionar.isEstacionado()) {
-				throw new IllegalArgumentException("Erro - O veículo já está estacionado.");
+			Vaga vagaDisponivel = null;
+			for (Vaga vaga : vagas) {
+				if (vaga.isDisponivel()) {
+					vagaDisponivel = vaga;
+					break;
+				}
 			}
 
-			// Procurar uma vaga disponível no estacionamento
-			Vaga vagaDisponivel = encontrarVagaDisponivel();
 			if (vagaDisponivel != null) {
-				// Estacionar o veículo na vaga
-				if (vagaDisponivel.estacionar()) {
-					veiculoParaEstacionar.setEstacionado(true);
-					// Pode incluir lógica adicional, como registrar o horário de entrada do veículo
-					System.out.println("Veículo com placa " + placa + " estacionado na vaga " + vagaDisponivel.getId());
+				if (vagaDisponivel.estacionar(clienteDoVeiculo)) {
+					LocalDateTime entrada = LocalDateTime.now(); // Obtém a hora de entrada do veículo
+					System.out.println("Veículo com placa " + placa + " estacionado na vaga " + vagaDisponivel.id);
+
 				} else {
 					throw new IllegalArgumentException("Erro - A vaga não está disponível.");
 				}
@@ -113,43 +118,7 @@ public class Estacionamento implements Serializable{
 	}
 
 	public double sair(String placa) {
-		// Procurar o veículo com base na placa
-		Veiculo veiculoParaSair = null;
-		for (Cliente cliente : id) {
-			Veiculo veiculo = cliente.possuiVeiculo(placa);
-			if (veiculo != null) {
-				veiculoParaSair = veiculo;
-				break;
-			}
-		}
 
-		if (veiculoParaSair != null) {
-			if (!veiculoParaSair.isEstacionado()) {
-				throw new IllegalArgumentException("Erro - O veículo não está estacionado.");
-			}
-
-			// Procurar a vaga onde o veículo está estacionado
-			Vaga vagaOndeEstaEstacionado = null;
-			for (Vaga vaga : vagas) {
-				if (vaga.getVeiculo() != null && vaga.getVeiculo().equals(veiculoParaSair)) {
-					vagaOndeEstaEstacionado = vaga;
-					break;
-				}
-			}
-
-			if (vagaOndeEstaEstacionado != null) {
-				// Sair com o veículo da vaga
-				double valorCobrado = vagaOndeEstaEstacionado.sair();
-				veiculoParaSair.setEstacionado(false);
-				// Pode incluir lógica adicional, como registrar o horário de saída do veículo
-				System.out.println("Veículo com placa " + placa + " saiu da vaga " + vagaOndeEstaEstacionado.getId());
-				return valorCobrado;
-			} else {
-				throw new IllegalArgumentException("Erro - O veículo não está estacionado em nenhuma vaga.");
-			}
-		} else {
-			throw new IllegalArgumentException("Erro - Veículo não encontrado.");
-		}
 	}
 
 	public double totalArrecadado() {
@@ -206,11 +175,7 @@ public class Estacionamento implements Serializable{
 	}
 
 	public String getNome() {
-		return this.nome;
-	}
-
-	public int getVagas() {
-		return (this.vagasPorFileira * this.quantFileiras);
+		return nome;
 	}
 
 }

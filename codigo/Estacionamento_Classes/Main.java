@@ -1,142 +1,204 @@
-import java.time.LocalDateTime;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
-public class Main{
-    public static void main(String[] args){
-        try{
-            //Criando 3 estacionamentos;
-            Estacionamento estacionamento1 = new Estacionamento("Estacionamento 1", 5, 10);
-            Estacionamento estacionamento2 = new Estacionamento("Estacionamento 2", 4, 12);
-            Estacionamento estacionamento3 = new Estacionamento("Estacionamento 3", 6, 8);
+public class Main {
+    public static void menu() {
+        System.out.println("Escolha uma opção: ");
+        System.out.println("1 - Criar estacionamento");
+        System.out.println("2 - Criar cliente");
+        System.out.println("3 - Estacionar veículo");
+        System.out.println("4 - Sair com veículo");
+        System.out.println("5 - Salvar dados");
+        System.out.println("6 - Sair");
+    }
 
-            //Criando 6 clientes;
-            Cliente cliente1 = new Cliente("Cliente 1", "12345");
-            Cliente cliente2 = new Cliente("Cliente 2", "54321");
-            Cliente cliente3 = new Cliente("Cliente 3", "53367");
-            Cliente cliente4 = new Cliente("Cliente 4", "74829");
-            Cliente cliente5 = new Cliente("Cliente 5", "23679");
-            Cliente cliente6 = new Cliente("Cliente 6", "17241");
+    public static Estacionamento criarEstacionamento() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Digite o nome do estacionamento: ");
+        String nome = sc.nextLine();
 
-            //Adicionando clientes ao estacionamento;
-            estacionamento1.addCliente(cliente1);
-            estacionamento1.addCliente(cliente2);
-            estacionamento2.addCliente(cliente3);
-            estacionamento2.addCliente(cliente4);
-            estacionamento3.addCliente(cliente5);
-            estacionamento3.addCliente(cliente6);
+        System.out.println("Digite a quantidade de fileiras: ");
+        int fileiras = sc.nextInt();
 
-            //Criando 6 veículos;
-            Veiculo veiculo1 = new Veiculo("ABC123");
-            Veiculo veiculo2 = new Veiculo("XYZ789");
-            Veiculo veiculo3 = new Veiculo("AEZ919");
-            Veiculo veiculo4 = new Veiculo("IYO762");
-            Veiculo veiculo5 = new Veiculo("AEC691");
-            Veiculo veiculo6 = new Veiculo("HTJ571");
+        System.out.println("Digite a quantidade de vagas por fileira: ");
+        int vagasPorFileira = sc.nextInt();
+        sc.close();
 
-            //Adicionando veículos aos clientes;
-            cliente1.addVeiculo(veiculo1);
-            cliente2.addVeiculo(veiculo2);
-            cliente3.addVeiculo(veiculo3);
-            cliente4.addVeiculo(veiculo4);
-            cliente5.addVeiculo(veiculo5);
-            cliente6.addVeiculo(veiculo6);
+        Estacionamento estacionamento = new Estacionamento(nome, fileiras, vagasPorFileira);
+        return estacionamento;
+    }
 
-            //Estacionando veículos;
-            estacionamento1.estacionar(veiculo1.getPlaca());
-            estacionamento1.estacionar(veiculo2.getPlaca());
-            estacionamento2.estacionar(veiculo3.getPlaca());
-            estacionamento2.estacionar(veiculo4.getPlaca());
-            estacionamento3.estacionar(veiculo5.getPlaca());
-            estacionamento3.estacionar(veiculo6.getPlaca());
+    public static Cliente criarCliente() {
 
-            //Crie uma lista para armazenar as vagas;
-            List<Vaga> vagas = new ArrayList<>();
-            
-            //Crie uma lista para armazenar os usos de vagas;
-            List<UsoDeVaga> usos = new ArrayList<>();
-            
-            //Crie uma lista para armazenar os registros históricos;
-            List<RegistroHistorico> registros = new ArrayList<>();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Digite o nome do cliente: ");
+        String nomeCliente = sc.nextLine();
 
-            //Criar e adicionar vagas, usos e registros;
-            int registrosPerClient = 10;
-            for(int clienteIndex = 0; clienteIndex < 6; clienteIndex++){
-                Cliente cliente = null;
-                String placa = null;
-                switch(clienteIndex){
-                    case 0:
-                        cliente = cliente1;
-                        placa = veiculo1.getPlaca();
+        System.out.println("Digite o ID do cliente: ");
+        String idCliente = sc.nextLine();
+
+        Cliente cliente = new Cliente(nomeCliente, idCliente);
+
+        System.out.println("Digite a quantidade de veículos:");
+        int qtdVeiculos = sc.nextInt();
+
+        for (int i = 0; i < qtdVeiculos; i++) {
+            System.out.println("Digite a placa do veículo: ");
+            String placa = sc.nextLine();
+            Veiculo veiculo = new Veiculo(placa);
+            cliente.addVeiculo(veiculo);
+        }
+
+        sc.close();
+        return cliente;
+    }
+
+    public static void estacionarVeiculo(Veiculo veiculo, Estacionamento estacionamento, Vaga vaga, Cliente cliente) {
+        estacionamento.estacionar(veiculo.getPlaca());
+        cliente.possuiVeiculo(veiculo.getPlaca()).estacionar(vaga);
+    }
+
+    public static void sairVeiculo(Veiculo veiculo, Estacionamento estacionamento, Cliente cliente) {
+        estacionamento.sair(veiculo.getPlaca());
+        cliente.possuiVeiculo(veiculo.getPlaca()).sair();
+    }
+
+    public static void salvarDados(List<Estacionamento> estacionamentos, List<Cliente> clientes) throws IOException {
+        FileOutputStream estacioOut = new FileOutputStream("estacionamentos.ser");
+        ObjectOutputStream estacioObjectOut = new ObjectOutputStream(estacioOut);
+
+        FileOutputStream clienteOut = new FileOutputStream("clientes.ser");
+        ObjectOutputStream clienteObjectOut = new ObjectOutputStream(clienteOut);
+
+        FileOutputStream vagaOut = new FileOutputStream("vagas.ser");
+        ObjectOutputStream vagaObjectOut = new ObjectOutputStream(vagaOut);
+
+        for (Estacionamento estacionamento : estacionamentos) {
+            estacioObjectOut.writeObject(estacionamento);
+        }
+
+        for (Cliente cliente : clientes) {
+            clienteObjectOut.writeObject(cliente);
+        }
+
+        estacioObjectOut.close();
+        estacioOut.close();
+        clienteObjectOut.close();
+        clienteOut.close();
+    }
+
+    public static void main(String[] args) throws IOException {
+        List<Estacionamento> estacionamentos = new ArrayList<>();
+        List<Cliente> clientes = new ArrayList<>();
+        List<Veiculo> veiculos = new ArrayList<>();
+        int escolha;
+
+        Scanner sc = new Scanner(System.in);
+
+        menu();
+        escolha = sc.nextInt();
+
+        switch (escolha) {
+            case 1:
+                Estacionamento estacionamento = criarEstacionamento();
+                estacionamentos.add(estacionamento);
+                menu();
+                escolha = sc.nextInt();
+
+            case 2:
+                Cliente cliente = criarCliente();
+                clientes.add(cliente);
+                menu();
+                escolha = sc.nextInt();
+
+            case 3:
+                System.out.println("Digite a placa do veículo: ");
+                String placa = sc.nextLine();
+                System.out.println("Digite o nome do estacionamento: ");
+                String nomeEstacionamento = sc.nextLine();
+                System.out.println("Digite o ID do cliente: ");
+                String idCliente = sc.nextLine();
+                System.out.println("Digite a fila da vaga: ");
+                int fila = sc.nextInt();
+                System.out.println("Digite o número da vaga: ");
+                int coluna = sc.nextInt();
+                Estacionamento estacionamentoAtual = null;
+                Cliente clienteAtual = null;
+                Veiculo veiculoAtual = null;
+                Vaga vagaAtual = new Vaga(fila, coluna);
+                for (Estacionamento estacionamento1 : estacionamentos) {
+                    if (estacionamento1.getNome().equals(nomeEstacionamento)) {
+                        estacionamentoAtual = estacionamento1;
                         break;
-                    case 1:
-                        cliente = cliente2;
-                        placa = veiculo2.getPlaca();
-                        break;
-                    case 2:
-                        cliente = cliente3;
-                        placa = veiculo3.getPlaca();
-                        break;
-                    case 3:
-                        cliente = cliente4;
-                        placa = veiculo4.getPlaca();
-                        break;
-                    case 4:
-                        cliente = cliente5;
-                        placa = veiculo5.getPlaca();
-                        break;
-                    case 5:
-                        cliente = cliente6;
-                        placa = veiculo6.getPlaca();
-                        break;
+                    }
                 }
-                for(int i = 0; i < registrosPerClient; i++){
-                    Vaga vaga = new Vaga(i, i);
-                    vagas.add(vaga);
-                    UsoDeVaga uso = new UsoDeVaga(vaga, LocalDateTime.now());
-                    uso.contratarServico();
-                    usos.add(uso);
-                    LocalDateTime horaSaida = LocalDateTime.now().plusHours(2);
-                    RegistroHistorico registro = new RegistroHistorico(cliente, placa, uso.getValorPago(), uso.getValorPago());
-                    registros.add(registro);
+                for (Cliente cliente1 : clientes) {
+                    if (cliente1.getID().equals(idCliente)) {
+                        clienteAtual = cliente1;
+                        break;
+                    }
                 }
-            }
+                for (Veiculo veiculo1 : veiculos) {
+                    if (veiculo1.getPlaca().equals(placa)) {
+                        veiculoAtual = veiculo1;
+                        break;
+                    }
+                }
+                estacionarVeiculo(veiculoAtual, estacionamentoAtual, vagaAtual, clienteAtual);
+                menu();
+                escolha = sc.nextInt();
 
-            //Crie um FileOutputStream para salvar os objetos em um arquivo binário;
-            FileOutputStream fileOut = new FileOutputStream("dados.bin");
+            case 4:
+                System.out.println("Digite a placa do veículo: ");
+                String placa1 = sc.nextLine();
+                System.out.println("Digite o nome do estacionamento: ");
+                String nomeEstacionamento1 = sc.nextLine();
+                System.out.println("Digite o ID do cliente: ");
+                String idCliente1 = sc.nextLine();
+                Estacionamento estacionamentoAtual1 = null;
+                Cliente clienteAtual1 = null;
+                Veiculo veiculoAtual1 = null;
+                for (Estacionamento estacionamento1 : estacionamentos) {
+                    if (estacionamento1.getNome().equals(nomeEstacionamento1)) {
+                        estacionamentoAtual1 = estacionamento1;
+                        break;
+                    }
+                }
+                for (Cliente cliente1 : clientes) {
+                    if (cliente1.getID().equals(idCliente1)) {
+                        clienteAtual1 = cliente1;
+                        break;
+                    }
+                }
+                for (Veiculo veiculo1 : veiculos) {
+                    if (veiculo1.getPlaca().equals(placa1)) {
+                        veiculoAtual1 = veiculo1;
+                        break;
+                    }
+                }
+                sairVeiculo(veiculoAtual1, estacionamentoAtual1, clienteAtual1);
+                menu();
+                escolha = sc.nextInt();
 
-            //Crie um ObjectOutputStream para escrever objetos no arquivo;
-            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+            case 5:
+                salvarDados(estacionamentos, clientes);
+                menu();
+                escolha = sc.nextInt();
 
-            //Escreva os objetos no arquivo;
-            objectOut.writeObject(estacionamento1);
-            objectOut.writeObject(cliente1);
-            objectOut.writeObject(cliente2);
-            objectOut.writeObject(estacionamento2);
-            objectOut.writeObject(cliente3);
-            objectOut.writeObject(cliente4);
-            objectOut.writeObject(estacionamento3);
-            objectOut.writeObject(cliente5);
-            objectOut.writeObject(cliente6);
+            case 6:
+                System.out.println("Saindo...");
+                break;
 
-            //Adicona as vagas;
-            for(Vaga vaga : vagas){
-                objectOut.writeObject(vaga);
-            }
-            //Adiciona os usos de vagas;
-            for(UsoDeVaga uso : usos){
-                objectOut.writeObject(uso);
-            }
-            //Adiciona o registro;
-            for(RegistroHistorico registro : registros){
-                objectOut.writeObject(registro);
-            }
+            default:
+                System.out.println("Opção inválida.");
+                break;
 
-            //Feche o ObjectOutputStream e o FileOutputStream;
-            objectOut.close();
-            fileOut.close();
-        }catch(Exception e){e.printStackTrace();}
+        }
+
+        sc.close();
     }
 }
