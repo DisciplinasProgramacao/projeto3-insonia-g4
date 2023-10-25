@@ -74,9 +74,6 @@ public class Main {
         FileOutputStream clienteOut = new FileOutputStream("clientes.ser");
         ObjectOutputStream clienteObjectOut = new ObjectOutputStream(clienteOut);
 
-        FileOutputStream vagaOut = new FileOutputStream("vagas.ser");
-        ObjectOutputStream vagaObjectOut = new ObjectOutputStream(vagaOut);
-
         for (Estacionamento estacionamento : estacionamentos) {
             estacioObjectOut.writeObject(estacionamento);
         }
