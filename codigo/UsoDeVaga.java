@@ -1,8 +1,9 @@
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Scanner;
+import java.io.Serializable;
 
-public class UsoDeVaga {
+public class UsoDeVaga implements Serializable{
 
     private static final double FRACAO_USO = 0.25;
     private static final double VALOR_FRACAO = 4.0;
@@ -23,7 +24,25 @@ public class UsoDeVaga {
     }
 
     public void contratarServico() {
+
         this.servicoContratado = Servicos.selecionarServico();
+
+    public void selecionarEstacionamento() {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Selecione o estacionamento (1, 2 ou 3): ");
+        int escolha = scanner.nextInt();
+        
+        if (escolha < 1 || escolha > 3) {
+            throw new IllegalArgumentException("Escolha inválida. Por favor, selecione 1, 2 ou 3.");
+        }
+        
+        this.numeroEstacionamento = escolha;
+    }
+
+    public int getNumeroEstacionamento() {
+        return numeroEstacionamento;
+    }
     }
 
     public void sair(LocalDateTime saida) {
