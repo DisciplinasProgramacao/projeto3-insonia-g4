@@ -2,10 +2,10 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 /**
-* <h1>Cliente</h1>
-* Classe Cliente.
-* @author Gabriel Alejandro Figueiro Galindo
-* @since 10/10/2023
+ * <h1>Cliente</h1>
+ * Classe Cliente.
+ * @author Gabriel Alejandro Figueiro Galindo
+ * @since 10/10/2023
 */
 public class Cliente implements Serializable{
     private String nome;//Nome do cliente;
