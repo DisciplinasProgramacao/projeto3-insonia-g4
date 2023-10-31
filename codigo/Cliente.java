@@ -1,85 +1,79 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 /**
-* <h1>Cliente</h1>
-* Classe Cliente.
-* @author Gabriel Alejandro Figueiro Galindo
-* @since 10/10/2023
+ * <h1>Cliente</h1>
+ * Classe Cliente.
+ * @author Gabriel Alejandro Figueiro Galindo
+ * @since 10/10/2023
 */
-public class Cliente{
-	private String nome;//Nome do cliente;
-	private String id;//identificador;
-	private List<Veiculo> veiculos;//Lista de veiculos;
-	//Construtor;
-	public Cliente(String nome, String id){
-		this.nome = nome;
-		this.id = id;
-		this.veiculos = new ArrayList<>();
-	}
+public class Cliente implements Serializable{
+    private String nome;//Nome do cliente;
+    private String id;//Identificador;
+    private Map<String, Veiculo> veiculos;//Map para armazenar os veiculos, com placas de veículos como chaves;
+
+    //Constructor;
+    public Cliente(String nome, String id){
+        this.nome = nome;
+        this.id = id;
+        this.veiculos = new HashMap<>();
+    }
+
 	//Getters;
 	public String getNome(){return nome;}
 	public String getID(){return id;}
-	public List<Veiculo> getVeiculos(){return veiculos;}
-	
-	//Setters;
-	public void setNome(String nome){this.nome = nome;}
-	public void setID(String id){this.id = id;}
-	public void setVeiculos(List<Veiculo> veiculos){this.veiculos = veiculos;}
-	
-	//Metodo para adicionar veículos na lista do cliente;
-	public void addVeiculo(Veiculo veiculo){
-		for(Veiculo veiculoAtual : veiculos){
-			if(veiculoAtual.getPlaca().equals(veiculo.getPlaca())){
-				throw new IllegalArgumentException("Erro - Carro já inserido.");
-			}
-		}
-		veiculos.add(veiculo);
-	}
+	public Map<String, Veiculo> getVeiculos(){return veiculos;}
 
-	//Verifica se o Cliente possui o veículo com base em sua placa;
-	public Veiculo possuiVeiculo(String placa){
-		for(Veiculo veiculo : veiculos){
-			if(veiculo.getPlaca() == placa){
-				return veiculo;
-			}
-		}
-		throw new IllegalArgumentException("Erro - Veiculo não encontrado.");
-	}
+    //Método para adicionar Veiculo para o Map de veículos;
+    public void addVeiculo(Veiculo veiculo){
+        if(veiculos.containsKey(veiculo.getPlaca())){
+            throw new IllegalArgumentException("Erro - Carro já inserido.");
+        }
+        veiculos.put(veiculo.getPlaca(), veiculo);
+    }
 
-        //Total de usos;
+	//Verifique se o Cliente possui um Veículo com uma placa específica;
+    public Veiculo possuiVeiculo(String placa){
+        Veiculo veiculo = veiculos.get(placa);
+        if(veiculo == null){
+            throw new IllegalArgumentException("Erro - Veiculo não encontrado.");
+        }
+        return veiculo;
+    }
+
+	//Total de usos;
 	public int totalDeUsos(){
 		int totalDeUsos = 0;
-		for(Veiculo veiculo : veiculos){
+		for(Veiculo veiculo : veiculos.values()){
 			totalDeUsos += veiculo.totalDeUsos();
-			return totalDeUsos;
-		}
-	}
-	
-        //Pega o total arrecadado pelo veículo;
+        }
+        return totalDeUsos;
+    }
+
+	//Arrecadado pelo veiculo com a placa específica;
 	public double arrecadadoPorVeiculo(String placa){
-		for(Veiculo veiculo : veiculos){
-			if(veiculo.getPlaca() == placa){
-				return veiculo.totalArrecadado();
-			}
+		Veiculo veiculo = veiculos.get(placa);
+		if(veiculo == null){
+			throw new IllegalArgumentException("Erro - Veiculo não encontrado.");
 		}
-		throw new IllegalArgumentException("Erro - Veiculo não encontrado.");
+		return veiculo.totalArrecadado();
 	}
 
-        //Total arrecadado pelo cliente;
-	public double arrecadadoTotal(){
-		double TotalArrecadado = 0;
-		for(Veiculo veiculo : veiculos){
-			TotalArrecadado += veiculo.totalArrecadado();
-			return TotalArrecadado;
-		}
-	}
-
-        //Arrecadado no mês pelo cliente;
-	public double arrecadadoNoMes(int mes){
-		double ArrecadadoMes = 0;
-		for(Veiculo veiculo : veiculos){
-			ArrecadadoMes += veiculo.arrecadadoNoMes(mes);
-			return ArrecadadoMes;
-		}
-	}
+	//Total arrecadado pelo Cliente;
+    public double arrecadadoTotal(){
+        double TotalArrecadado = 0;
+        for(Veiculo veiculo : veiculos.values()){
+            TotalArrecadado += veiculo.totalArrecadado();
+        }
+        return TotalArrecadado;
+    }
+	
+    //Arrecadado no mês pelo Cliente;
+    public double arrecadadoNoMes(int mes){
+        double ArrecadadoMes = 0;
+        for(Veiculo veiculo : veiculos.values()){
+            ArrecadadoMes += veiculo.arrecadadoNoMes(mes);
+        }
+        return ArrecadadoMes;
+    }
 }
