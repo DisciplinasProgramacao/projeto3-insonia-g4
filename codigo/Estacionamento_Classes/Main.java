@@ -48,7 +48,7 @@ public class Main {
 
         for (int i = 0; i < qtdVeiculos; i++) {
             System.out.println("Digite a placa do veículo: ");
-            String placa = sc.nextLine();
+            String placa = sc.next();
             Veiculo veiculo = new Veiculo(placa);
             cliente.addVeiculo(veiculo);
         }
@@ -151,11 +151,11 @@ public class Main {
 
             case 4:
                 System.out.println("Digite a placa do veículo: ");
-                String placa1 = sc.nextLine();
+                String placa1 = sc.next();
                 System.out.println("Digite o nome do estacionamento: ");
-                String nomeEstacionamento1 = sc.nextLine();
+                String nomeEstacionamento1 = sc.next();
                 System.out.println("Digite o ID do cliente: ");
-                String idCliente1 = sc.nextLine();
+                String idCliente1 = sc.next();
                 Estacionamento estacionamentoAtual1 = null;
                 Cliente clienteAtual1 = null;
                 Veiculo veiculoAtual1 = null;
