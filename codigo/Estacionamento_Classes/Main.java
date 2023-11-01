@@ -98,102 +98,111 @@ public class Main {
 
         menu();
         escolha = sc.nextInt();
-
-        switch (escolha) {
-            case 1:
-                Estacionamento estacionamento = criarEstacionamento();
-                estacionamentos.add(estacionamento);
-                menu();
-                escolha = sc.nextInt();
-
-            case 2:
-                Cliente cliente = criarCliente();
-                clientes.add(cliente);
-                menu();
-                escolha = sc.nextInt();
-
-            case 3:
-                System.out.println("Digite a placa do veículo: ");
-                String placa = sc.nextLine();
-                System.out.println("Digite o nome do estacionamento: ");
-                String nomeEstacionamento = sc.nextLine();
-                System.out.println("Digite o ID do cliente: ");
-                String idCliente = sc.nextLine();
-                System.out.println("Digite a fila da vaga: ");
-                int fila = sc.nextInt();
-                System.out.println("Digite o número da vaga: ");
-                int coluna = sc.nextInt();
-                Estacionamento estacionamentoAtual = null;
-                Cliente clienteAtual = null;
-                Veiculo veiculoAtual = null;
-                Vaga vagaAtual = new Vaga(fila, coluna);
-                for (Estacionamento estacionamento1 : estacionamentos) {
-                    if (estacionamento1.getNome().equals(nomeEstacionamento)) {
-                        estacionamentoAtual = estacionamento1;
-                        break;
+        
+        while(escolha != 6){
+            System.out.println(escolha);
+            switch (escolha) {
+                case 1:
+                    Estacionamento estacionamento = criarEstacionamento();
+                    estacionamentos.add(estacionamento);
+                    menu();
+                    escolha = sc.nextInt();
+    
+                case 2:
+                    Cliente cliente = criarCliente();
+                    clientes.add(cliente);
+                    // menu();
+                    // novaEscolha = novo.nextInt();
+                    System.out.println("Escolha 2");
+                    break;
+    
+                case 3:
+                    System.out.println("Digite a placa do veículo: ");
+                    String placa = sc.nextLine();
+                    System.out.println("Digite o nome do estacionamento: ");
+                    String nomeEstacionamento = sc.nextLine();
+                    System.out.println("Digite o ID do cliente: ");
+                    String idCliente = sc.nextLine();
+                    System.out.println("Digite a fila da vaga: ");
+                    int fila = sc.nextInt();
+                    System.out.println("Digite o número da vaga: ");
+                    int coluna = sc.nextInt();
+                    Estacionamento estacionamentoAtual = null;
+                    Cliente clienteAtual = null;
+                    Veiculo veiculoAtual = null;
+                    Vaga vagaAtual = new Vaga(fila, coluna);
+                    for (Estacionamento estacionamento1 : estacionamentos) {
+                        if (estacionamento1.getNome().equals(nomeEstacionamento)) {
+                            estacionamentoAtual = estacionamento1;
+                            break;
+                        }
                     }
-                }
-                for (Cliente cliente1 : clientes) {
-                    if (cliente1.getID().equals(idCliente)) {
-                        clienteAtual = cliente1;
-                        break;
+                    for (Cliente cliente1 : clientes) {
+                        if (cliente1.getID().equals(idCliente)) {
+                            clienteAtual = cliente1;
+                            break;
+                        }
                     }
-                }
-                for (Veiculo veiculo1 : veiculos) {
-                    if (veiculo1.getPlaca().equals(placa)) {
-                        veiculoAtual = veiculo1;
-                        break;
+                    for (Veiculo veiculo1 : veiculos) {
+                        if (veiculo1.getPlaca().equals(placa)) {
+                            veiculoAtual = veiculo1;
+                            break;
+                        }
                     }
-                }
-                estacionarVeiculo(veiculoAtual, estacionamentoAtual, vagaAtual, clienteAtual);
-                menu();
-                escolha = sc.nextInt();
-
-            case 4:
-                System.out.println("Digite a placa do veículo: ");
-                String placa1 = sc.next();
-                System.out.println("Digite o nome do estacionamento: ");
-                String nomeEstacionamento1 = sc.next();
-                System.out.println("Digite o ID do cliente: ");
-                String idCliente1 = sc.next();
-                Estacionamento estacionamentoAtual1 = null;
-                Cliente clienteAtual1 = null;
-                Veiculo veiculoAtual1 = null;
-                for (Estacionamento estacionamento1 : estacionamentos) {
-                    if (estacionamento1.getNome().equals(nomeEstacionamento1)) {
-                        estacionamentoAtual1 = estacionamento1;
-                        break;
+                    estacionarVeiculo(veiculoAtual, estacionamentoAtual, vagaAtual, clienteAtual);
+                    menu();
+                    escolha = sc.nextInt();
+    
+                case 4:
+                    System.out.println("Digite a placa do veículo: ");
+                    String placa1 = sc.next();
+                    System.out.println("Digite o nome do estacionamento: ");
+                    String nomeEstacionamento1 = sc.next();
+                    System.out.println("Digite o ID do cliente: ");
+                    String idCliente1 = sc.next();
+                    Estacionamento estacionamentoAtual1 = null;
+                    Cliente clienteAtual1 = null;
+                    Veiculo veiculoAtual1 = null;
+                    for (Estacionamento estacionamento1 : estacionamentos) {
+                        if (estacionamento1.getNome().equals(nomeEstacionamento1)) {
+                            estacionamentoAtual1 = estacionamento1;
+                            break;
+                        }
                     }
-                }
-                for (Cliente cliente1 : clientes) {
-                    if (cliente1.getID().equals(idCliente1)) {
-                        clienteAtual1 = cliente1;
-                        break;
+                    for (Cliente cliente1 : clientes) {
+                        if (cliente1.getID().equals(idCliente1)) {
+                            clienteAtual1 = cliente1;
+                            break;
+                        }
                     }
-                }
-                for (Veiculo veiculo1 : veiculos) {
-                    if (veiculo1.getPlaca().equals(placa1)) {
-                        veiculoAtual1 = veiculo1;
-                        break;
+                    for (Veiculo veiculo1 : veiculos) {
+                        if (veiculo1.getPlaca().equals(placa1)) {
+                            veiculoAtual1 = veiculo1;
+                            break;
+                        }
                     }
-                }
-                sairVeiculo(veiculoAtual1, estacionamentoAtual1, clienteAtual1);
-                menu();
-                escolha = sc.nextInt();
+                    sairVeiculo(veiculoAtual1, estacionamentoAtual1, clienteAtual1);
+                    menu();
+                    escolha = sc.nextInt();
+    
+                case 5:
+                    salvarDados(estacionamentos, clientes);
+                    menu();
+                    escolha = sc.nextInt();
+    
+                case 6:
+                    System.out.println("Saindo...");
+                    break;
+    
+                default:
+                    System.out.println("Opção inválida.");
+                    break;
+    
+            }
+    
+            menu();
 
-            case 5:
-                salvarDados(estacionamentos, clientes);
-                menu();
-                escolha = sc.nextInt();
-
-            case 6:
-                System.out.println("Saindo...");
-                break;
-
-            default:
-                System.out.println("Opção inválida.");
-                break;
-
+            escolha = novo.nextInt();
         }
 
         sc.close();
