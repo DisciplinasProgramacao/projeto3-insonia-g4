@@ -148,8 +148,8 @@ public class Main {
                         }
                     }
                     estacionarVeiculo(veiculoAtual, estacionamentoAtual, vagaAtual, clienteAtual);
-                    menu();
-                    escolha = myio.readInt();
+                    //menu();
+                    //escolha = myio.readInt();
     
                 case 4:
                     myio.println("Digite a placa do veículo: ");
@@ -180,13 +180,13 @@ public class Main {
                         }
                     }
                     sairVeiculo(veiculoAtual1, estacionamentoAtual1, clienteAtual1);
-                    menu();
-                    escolha = myio.readInt();
+                    //menu();
+                    //escolha = myio.readInt();
     
                 case 5:
                     salvarDados(estacionamentos, clientes);
-                    menu();
-                    escolha = myio.readInt();
+                    //menu();
+                    //escolha = myio.readInt();
     
                 case 6:
                     System.out.println("Saindo...");
