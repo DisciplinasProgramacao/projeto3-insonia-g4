@@ -17,43 +17,40 @@ public class Main {
     }
 
     public static Estacionamento criarEstacionamento() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Digite o nome do estacionamento: ");
-        String nome = sc.nextLine();
-
-        System.out.println("Digite a quantidade de fileiras: ");
-        int fileiras = sc.nextInt();
-
-        System.out.println("Digite a quantidade de vagas por fileira: ");
-        int vagasPorFileira = sc.nextInt();
-        sc.close();
-
+        MyIO myio = new MyIO();
+        myio.println("Digite o nome do estacionamento: ");
+        String nome = myio.readLine();
+    
+        myio.println("Digite a quantidade de fileiras: ");
+        int fileiras = myio.readInt();
+    
+        myio.println("Digite a quantidade de vagas por fileira: ");
+        int vagasPorFileira = myio.readInt();
+    
         Estacionamento estacionamento = new Estacionamento(nome, fileiras, vagasPorFileira);
         return estacionamento;
     }
-
+    
     public static Cliente criarCliente() {
-
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Digite o nome do cliente: ");
-        String nomeCliente = sc.nextLine();
-
-        System.out.println("Digite o ID do cliente: ");
-        String idCliente = sc.nextLine();
-
+        MyIO myio = new MyIO();
+        myio.println("Digite o nome do cliente: ");
+        String nomeCliente = myio.readLine();
+    
+        myio.println("Digite o ID do cliente: ");
+        String idCliente = myio.readLine();
+    
         Cliente cliente = new Cliente(nomeCliente, idCliente);
-
-        System.out.println("Digite a quantidade de veículos:");
-        int qtdVeiculos = sc.nextInt();
-
+    
+        myio.println("Digite a quantidade de veículos:");
+        int qtdVeiculos = myio.readInt();
+    
         for (int i = 0; i < qtdVeiculos; i++) {
-            System.out.println("Digite a placa do veículo: ");
-            String placa = sc.next();
+            myio.println("Digite a placa do veículo: ");
+            String placa = myio.readLine();
             Veiculo veiculo = new Veiculo(placa);
             cliente.addVeiculo(veiculo);
         }
-
-        sc.close();
+    
         return cliente;
     }
 
@@ -94,39 +91,40 @@ public class Main {
         List<Veiculo> veiculos = new ArrayList<>();
         int escolha;
 
-        Scanner sc = new Scanner(System.in);
+        MyIO myio = new MyIO();
 
         menu();
-        escolha = sc.nextInt();
+        escolha = myio.readInt();
         
         while(escolha != 6){
-            System.out.println(escolha);
+            myio.println("escolha foi:"+escolha);
             switch (escolha) {
                 case 1:
                     Estacionamento estacionamento = criarEstacionamento();
                     estacionamentos.add(estacionamento);
-                    menu();
-                    escolha = sc.nextInt();
+                    //menu();
+                    //escolha = myio.readInt();
+                    break;
     
                 case 2:
                     Cliente cliente = criarCliente();
                     clientes.add(cliente);
                     // menu();
                     // novaEscolha = novo.nextInt();
-                    System.out.println("Escolha 2");
                     break;
     
                 case 3:
-                    System.out.println("Digite a placa do veículo: ");
-                    String placa = sc.nextLine();
-                    System.out.println("Digite o nome do estacionamento: ");
-                    String nomeEstacionamento = sc.nextLine();
-                    System.out.println("Digite o ID do cliente: ");
-                    String idCliente = sc.nextLine();
-                    System.out.println("Digite a fila da vaga: ");
-                    int fila = sc.nextInt();
-                    System.out.println("Digite o número da vaga: ");
-                    int coluna = sc.nextInt();
+                    myio.println("Digite a placa do veículo: ");
+                    String placa = myio.readLine();
+                    myio.println("Digite o nome do estacionamento: ");
+                    String nomeEstacionamento = myio.readLine();
+                    myio.println("Digite o ID do cliente: ");
+                    String idCliente = myio.readLine();
+                    myio.println("Digite a fila da vaga: ");
+                    int fila = myio.readInt();
+                    myio.println("Digite o número da vaga: ");
+                    int coluna = myio.readInt();
+
                     Estacionamento estacionamentoAtual = null;
                     Cliente clienteAtual = null;
                     Veiculo veiculoAtual = null;
@@ -150,16 +148,16 @@ public class Main {
                         }
                     }
                     estacionarVeiculo(veiculoAtual, estacionamentoAtual, vagaAtual, clienteAtual);
-                    menu();
-                    escolha = sc.nextInt();
+                    //menu();
+                    //escolha = myio.readInt();
     
                 case 4:
-                    System.out.println("Digite a placa do veículo: ");
-                    String placa1 = sc.next();
-                    System.out.println("Digite o nome do estacionamento: ");
-                    String nomeEstacionamento1 = sc.next();
-                    System.out.println("Digite o ID do cliente: ");
-                    String idCliente1 = sc.next();
+                    myio.println("Digite a placa do veículo: ");
+                    String placa1 = myio.readLine();
+                    myio.println("Digite o nome do estacionamento: ");
+                    String nomeEstacionamento1 = myio.readLine();
+                    myio.println("Digite o ID do cliente: ");
+                    String idCliente1 = myio.readLine();
                     Estacionamento estacionamentoAtual1 = null;
                     Cliente clienteAtual1 = null;
                     Veiculo veiculoAtual1 = null;
@@ -182,13 +180,13 @@ public class Main {
                         }
                     }
                     sairVeiculo(veiculoAtual1, estacionamentoAtual1, clienteAtual1);
-                    menu();
-                    escolha = sc.nextInt();
+                    //menu();
+                    //escolha = myio.readInt();
     
                 case 5:
                     salvarDados(estacionamentos, clientes);
-                    menu();
-                    escolha = sc.nextInt();
+                    //menu();
+                    //escolha = myio.readInt();
     
                 case 6:
                     System.out.println("Saindo...");
@@ -202,9 +200,9 @@ public class Main {
     
             menu();
 
-            escolha = novo.nextInt();
+            escolha = myio.readInt();
         }
 
-        sc.close();
+        
     }
 }
