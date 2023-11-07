@@ -18,11 +18,11 @@ public class Cliente implements Serializable{
         this.id = id;
         this.veiculos = new HashMap<>();
     }
-	
-    //Getters;
-    public String getNome(){return nome;}
-    public String getID(){return id;}
-    public Map<String, Veiculo> getVeiculos(){return veiculos;}
+
+	//Getters;
+	public String getNome(){return nome;}
+	public String getID(){return id;}
+	public Map<String, Veiculo> getVeiculos(){return veiculos;}
 
     //Método para adicionar Veiculo para o Map de veículos;
     public void addVeiculo(Veiculo veiculo){
@@ -32,17 +32,13 @@ public class Cliente implements Serializable{
         veiculos.put(veiculo.getPlaca(), veiculo);
     }
 
-    //Verifique se o Cliente possui um Veículo com uma placa específica;
+	//Verifique se o Cliente possui um Veículo com uma placa específica;
     public Veiculo possuiVeiculo(String placa){
-        Veiculo veiculo = veiculos.get(placa);
-        if(veiculo == null){
-            throw new IllegalArgumentException("Erro - Veiculo não encontrado.");
-        }
-        return veiculo;
+        return veiculos.get(placa);
     }
-	
-    //Total de usos;
-    public int totalDeUsos(){
+
+	//Total de usos;
+	public int totalDeUsos(){
 		int totalDeUsos = 0;
 		for(Veiculo veiculo : veiculos.values()){
 			totalDeUsos += veiculo.totalDeUsos();
@@ -50,16 +46,16 @@ public class Cliente implements Serializable{
         return totalDeUsos;
     }
 
-    //Arrecadado pelo veiculo com a placa específica;
-    public double arrecadadoPorVeiculo(String placa){
+	//Arrecadado pelo veiculo com a placa específica;
+	public double arrecadadoPorVeiculo(String placa){
 		Veiculo veiculo = veiculos.get(placa);
 		if(veiculo == null){
 			throw new IllegalArgumentException("Erro - Veiculo não encontrado.");
 		}
 		return veiculo.totalArrecadado();
-    }
+	}
 
-    //Total arrecadado pelo Cliente;
+	//Total arrecadado pelo Cliente;
     public double arrecadadoTotal(){
         double TotalArrecadado = 0;
         for(Veiculo veiculo : veiculos.values()){
