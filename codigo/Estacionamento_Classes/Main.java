@@ -3,9 +3,89 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Main {
+
+    //Função para criar o Estacionamento;
+    public static Estacionamento criarEstacionamento() {
+
+        MyIO.println("Digite o nome do estacionamento: ");
+        String nome = MyIO.readLine();
+    
+        MyIO.println("Digite a quantidade de fileiras: ");
+        int fileiras = MyIO.readInt();
+    
+        MyIO.println("Digite a quantidade de vagas por fileira: ");
+        int vagasPorFileira = MyIO.readInt();
+    
+        Estacionamento estacionamento = new Estacionamento(nome, fileiras, vagasPorFileira);
+        return estacionamento;
+    }
+    
+    //Função para criar o Cliente;
+    public static Cliente criarCliente() {
+
+        MyIO.println("Digite o nome do cliente: ");
+        String nomeCliente = MyIO.readLine();
+    
+        MyIO.println("Digite o ID do cliente: ");
+        String idCliente = MyIO.readLine();
+    
+        Cliente cliente = new Cliente(nomeCliente, idCliente);
+    
+        MyIO.println("Digite a quantidade de veículos:");
+        int qtdVeiculos = MyIO.readInt();
+    
+        for (int i = 0; i < qtdVeiculos; i++) {
+            MyIO.println("Digite a placa do veículo: ");
+            String placa = MyIO.readLine();
+            Veiculo veiculo = new Veiculo(placa);
+            cliente.addVeiculo(veiculo);
+        }
+        return cliente;
+    }
+
+    //Função para Estacionar o Veículo;
+    public static void estacionarVeiculo(Veiculo veiculo, Estacionamento estacionamento, 
+    Vaga vaga, Cliente cliente) {
+        estacionamento.estacionar(veiculo.getPlaca());
+        cliente.possuiVeiculo(veiculo.getPlaca()).estacionar(vaga);
+    }
+
+    //Função para fazer o veículo sair da vaga e do Estacionamento;
+    public static void sairVeiculo(Veiculo veiculo, Estacionamento estacionamento, Cliente cliente) {
+        //estacionamento.sair(veiculo.getPlaca());//IMPORTANTE: Função sair de estacionamento não foi implementada;
+        cliente.possuiVeiculo(veiculo.getPlaca()).sair();
+    }
+
+    //Salvar os Dados em um arquivo;
+    public static void salvarDados(List<Estacionamento> estacionamentos, 
+    List<Cliente> clientes) throws IOException {
+        //Crie um FileOutputStream para salvar os objetos em um arquivo binário;
+        FileOutputStream estacioOut = new FileOutputStream("estacionamentos.ser");
+        ObjectOutputStream estacioObjectOut = new ObjectOutputStream(estacioOut);
+
+        FileOutputStream clienteOut = new FileOutputStream("clientes.ser");
+        ObjectOutputStream clienteObjectOut = new ObjectOutputStream(clienteOut);
+
+        //Escreve os estacionamentos no arquivo;
+        for (Estacionamento estacionamento : estacionamentos) {
+            estacioObjectOut.writeObject(estacionamento);
+        }
+
+        //Escreve os clientes no arquivo;
+        for (Cliente cliente : clientes) {
+            clienteObjectOut.writeObject(cliente);
+        }
+
+        //Fecha o arquivo;
+        estacioObjectOut.close();
+        estacioOut.close();
+        clienteObjectOut.close();
+        clienteOut.close();
+    }
+
+    //Menu de opções de operações;
     public static void menu() {
         System.out.println("Escolha uma opção: ");
         System.out.println("1 - Criar estacionamento");
@@ -16,88 +96,18 @@ public class Main {
         System.out.println("6 - Sair");
     }
 
-    public static Estacionamento criarEstacionamento() {
-        MyIO myio = new MyIO();
-        myio.println("Digite o nome do estacionamento: ");
-        String nome = myio.readLine();
-    
-        myio.println("Digite a quantidade de fileiras: ");
-        int fileiras = myio.readInt();
-    
-        myio.println("Digite a quantidade de vagas por fileira: ");
-        int vagasPorFileira = myio.readInt();
-    
-        Estacionamento estacionamento = new Estacionamento(nome, fileiras, vagasPorFileira);
-        return estacionamento;
-    }
-    
-    public static Cliente criarCliente() {
-        MyIO myio = new MyIO();
-        myio.println("Digite o nome do cliente: ");
-        String nomeCliente = myio.readLine();
-    
-        myio.println("Digite o ID do cliente: ");
-        String idCliente = myio.readLine();
-    
-        Cliente cliente = new Cliente(nomeCliente, idCliente);
-    
-        myio.println("Digite a quantidade de veículos:");
-        int qtdVeiculos = myio.readInt();
-    
-        for (int i = 0; i < qtdVeiculos; i++) {
-            myio.println("Digite a placa do veículo: ");
-            String placa = myio.readLine();
-            Veiculo veiculo = new Veiculo(placa);
-            cliente.addVeiculo(veiculo);
-        }
-    
-        return cliente;
-    }
-
-    public static void estacionarVeiculo(Veiculo veiculo, Estacionamento estacionamento, Vaga vaga, Cliente cliente) {
-        estacionamento.estacionar(veiculo.getPlaca());
-        cliente.possuiVeiculo(veiculo.getPlaca()).estacionar(vaga);
-    }
-
-    public static void sairVeiculo(Veiculo veiculo, Estacionamento estacionamento, Cliente cliente) {
-        estacionamento.sair(veiculo.getPlaca());
-        cliente.possuiVeiculo(veiculo.getPlaca()).sair();
-    }
-
-    public static void salvarDados(List<Estacionamento> estacionamentos, List<Cliente> clientes) throws IOException {
-        FileOutputStream estacioOut = new FileOutputStream("estacionamentos.ser");
-        ObjectOutputStream estacioObjectOut = new ObjectOutputStream(estacioOut);
-
-        FileOutputStream clienteOut = new FileOutputStream("clientes.ser");
-        ObjectOutputStream clienteObjectOut = new ObjectOutputStream(clienteOut);
-
-        for (Estacionamento estacionamento : estacionamentos) {
-            estacioObjectOut.writeObject(estacionamento);
-        }
-
-        for (Cliente cliente : clientes) {
-            clienteObjectOut.writeObject(cliente);
-        }
-
-        estacioObjectOut.close();
-        estacioOut.close();
-        clienteObjectOut.close();
-        clienteOut.close();
-    }
-
+    //Main do Arquivo;
     public static void main(String[] args) throws IOException {
-        List<Estacionamento> estacionamentos = new ArrayList<>();
-        List<Cliente> clientes = new ArrayList<>();
-        List<Veiculo> veiculos = new ArrayList<>();
-        int escolha;
-
-        MyIO myio = new MyIO();
+        List<Estacionamento> estacionamentos = new ArrayList<>();//Lista de Estacionamento;
+        List<Cliente> clientes = new ArrayList<>();//Lista de Clientes;
+        List<Veiculo> veiculos = new ArrayList<>();//Lista de Veículos;
+        int escolha;//escolha do usuário;
 
         menu();
-        escolha = myio.readInt();
+        escolha = MyIO.readInt();
         
         while(escolha != 6){
-            myio.println("escolha foi:"+escolha);
+            MyIO.println("escolha foi: " + escolha);
             switch (escolha) {
                 case 1:
                     Estacionamento estacionamento = criarEstacionamento();
@@ -105,25 +115,23 @@ public class Main {
                     //menu();
                     //escolha = myio.readInt();
                     break;
-    
                 case 2:
                     Cliente cliente = criarCliente();
                     clientes.add(cliente);
                     // menu();
                     // novaEscolha = novo.nextInt();
                     break;
-    
                 case 3:
-                    myio.println("Digite a placa do veículo: ");
-                    String placa = myio.readLine();
-                    myio.println("Digite o nome do estacionamento: ");
-                    String nomeEstacionamento = myio.readLine();
-                    myio.println("Digite o ID do cliente: ");
-                    String idCliente = myio.readLine();
-                    myio.println("Digite a fila da vaga: ");
-                    int fila = myio.readInt();
-                    myio.println("Digite o número da vaga: ");
-                    int coluna = myio.readInt();
+                    MyIO.println("Digite a placa do veículo: ");
+                    String placa = MyIO.readLine();
+                    MyIO.println("Digite o nome do estacionamento: ");
+                    String nomeEstacionamento = MyIO.readLine();
+                    MyIO.println("Digite o ID do cliente: ");
+                    String idCliente = MyIO.readLine();
+                    MyIO.println("Digite a fila da vaga: ");
+                    int fila = MyIO.readInt();
+                    MyIO.println("Digite o número da vaga: ");
+                    int coluna = MyIO.readInt();
 
                     Estacionamento estacionamentoAtual = null;
                     Cliente clienteAtual = null;
@@ -150,14 +158,13 @@ public class Main {
                     estacionarVeiculo(veiculoAtual, estacionamentoAtual, vagaAtual, clienteAtual);
                     //menu();
                     //escolha = myio.readInt();
-    
                 case 4:
-                    myio.println("Digite a placa do veículo: ");
-                    String placa1 = myio.readLine();
-                    myio.println("Digite o nome do estacionamento: ");
-                    String nomeEstacionamento1 = myio.readLine();
-                    myio.println("Digite o ID do cliente: ");
-                    String idCliente1 = myio.readLine();
+                    MyIO.println("Digite a placa do veículo: ");
+                    String placa1 = MyIO.readLine();
+                    MyIO.println("Digite o nome do estacionamento: ");
+                    String nomeEstacionamento1 = MyIO.readLine();
+                    MyIO.println("Digite o ID do cliente: ");
+                    String idCliente1 = MyIO.readLine();
                     Estacionamento estacionamentoAtual1 = null;
                     Cliente clienteAtual1 = null;
                     Veiculo veiculoAtual1 = null;
@@ -182,27 +189,19 @@ public class Main {
                     sairVeiculo(veiculoAtual1, estacionamentoAtual1, clienteAtual1);
                     //menu();
                     //escolha = myio.readInt();
-    
                 case 5:
                     salvarDados(estacionamentos, clientes);
                     //menu();
                     //escolha = myio.readInt();
-    
                 case 6:
                     System.out.println("Saindo...");
                     break;
-    
                 default:
                     System.out.println("Opção inválida.");
                     break;
-    
             }
-    
             menu();
-
-            escolha = myio.readInt();
+            escolha = MyIO.readInt();
         }
-
-        
     }
 }

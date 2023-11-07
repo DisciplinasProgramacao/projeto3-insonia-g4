@@ -34,11 +34,7 @@ public class Cliente implements Serializable{
 
 	//Verifique se o Cliente possui um Veículo com uma placa específica;
     public Veiculo possuiVeiculo(String placa){
-        Veiculo veiculo = veiculos.get(placa);
-        if(veiculo == null){
-            throw new IllegalArgumentException("Erro - Veiculo não encontrado.");
-        }
-        return veiculo;
+        return veiculos.get(placa);
     }
 
 	//Total de usos;

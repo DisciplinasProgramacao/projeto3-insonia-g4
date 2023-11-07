@@ -3,17 +3,34 @@ import java.io.Serializable;
 
 public class Servicos implements Serializable{
     private int idServico;
-    private String nomeDoServico;
-    private double custoServico;
+    private String nomeDoServico;//Nome do Serviço;
+    private double custoServico;//Custo do Serviço;
     private int tempoMinimo;
 
-    public Servicos(int idServico, String nomeDoServico, double custoServico, int tempoMinimo) {
+    //Constructor;
+    public Servicos(int idServico, String nomeDoServico, 
+    double custoServico, int tempoMinimo) {
         this.idServico = idServico;
         this.nomeDoServico = nomeDoServico;
         this.custoServico = custoServico;
         this.tempoMinimo = tempoMinimo;
     }
 
+    //Getters;
+    public int getIdServico() {
+        return idServico;
+    }
+    public String getNomeDoServico() {
+        return nomeDoServico;
+    }
+    public double getCustoServico() {
+        return custoServico;
+    }
+    public int getTempoMinimo() {
+        return tempoMinimo;
+    }
+
+    //Função de selecionar o serviço;
     public static Servicos selecionarServico() {
         System.out.println("Escolha o serviço (0 a 3): ");
         System.out.println("0 - Nenhum");
@@ -37,21 +54,5 @@ public class Servicos implements Serializable{
             default:
                 throw new IllegalArgumentException("Escolha inválida. Por favor, escolha entre 0 e 3.");
         }
-    }
-
-    public int getIdServico() {
-        return idServico;
-    }
-
-    public String getNomeDoServico() {
-        return nomeDoServico;
-    }
-
-    public double getCustoServico() {
-        return custoServico;
-    }
-
-    public int getTempoMinimo() {
-        return tempoMinimo;
     }
 }

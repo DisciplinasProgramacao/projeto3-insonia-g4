@@ -1,10 +1,8 @@
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Scanner;
 import java.io.Serializable;
 
 public class UsoDeVaga implements Serializable{
-
     private static final double FRACAO_USO = 0.25;
     private static final double VALOR_FRACAO = 4.0;
     private static final double VALOR_MAXIMO = 50.0;
@@ -15,6 +13,7 @@ public class UsoDeVaga implements Serializable{
     private double valorPago;
     private Servicos servicoContratado;
 
+    //Constructor;
     public UsoDeVaga(Vaga vaga, LocalDateTime entrada) {
         this.vaga = vaga;
         this.entrada = entrada;
@@ -23,10 +22,20 @@ public class UsoDeVaga implements Serializable{
         this.servicoContratado = null;
     }
 
+    //Getters;
+    public double getValorPago() {
+        return valorPago;
+    }
+    public int getMes() {
+        return entrada.getMonthValue();
+    }
+
+    //Escolher um serviço da classe Servicos;
     public void contratarServico() {
         this.servicoContratado = Servicos.selecionarServico();
     }
 
+    //Sair da vaga;
     public void sair(LocalDateTime saida) {
         if (servicoContratado != null && Duration.between(entrada, saida).toMinutes() < servicoContratado.getTempoMinimo()) {
             long minutosRestantes = servicoContratado.getTempoMinimo() - Duration.between(entrada, saida).toMinutes();
@@ -52,13 +61,5 @@ public class UsoDeVaga implements Serializable{
         if (servicoContratado != null) {
             this.valorPago += servicoContratado.getCustoServico();
         }
-    }
-
-    public double getValorPago() {
-        return valorPago;
-    }
-
-    public int getMes() {
-        return entrada.getMonthValue();
     }
 }

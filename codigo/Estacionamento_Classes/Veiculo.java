@@ -2,27 +2,34 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class Veiculo implements Serializable {
-    private String placa;
+    private String placa;//Placa do veículo;
     private UsoDeVaga[] usos;
-    private int totalUsos;
+    private int totalUsos;//Total de usos do veículo;
 
+    //Construtor;
     public Veiculo(String placa) {
         this.placa = placa;
         this.usos = new UsoDeVaga[100];
         this.totalUsos = 0;
     }
 
+    //Getters;
+    public String getPlaca(){return placa;}
+
+    //Retorna o número total de usos do veiculo;
+    public int totalDeUsos() {
+        return totalUsos;
+    }
+
+    //Estacionar o veículo;
     public void estacionar(Vaga vaga) {
         if (totalUsos < usos.length) {
             usos[totalUsos] = new UsoDeVaga(vaga, LocalDateTime.now());
             totalUsos++;
-        } else {
+        } 
+        else {
             System.out.println("Limite de usos atingido.");
         }
-    }
-
-    public String getPlaca() {
-        return placa;
     }
 
     public double sair() {
@@ -46,9 +53,5 @@ public class Veiculo implements Serializable {
             }
         }
         return totalMes;
-    }
-
-    public int totalDeUsos() {
-        return totalUsos;
     }
 }
