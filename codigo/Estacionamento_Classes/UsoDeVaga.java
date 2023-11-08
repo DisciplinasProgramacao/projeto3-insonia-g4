@@ -36,12 +36,15 @@ public class UsoDeVaga implements Serializable{
     }
 
     //Sair da vaga;
-    public void sair(LocalDateTime saida) {
+    public boolean permissaoSaida(LocalDateTime saida) {
         if (servicoContratado != null && Duration.between(entrada, saida).toMinutes() < servicoContratado.getTempoMinimo()) {
             long minutosRestantes = servicoContratado.getTempoMinimo() - Duration.between(entrada, saida).toMinutes();
             throw new IllegalStateException("Seu veículo ainda está no(a) " + servicoContratado.getNomeDoServico() + "! Ele estará disponível em " + minutosRestantes + " minutos.");
+            return false;
+        } else {
+             return true;   
         }
-
+    public double sair(LocalDateTime saida) {
         this.saida = saida;
         long minutos = Duration.between(entrada, saida).toMinutes();
         
