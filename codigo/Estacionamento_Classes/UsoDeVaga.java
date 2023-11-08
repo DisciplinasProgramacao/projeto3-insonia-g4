@@ -2,7 +2,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 
-public class UsoDeVaga implements Serializable{
+public class UsoDeVaga implements Serializable {
     private static final double FRACAO_USO = 0.25;
     private static final double VALOR_FRACAO = 4.0;
     private static final double VALOR_MAXIMO = 50.0;
@@ -13,7 +13,7 @@ public class UsoDeVaga implements Serializable{
     private double valorPago;
     private Servicos servicoContratado;
 
-    //Constructor;
+    // Constructor;
     public UsoDeVaga(Vaga vaga, LocalDateTime entrada) {
         this.vaga = vaga;
         this.entrada = entrada;
@@ -22,36 +22,41 @@ public class UsoDeVaga implements Serializable{
         this.servicoContratado = null;
     }
 
-    //Getters;
+    // Getters;
     public double getValorPago() {
         return valorPago;
     }
+
     public int getMes() {
         return entrada.getMonthValue();
     }
 
-    //Escolher um serviço da classe Servicos;
+    // Escolher um serviço da classe Servicos;
     public void contratarServico() {
         this.servicoContratado = Servicos.selecionarServico();
     }
 
-    //Sair da vaga;
+    // Sair da vaga;
     public boolean permissaoSaida(LocalDateTime saida) {
-        if (servicoContratado != null && Duration.between(entrada, saida).toMinutes() < servicoContratado.getTempoMinimo()) {
+        if (servicoContratado != null
+                && Duration.between(entrada, saida).toMinutes() < servicoContratado.getTempoMinimo()) {
             long minutosRestantes = servicoContratado.getTempoMinimo() - Duration.between(entrada, saida).toMinutes();
-            throw new IllegalStateException("Seu veículo ainda está no(a) " + servicoContratado.getNomeDoServico() + "! Ele estará disponível em " + minutosRestantes + " minutos.");
+            System.err.print("Seu veículo ainda está no(a) " + servicoContratado.getNomeDoServico()
+                    + "! Ele estará disponível em " + minutosRestantes + " minutos.");
             return false;
         } else {
-             return true;   
+            return true;
         }
+    }
+
     public double sair(LocalDateTime saida) {
         this.saida = saida;
         long minutos = Duration.between(entrada, saida).toMinutes();
-        
+
         if (minutos <= 15) {
             this.valorPago = 0.0;
         } else {
-            int horas = (int)Math.ceil((double)minutos / 60);
+            int horas = (int) Math.ceil((double) minutos / 60);
             if (horas <= 1) {
                 this.valorPago = VALOR_FRACAO;
             } else if (horas >= 9) {
@@ -64,5 +69,7 @@ public class UsoDeVaga implements Serializable{
         if (servicoContratado != null) {
             this.valorPago += servicoContratado.getCustoServico();
         }
+
+        return getValorPago();
     }
 }
