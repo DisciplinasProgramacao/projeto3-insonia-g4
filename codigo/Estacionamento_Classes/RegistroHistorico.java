@@ -2,9 +2,9 @@ import java.io.Serializable;
 
 public class RegistroHistorico implements Serializable{
     private Cliente cliente;
-    private String id;
-    private double tempoEstacionado;
-    private double valorCobranca;
+    private String id;//Id do Registro;
+    private double tempoEstacionado;//Tempo que o véiculo ficou estacionado;
+    private double valorCobranca;//Valor cobrado ao cliente;
 
     //Constructor;
     public RegistroHistorico(Cliente cliente, String id, double tempoEstacionado, double valorCobranca){

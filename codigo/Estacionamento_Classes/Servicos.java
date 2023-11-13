@@ -1,8 +1,7 @@
-import java.util.Scanner;
 import java.io.Serializable;
 
 public class Servicos implements Serializable{
-    private int idServico;
+    private int idServico;//Id do serviço;
     private String nomeDoServico;//Nome do Serviço;
     private double custoServico;//Custo do Serviço;
     private int tempoMinimo;
@@ -31,17 +30,8 @@ public class Servicos implements Serializable{
     }
 
     //Função de selecionar o serviço;
-    public static Servicos selecionarServico() {
-        System.out.println("Escolha o serviço (0 a 3): ");
-        System.out.println("0 - Nenhum");
-        System.out.println("1 - Manobrista");
-        System.out.println("2 - Lavagem");
-        System.out.println("3 - Polimento");
-
-        Scanner scanner = new Scanner(System.in);
-        int escolha = scanner.nextInt();
-        scanner.close();
-
+    public static Servicos selecionarServico(int escolha){
+        //O valor de int escolha decide o serviço;
         switch (escolha) {
             case 0:
                 return new Servicos(0, "Nenhum", 0.0, 0);

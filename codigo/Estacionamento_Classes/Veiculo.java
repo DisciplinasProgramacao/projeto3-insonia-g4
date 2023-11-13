@@ -2,31 +2,31 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class Veiculo implements Serializable {
-    private String placa;//Placa do veículo;
+    private String placa;// Placa do veículo;
     private UsoDeVaga[] usos;
-    private int totalUsos;//Total de usos do veículo;
+    private int totalUsos;// Total de usos do veículo;
 
-    //Construtor;
+    // Construtor;
     public Veiculo(String placa) {
         this.placa = placa;
         this.usos = new UsoDeVaga[100];
         this.totalUsos = 0;
+    }
         
     // Método para ordenar usos de vaga por data
     public void ordenarUsosPorData() {
         Arrays.sort(usos, 0, totalUsos);
     }
-    }
 
-    //Getters;
+    // Getters;
     public String getPlaca(){return placa;}
 
-    //Retorna o número total de usos do veiculo;
+    // Retorna o número total de usos do veiculo;
     public int totalDeUsos() {
         return totalUsos;
     }
 
-    //Estacionar o veículo;
+    // Estacionar o veículo;
     public void estacionar(Vaga vaga) {
         if (totalUsos < usos.length) {
             usos[totalUsos] = new UsoDeVaga(vaga, LocalDateTime.now());
@@ -44,7 +44,7 @@ public class Veiculo implements Serializable {
 
     public double totalArrecadado() {
     double total = 0.0;
-    ordenarUsosPorData(); // Ordena os usos por data
+    ordenarUsosPorData();// Ordena os usos por data;
     for (int i = 0; i < totalUsos; i++) {
         total += usos[i].getValorPago();
     }
@@ -52,7 +52,7 @@ public class Veiculo implements Serializable {
 }
    public double arrecadadoNoMes(int mes) {
     double totalMes = 0.0;
-    ordenarUsosPorData(); // Ordena os usos por data
+    ordenarUsosPorData();// Ordena os usos por data;
     for (int i = 0; i < totalUsos; i++) {
         if (usos[i].getMes() == mes) {
             totalMes += usos[i].getValorPago();

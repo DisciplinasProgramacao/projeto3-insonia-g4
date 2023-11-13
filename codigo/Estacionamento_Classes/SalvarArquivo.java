@@ -92,9 +92,8 @@ public class SalvarArquivo{
                 for(int i = 0; i < registrosPerClient; i++){
                     Vaga vaga = new Vaga(i, i);
                     vagas.add(vaga);
-                    //UsoDeVaga uso = new UsoDeVaga(vaga, LocalDateTime.now());
-                    //uso.contratarServico();
-                    //usos.add(uso);
+                    UsoDeVaga uso = new UsoDeVaga(vaga, LocalDateTime.now());
+                    usos.add(uso);
                 }
             }
 
@@ -121,9 +120,9 @@ public class SalvarArquivo{
             }
             
             //Adiciona os usos de vagas;
-            /*for(UsoDeVaga uso : usos){
+            for(UsoDeVaga uso : usos){
                 objectOut.writeObject(uso);
-            }*/
+            }
             
             //Feche o ObjectOutputStream e o FileOutputStream;
             objectOut.close();

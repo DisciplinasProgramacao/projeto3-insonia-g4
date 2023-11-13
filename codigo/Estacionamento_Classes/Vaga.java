@@ -64,6 +64,7 @@ public class Vaga implements Serializable {
         }
     }
 
+    //Calcula o tempo que o veículo ficou estacionado;
     private double calcularTempoEstacionado() {
         if (cliente == null) {
             return 0.0;
@@ -73,6 +74,7 @@ public class Vaga implements Serializable {
         return tempoEstacionado;
     }
 
+    //Calcula o valor que vai ser cobrado ao cliente pelo estacionamento do veículo;
     double calcularValorCobranca(double tempoEstacionado) {
         /*Valor por fração de tempo (15 minutos), Limite máximo de cobrança,
         Calcular o número de frações de tempo (15 minutos) arredondando para cima,

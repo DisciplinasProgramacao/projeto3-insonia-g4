@@ -204,4 +204,9 @@ public class Main {
             escolha = MyIO.readInt();
         }
     }
+    /*MyIO.println("Escolha o serviço (0 a 3): ");
+        MyIO.println("0 - Nenhum");
+        MyIO.println("1 - Manobrista");
+        MyIO.println("2 - Lavagem");
+        MyIO.println("3 - Polimento");*/
 }

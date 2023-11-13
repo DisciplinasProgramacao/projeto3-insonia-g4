@@ -8,12 +8,12 @@ public class UsoDeVaga implements Serializable {
     private static final double VALOR_MAXIMO = 50.0;
 
     private Vaga vaga;
-    private LocalDateTime entrada;
-    private LocalDateTime saida;
-    private double valorPago;
-    private Servicos servicoContratado;
+    private LocalDateTime entrada;//Horário de Entrada do Veículo na vaga;
+    private LocalDateTime saida;//Horário de Saida do Veículo na vaga;
+    private double valorPago;//Valor pago pelo uso da vaga;
+    private Servicos servicoContratado;//Tipo de serviço contratado;
 
-    // Constructor;
+    //Constructor;
     public UsoDeVaga(Vaga vaga, LocalDateTime entrada) {
         this.vaga = vaga;
         this.entrada = entrada;
@@ -22,7 +22,7 @@ public class UsoDeVaga implements Serializable {
         this.servicoContratado = null;
     }
 
-    // Getters;
+    //Getters;
     public double getValorPago() {
         return valorPago;
     }
@@ -31,12 +31,12 @@ public class UsoDeVaga implements Serializable {
         return entrada.getMonthValue();
     }
 
-    // Escolher um serviço da classe Servicos;
-    public void contratarServico() {
-        this.servicoContratado = Servicos.selecionarServico();
+    //Escolher um serviço da classe Servicos;
+    public void contratarServico(int escolha) {
+        this.servicoContratado = Servicos.selecionarServico(escolha);
     }
 
-    // Sair da vaga;
+    //???;
     public boolean permissaoSaida(LocalDateTime saida) {
         if (servicoContratado != null
                 && Duration.between(entrada, saida).toMinutes() < servicoContratado.getTempoMinimo()) {
@@ -49,6 +49,7 @@ public class UsoDeVaga implements Serializable {
         }
     }
 
+    //Sair da vaga;
     public double sair(LocalDateTime saida) {
         this.saida = saida;
         long minutos = Duration.between(entrada, saida).toMinutes();
