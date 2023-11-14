@@ -1,28 +1,31 @@
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.io.Serializable;
 
 public class UsoDeVaga implements Serializable {
-    private static final double FRACAO_USO = 0.25;
+    // private static final double FRACAO_USO = 0.25;
     private static final double VALOR_FRACAO = 4.0;
     private static final double VALOR_MAXIMO = 50.0;
 
     private Vaga vaga;
-    private LocalDateTime entrada;//Horário de Entrada do Veículo na vaga;
-    private LocalDateTime saida;//Horário de Saida do Veículo na vaga;
-    private double valorPago;//Valor pago pelo uso da vaga;
-    private Servicos servicoContratado;//Tipo de serviço contratado;
+    private LocalDateTime entrada; // Horário de Entrada do Veículo na vaga;
+    private LocalDateTime saida; // Horário de Saida do Veículo na vaga;
+    private double valorPago; // Valor pago pelo uso da vaga;
+    private Servicos servicoContratado; // Tipo de serviço contratado;
+    private Date data; // Data do uso da vaga;
 
-    //Constructor;
+    // Constructor;
     public UsoDeVaga(Vaga vaga, LocalDateTime entrada) {
         this.vaga = vaga;
         this.entrada = entrada;
         this.saida = null;
         this.valorPago = 0.0;
         this.servicoContratado = null;
+        this.data = new Date();
     }
 
-    //Getters;
+    // Getters;
     public double getValorPago() {
         return valorPago;
     }
@@ -31,12 +34,24 @@ public class UsoDeVaga implements Serializable {
         return entrada.getMonthValue();
     }
 
-    //Escolher um serviço da classe Servicos;
+    public LocalDateTime getSaida() {
+        return this.saida;
+    }
+
+    public Date getData() {
+        return this.data;
+    }
+
+    public Vaga getVaga() {
+        return this.vaga;
+    }
+
+    // Escolher um serviço da classe Servicos;
     public void contratarServico(int escolha) {
         this.servicoContratado = Servicos.selecionarServico(escolha);
     }
 
-    //???;
+    // ???;
     public boolean permissaoSaida(LocalDateTime saida) {
         if (servicoContratado != null
                 && Duration.between(entrada, saida).toMinutes() < servicoContratado.getTempoMinimo()) {
@@ -49,7 +64,7 @@ public class UsoDeVaga implements Serializable {
         }
     }
 
-    //Sair da vaga;
+    // Sair da vaga;
     public double sair(LocalDateTime saida) {
         this.saida = saida;
         long minutos = Duration.between(entrada, saida).toMinutes();

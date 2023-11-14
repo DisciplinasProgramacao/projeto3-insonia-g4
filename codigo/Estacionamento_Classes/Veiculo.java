@@ -24,6 +24,14 @@ public class Veiculo implements Serializable {
         return placa;
     }
 
+    public UsoDeVaga[] getUsos() {
+        return usos;
+    }
+
+    public int getTotalUsos() {
+        return this.totalUsos;
+    }
+
     // Retorna o número total de usos do veiculo;
     public int totalDeUsos() {
         return totalUsos;

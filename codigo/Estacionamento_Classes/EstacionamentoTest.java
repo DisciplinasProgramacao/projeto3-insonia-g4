@@ -38,7 +38,6 @@ public class EstacionamentoTest {
             fail("Exceção não deveria ter sido lançada.");
         }
 
-
         double valorEsperado = veiculo.getPrecoPorHora();
 
         assertEquals(valorEsperado, estacionamento.totalArrecadado(), 0.01);

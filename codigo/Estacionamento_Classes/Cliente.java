@@ -95,5 +95,6 @@ public class Cliente implements Serializable {
         for (Veiculo veiculo : veiculos.values()) {
             totalArrecadado += veiculo.totalArrecadado();
         }
-        return totalArrecad
+        return totalArrecadado;
     }
+}
