@@ -1,14 +1,16 @@
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Main {
 
     //Função para criar o Estacionamento;
     public static Estacionamento criarEstacionamento() {
+
         MyIO.println("Digite o nome do estacionamento: ");
         String nome = MyIO.readLine();
     
@@ -24,13 +26,14 @@ public class Main {
     
     //Função para criar o Cliente;
     public static Cliente criarCliente() {
+
         MyIO.println("Digite o nome do cliente: ");
         String nomeCliente = MyIO.readLine();
     
         MyIO.println("Digite o ID do cliente: ");
         String idCliente = MyIO.readLine();
     
-        Cliente cliente = new Cliente(nomeCliente, idCliente, Modalidade.HORISTA); // Definindo como horista por padrão
+        Cliente cliente = new Cliente(nomeCliente, idCliente);
     
         MyIO.println("Digite a quantidade de veículos:");
         int qtdVeiculos = MyIO.readInt();
@@ -48,17 +51,16 @@ public class Main {
     public static void estacionarVeiculo(Veiculo veiculo, Estacionamento estacionamento, 
     Vaga vaga, Cliente cliente) {
         estacionamento.estacionar(veiculo.getPlaca());
-        UsoDeVaga uso = new UsoDeVaga(vaga, LocalDateTime.now(), 0, cliente);
-        cliente.possuiVeiculo(veiculo.getPlaca()).estacionar(uso);
+        cliente.possuiVeiculo(veiculo.getPlaca()).estacionar(vaga);
     }
 
     //Função para fazer o veículo sair da vaga e do Estacionamento;
     public static void sairVeiculo(Veiculo veiculo, Estacionamento estacionamento, Cliente cliente) {
-        UsoDeVaga uso = cliente.possuiVeiculo(veiculo.getPlaca()).getUsoAtual();
-        uso.sair(LocalDateTime.now());
+        //estacionamento.sair(veiculo.getPlaca());//IMPORTANTE: Função sair de estacionamento não foi implementada;
         cliente.possuiVeiculo(veiculo.getPlaca()).sair();
-        estacionamento.sair(veiculo.getPlaca());
     }
+
+    
 
     //Salvar os Dados em um arquivo;
     public static void salvarDados(List<Estacionamento> estacionamentos, 
@@ -102,6 +104,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         List<Estacionamento> estacionamentos = new ArrayList<>();//Lista de Estacionamento;
         List<Cliente> clientes = new ArrayList<>();//Lista de Clientes;
+        List<Veiculo> veiculos = new ArrayList<>();//Lista de Veículos;
         int escolha;//escolha do usuário;
 
         menu();
@@ -113,10 +116,14 @@ public class Main {
                 case 1:
                     Estacionamento estacionamento = criarEstacionamento();
                     estacionamentos.add(estacionamento);
+                    //menu();
+                    //escolha = myio.readInt();
                     break;
                 case 2:
                     Cliente cliente = criarCliente();
                     clientes.add(cliente);
+                    // menu();
+                    // novaEscolha = novo.nextInt();
                     break;
                 case 3:
                     MyIO.println("Digite a placa do veículo: ");
@@ -153,7 +160,8 @@ public class Main {
                         }
                     }
                     estacionarVeiculo(veiculoAtual, estacionamentoAtual, vagaAtual, clienteAtual);
-                    break;
+                    //menu();
+                    //escolha = myio.readInt();
                 case 4:
                     MyIO.println("Digite a placa do veículo: ");
                     String placa1 = MyIO.readLine();
@@ -170,4 +178,40 @@ public class Main {
                             break;
                         }
                     }
-                    for (Cliente cliente1 : clientes)
+                    for (Cliente cliente1 : clientes) {
+                        if (cliente1.getID().equals(idCliente1)) {
+                            clienteAtual1 = cliente1;
+                            break;
+                        }
+                    }
+                    for (Veiculo veiculo1 : veiculos) {
+                        if (veiculo1.getPlaca().equals(placa1)) {
+                            veiculoAtual1 = veiculo1;
+                            break;
+                        }
+                    }
+                    sairVeiculo(veiculoAtual1, estacionamentoAtual1, clienteAtual1);
+                    //menu();
+                    //escolha = myio.readInt();
+                case 5:
+                    salvarDados(estacionamentos, clientes);
+                    //menu();
+                    //escolha = myio.readInt();
+                case 6:
+                    System.out.println("Saindo...");
+                    break;
+                default:
+                    System.out.println("Opção inválida.");
+                    break;
+            }
+            Collections.sort(estacionamentos, Comparator.comparingDouble(Estacionamento::totalArrecadado).reversed()); //ordenar em ordem decrescente
+            menu();
+            escolha = MyIO.readInt();
+        }
+    }
+    /*MyIO.println("Escolha o serviço (0 a 3): ");
+        MyIO.println("0 - Nenhum");
+        MyIO.println("1 - Manobrista");
+        MyIO.println("2 - Lavagem");
+        MyIO.println("3 - Polimento");*/
+}
