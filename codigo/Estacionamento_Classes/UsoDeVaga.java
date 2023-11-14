@@ -16,12 +16,12 @@ public class UsoDeVaga implements Serializable {
     private Date data; // Data do uso da vaga;
 
     // Constructor;
-    public UsoDeVaga(Vaga vaga, LocalDateTime entrada) {
+    public UsoDeVaga(Vaga vaga, LocalDateTime entrada, int escolha) {
         this.vaga = vaga;
         this.entrada = entrada;
         this.saida = null;
         this.valorPago = 0.0;
-        this.servicoContratado = null;
+        this.servicoContratado = Servicos.selecionarServico(escolha);
         this.data = new Date();
     }
 
@@ -45,12 +45,7 @@ public class UsoDeVaga implements Serializable {
     public Vaga getVaga() {
         return this.vaga;
     }
-
-    // Escolher um serviço da classe Servicos;
-    public void contratarServico(int escolha) {
-        this.servicoContratado = Servicos.selecionarServico(escolha);
-    }
-
+    
     // ???;
     public boolean permissaoSaida(LocalDateTime saida) {
         if (servicoContratado != null
