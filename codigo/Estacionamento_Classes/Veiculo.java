@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 public class Veiculo implements Serializable {
     private String placa;// Placa do veículo;
@@ -12,14 +13,16 @@ public class Veiculo implements Serializable {
         this.usos = new UsoDeVaga[100];
         this.totalUsos = 0;
     }
-        
+
     // Método para ordenar usos de vaga por data
     public void ordenarUsosPorData() {
         Arrays.sort(usos, 0, totalUsos);
     }
 
     // Getters;
-    public String getPlaca(){return placa;}
+    public String getPlaca() {
+        return placa;
+    }
 
     // Retorna o número total de usos do veiculo;
     public int totalDeUsos() {
@@ -31,8 +34,7 @@ public class Veiculo implements Serializable {
         if (totalUsos < usos.length) {
             usos[totalUsos] = new UsoDeVaga(vaga, LocalDateTime.now());
             totalUsos++;
-        } 
-        else {
+        } else {
             System.out.println("Limite de usos atingido.");
         }
     }
@@ -43,20 +45,22 @@ public class Veiculo implements Serializable {
     }
 
     public double totalArrecadado() {
-    double total = 0.0;
-    ordenarUsosPorData();// Ordena os usos por data;
-    for (int i = 0; i < totalUsos; i++) {
-        total += usos[i].getValorPago();
-    }
-    return total;
-}
-   public double arrecadadoNoMes(int mes) {
-    double totalMes = 0.0;
-    ordenarUsosPorData();// Ordena os usos por data;
-    for (int i = 0; i < totalUsos; i++) {
-        if (usos[i].getMes() == mes) {
-            totalMes += usos[i].getValorPago();
+        double total = 0.0;
+        ordenarUsosPorData();// Ordena os usos por data;
+        for (int i = 0; i < totalUsos; i++) {
+            total += usos[i].getValorPago();
         }
+        return total;
     }
-    return totalMes;
+
+    public double arrecadadoNoMes(int mes) {
+        double totalMes = 0.0;
+        ordenarUsosPorData();// Ordena os usos por data;
+        for (int i = 0; i < totalUsos; i++) {
+            if (usos[i].getMes() == mes) {
+                totalMes += usos[i].getValorPago();
+            }
+        }
+        return totalMes;
+    }
 }
