@@ -92,7 +92,7 @@ public class SalvarArquivo{
                 for(int i = 0; i < registrosPerClient; i++){
                     Vaga vaga = new Vaga(i, i);
                     vagas.add(vaga);
-                    UsoDeVaga uso = new UsoDeVaga(vaga, LocalDateTime.now());
+                    UsoDeVaga uso = new UsoDeVaga(vaga, LocalDateTime.now(), 0);
                     usos.add(uso);
                 }
             }
