@@ -38,9 +38,9 @@ public class Veiculo implements Serializable {
     }
 
     // Estacionar o veículo;
-    public void estacionar(Vaga vaga) {
+    public void estacionar(Vaga vaga, int escolha) {
         if (totalUsos < usos.length) {
-            usos[totalUsos] = new UsoDeVaga(vaga, LocalDateTime.now());
+            usos[totalUsos] = new UsoDeVaga(vaga, LocalDateTime.now(), escolha);
             totalUsos++;
         } else {
             System.out.println("Limite de usos atingido.");
