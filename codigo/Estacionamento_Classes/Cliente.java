@@ -33,6 +33,10 @@ public class Cliente implements Serializable {
         return veiculos;
     }
 
+    public Modalidade getModalidade(){
+        return modalidade;
+    }
+
     // Método para adicionar veículo com base na modalidade
     public void addVeiculo(Veiculo veiculo) {
         if (veiculos.containsKey(veiculo.getPlaca())) {

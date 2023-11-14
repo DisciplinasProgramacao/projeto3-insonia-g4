@@ -50,6 +50,25 @@ public class Estacionamento{
 		}
 	}
 
+	public double arrecadacaoMediaClientesHoristas(int mes) {
+        double totalArrecadadoHoristas = 0;
+        int totalClientesHoristas = 0;
+
+        for (Cliente cliente : id) {
+            if (cliente.getModalidade() == Modalidade.HORISTA) {
+                totalArrecadadoHoristas += cliente.arrecadadoNoMes(mes);
+                totalClientesHoristas++;
+            }
+        }
+
+        // Evita a divisão por zero
+        if (totalClientesHoristas > 0) {
+            return totalArrecadadoHoristas / totalClientesHoristas;
+        } else {
+            return 0;
+        }
+    }
+
     //Adicionar cliente no estacionamento;
 	public void addCliente(Cliente cliente) {
 		//Verificar se o cliente já existe com base no ID;
