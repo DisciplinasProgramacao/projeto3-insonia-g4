@@ -196,6 +196,12 @@ public class Estacionamento{
 		}
 	}*/
 
+
+
+
+
+
+
     //Total arrecadado pelo estacionamento;
 	public double totalArrecadado() {
 		double valTotal = 0;
@@ -213,6 +219,31 @@ public class Estacionamento{
 		}
 		return valArrecadado;
 	}
+
+
+	//Media dos clientes mensalisatas no mes corrente
+	public double mediaClientesMensal() {
+        int mesCorrente = LocalDateTime.now().getMonthValue();
+        double somaArrecadacao = 0.0;
+		int contadorClientes = 0;
+
+        for (Cliente cliente : id) {
+            double arrecadacaoNoMes = cliente.arrecadadoNoMes(mesCorrente);
+            if (arrecadacaoNoMes > 0) {
+                somaArrecadacao += arrecadacaoNoMes;
+                contadorClientes++;
+            }
+        }
+
+        if (contadorClientes > 0) {
+            return somaArrecadacao / contadorClientes;
+        } else {
+            System.out.println("Nenhum cliente teve arrecadação no mês corrente.");
+            return 0.0;
+        }
+    }
+
+
 
 	//Média arrecadada;
 	public double valorMedioPorUso() {
@@ -253,3 +284,11 @@ public class Estacionamento{
 		return sb.toString();
 	}
 }
+
+
+
+
+
+	
+
+	
