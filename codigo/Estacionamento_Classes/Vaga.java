@@ -3,13 +3,13 @@ import java.util.List;
 import java.io.Serializable;
 
 public class Vaga implements Serializable {
-    protected String id;//Id da Vaga;
-    private boolean disponivel;//Boolean que marca se a vaga está disponivel ou não;
-    private Cliente cliente;//Representa o cliente que está ocupando a vaga no momento;
-    private List<RegistroHistorico> historico;//Para manter o histórico de uso da vaga;
-    private long entradaMillis;//Momento em que o cliente estacionou na vaga;
+    protected String id;// Id da Vaga;
+    private boolean disponivel;// Boolean que marca se a vaga está disponivel ou não;
+    private Cliente cliente;// Representa o cliente que está ocupando a vaga no momento;
+    private List<RegistroHistorico> historico;// Para manter o histórico de uso da vaga;
+    private long entradaMillis;// Momento em que o cliente estacionou na vaga;
 
-    //Constructor;
+    // Constructor;
     public Vaga(int fila, int numero) {
         this.id = "Vaga " + fila + numero;
         this.disponivel = true;
@@ -18,7 +18,7 @@ public class Vaga implements Serializable {
         this.entradaMillis = 0;
     }
 
-    //Getters;
+    // Getters;
     public List<RegistroHistorico> getHistorico() {
         return historico;
     }
@@ -26,12 +26,12 @@ public class Vaga implements Serializable {
         return this.cliente.getNome();
     }
 
-    //Verifica o boolean disponivel (se a vaga está ocupada ou não);
+    // Verifica o boolean disponivel (se a vaga está ocupada ou não);
     public boolean isDisponivel(){
         return disponivel;
     }
 
-    //Ocupar Vaga;
+    // Ocupar Vaga;
     public boolean estacionar(Cliente cliente){
         if (disponivel) {
             this.cliente = cliente;
@@ -40,18 +40,18 @@ public class Vaga implements Serializable {
             return true;
         } 
         else{
-            return false;//A vaga já está ocupada;
+            return false;// A vaga já está ocupada;
         }
     }
 
-    //Liberar Vaga;
+    // Liberar Vaga;
     public boolean sair() {
         if (!disponivel) {
-            //Calcular o tempo em que o cliente ficou estacionado e calcular a cobrança;
+            // Calcular o tempo em que o cliente ficou estacionado e calcular a cobrança;
             double tempoEstacionado = calcularTempoEstacionado();
             double valorCobranca = calcularValorCobranca(tempoEstacionado);
 
-            //Registre o uso da vaga no histórico;
+            // Registre o uso da vaga no histórico;
             RegistroHistorico registro = new RegistroHistorico(cliente, id, tempoEstacionado, valorCobranca);
             historico.add(registro);
 
@@ -60,21 +60,21 @@ public class Vaga implements Serializable {
             return true;
         } 
         else {
-            return false;//A vaga já está vazia;
+            return false;// A vaga já está vazia;
         }
     }
 
-    //Calcula o tempo que o veículo ficou estacionado;
+    // Calcula o tempo que o veículo ficou estacionado;
     private double calcularTempoEstacionado() {
         if (cliente == null) {
             return 0.0;
         }
         long tempoSaidaMillis = System.currentTimeMillis();
-        double tempoEstacionado = (tempoSaidaMillis - entradaMillis) / (1000.0 * 60.0);//Calcula o tempo estacionado em minutos;
+        double tempoEstacionado = (tempoSaidaMillis - entradaMillis) / (1000.0 * 60.0);// Calcula o tempo estacionado em minutos;
         return tempoEstacionado;
     }
 
-    //Calcula o valor que vai ser cobrado ao cliente pelo estacionamento do veículo;
+    // Calcula o valor que vai ser cobrado ao cliente pelo estacionamento do veículo;
     double calcularValorCobranca(double tempoEstacionado) {
         /*Valor por fração de tempo (15 minutos), Limite máximo de cobrança,
         Calcular o número de frações de tempo (15 minutos) arredondando para cima,

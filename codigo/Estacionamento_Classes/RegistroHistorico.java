@@ -2,11 +2,11 @@ import java.io.Serializable;
 
 public class RegistroHistorico implements Serializable{
     private Cliente cliente;
-    private String id;//Id do Registro;
-    private double tempoEstacionado;//Tempo que o véiculo ficou estacionado;
-    private double valorCobranca;//Valor cobrado ao cliente;
+    private String id;// Id do Registro;
+    private double tempoEstacionado;// Tempo que o véiculo ficou estacionado;
+    private double valorCobranca;// Valor cobrado ao cliente;
 
-    //Constructor;
+    // Constructor;
     public RegistroHistorico(Cliente cliente, String id, double tempoEstacionado, double valorCobranca){
         this.cliente = cliente;
         this.id = id;
@@ -14,7 +14,7 @@ public class RegistroHistorico implements Serializable{
         this.valorCobranca = valorCobranca;
     }
 
-    //Getters;
+    // Getters;
     public Cliente getCliente(){
 		return cliente;
 	}

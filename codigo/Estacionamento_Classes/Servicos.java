@@ -1,12 +1,12 @@
 import java.io.Serializable;
 
 public class Servicos implements Serializable{
-    private int idServico;//Id do serviço;
-    private String nomeDoServico;//Nome do Serviço;
-    private double custoServico;//Custo do Serviço;
+    private int idServico;// Id do serviço;
+    private String nomeDoServico;// Nome do Serviço;
+    private double custoServico;// Custo do Serviço;
     private int tempoMinimo;
 
-    //Constructor;
+    // Constructor;
     public Servicos(int idServico, String nomeDoServico, 
     double custoServico, int tempoMinimo) {
         this.idServico = idServico;
@@ -15,7 +15,7 @@ public class Servicos implements Serializable{
         this.tempoMinimo = tempoMinimo;
     }
 
-    //Getters;
+    // Getters;
     public int getIdServico() {
         return idServico;
     }
@@ -29,9 +29,9 @@ public class Servicos implements Serializable{
         return tempoMinimo;
     }
 
-    //Função de selecionar o serviço;
+    // Função de selecionar o serviço;
     public static Servicos selecionarServico(int escolha){
-        //O valor de int escolha decide o serviço;
+        // O valor de int escolha decide o serviço;
         switch (escolha) {
             case 0:
                 return new Servicos(0, "Nenhum", 0.0, 0);

@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class Veiculo implements Serializable {
     private String placa;// Placa do veículo;
-    private UsoDeVaga[] usos;
+    private UsoDeVaga[] usos;// Lista de usos do veículo;
     private int totalUsos;// Total de usos do veículo;
 
     // Construtor;
@@ -38,9 +38,9 @@ public class Veiculo implements Serializable {
     }
 
     // Estacionar o veículo;
-    public void estacionar(Vaga vaga, int escolha) {
+    public void estacionar(Vaga vaga, int escolha, Cliente cliente) {
         if (totalUsos < usos.length) {
-            usos[totalUsos] = new UsoDeVaga(vaga, LocalDateTime.now(), escolha);
+            usos[totalUsos] = new UsoDeVaga(vaga, LocalDateTime.now(), escolha, cliente);
             totalUsos++;
         } else {
             System.out.println("Limite de usos atingido.");
@@ -48,7 +48,7 @@ public class Veiculo implements Serializable {
     }
 
     public double sair() {
-        // Implemente o cálculo do valor a pagar ao sair de uma vaga aqui
+        // Implemente o cálculo do valor a pagar ao sair de uma vaga aqui;
         return 0.0;
     }
 

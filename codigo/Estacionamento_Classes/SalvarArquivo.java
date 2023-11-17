@@ -7,20 +7,20 @@ import java.util.List;
 public class SalvarArquivo{
     public static void main(String[] args){
         try{
-            //Criando 3 estacionamentos;
+            // Criando 3 estacionamentos;
             Estacionamento estacionamento1 = new Estacionamento("Estacionamento 1", 10, 14);
             Estacionamento estacionamento2 = new Estacionamento("Estacionamento 2", 10, 14);
             Estacionamento estacionamento3 = new Estacionamento("Estacionamento 3", 10, 14);
 
-            //Criando 6 clientes;
-            Cliente cliente1 = new Cliente("Cliente 1", "12345");
-            Cliente cliente2 = new Cliente("Cliente 2", "54321");
-            Cliente cliente3 = new Cliente("Cliente 3", "53367");
-            Cliente cliente4 = new Cliente("Cliente 4", "74829");
-            Cliente cliente5 = new Cliente("Cliente 5", "23679");
-            Cliente cliente6 = new Cliente("Cliente 6", "17241");
+            // Criando 6 clientes;
+            Cliente cliente1 = new Cliente("Cliente 1", "12345", Modalidade.HORISTA);
+            Cliente cliente2 = new Cliente("Cliente 2", "54321", Modalidade.HORISTA);
+            Cliente cliente3 = new Cliente("Cliente 3", "53367", Modalidade.DE_TURNO);
+            Cliente cliente4 = new Cliente("Cliente 4", "74829", Modalidade.DE_TURNO);
+            Cliente cliente5 = new Cliente("Cliente 5", "23679", Modalidade.MENSALISTA);
+            Cliente cliente6 = new Cliente("Cliente 6", "17241", Modalidade.MENSALISTA);
 
-            //Adicionando clientes ao estacionamento;
+            // Adicionando clientes ao estacionamento;
             estacionamento1.addCliente(cliente1);
             estacionamento1.addCliente(cliente2);
             estacionamento2.addCliente(cliente3);
@@ -28,7 +28,7 @@ public class SalvarArquivo{
             estacionamento3.addCliente(cliente5);
             estacionamento3.addCliente(cliente6);
 
-            //Criando 6 veículos;
+            // Criando 6 veículos;
             Veiculo veiculo1 = new Veiculo("ABC123");
             Veiculo veiculo2 = new Veiculo("XYZ789");
             Veiculo veiculo3 = new Veiculo("AEZ919");
@@ -36,7 +36,7 @@ public class SalvarArquivo{
             Veiculo veiculo5 = new Veiculo("AEC691");
             Veiculo veiculo6 = new Veiculo("HTJ571");
 
-            //Adicionando veículos aos clientes;
+            // Adicionando veículos aos clientes;
             cliente1.addVeiculo(veiculo1);
             cliente2.addVeiculo(veiculo2);
             cliente3.addVeiculo(veiculo3);
@@ -44,7 +44,7 @@ public class SalvarArquivo{
             cliente5.addVeiculo(veiculo5);
             cliente6.addVeiculo(veiculo6);
 
-            //Estacionando veículos;
+            // Estacionando veículos;
             estacionamento1.estacionar(veiculo1.getPlaca());
             estacionamento1.estacionar(veiculo2.getPlaca());
             estacionamento2.estacionar(veiculo3.getPlaca());
@@ -52,13 +52,13 @@ public class SalvarArquivo{
             estacionamento3.estacionar(veiculo5.getPlaca());
             estacionamento3.estacionar(veiculo6.getPlaca());
 
-            //Crie uma lista para armazenar as vagas;
+            // Crie uma lista para armazenar as vagas;
             List<Vaga> vagas = new ArrayList<>();
             
-            //Crie uma lista para armazenar os usos de vagas;
+            // Crie uma lista para armazenar os usos de vagas;
             List<UsoDeVaga> usos = new ArrayList<>();
             
-            //Criar e adicionar vagas, usos e registros;
+            // Criar e adicionar vagas, usos e registros;
             int registrosPerClient = 10;
             for(int clienteIndex = 0; clienteIndex < 6; clienteIndex++){
                 Cliente cliente = null;
@@ -92,18 +92,18 @@ public class SalvarArquivo{
                 for(int i = 0; i < registrosPerClient; i++){
                     Vaga vaga = new Vaga(i, i);
                     vagas.add(vaga);
-                    UsoDeVaga uso = new UsoDeVaga(vaga, LocalDateTime.now(), 0);
+                    UsoDeVaga uso = new UsoDeVaga(vaga, LocalDateTime.now(), 0, cliente);
                     usos.add(uso);
                 }
             }
 
-            //Crie um FileOutputStream para salvar os objetos em um arquivo binário;
+            // Crie um FileOutputStream para salvar os objetos em um arquivo binário;
             FileOutputStream fileOut = new FileOutputStream("dados.bin");
 
-            //Crie um ObjectOutputStream para escrever objetos no arquivo;
+            // Crie um ObjectOutputStream para escrever objetos no arquivo;
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 
-            //Escreva os objetos no arquivo;
+            // Escreva os objetos no arquivo;
             objectOut.writeObject(estacionamento1);
             objectOut.writeObject(cliente1);
             objectOut.writeObject(cliente2);
@@ -114,17 +114,17 @@ public class SalvarArquivo{
             objectOut.writeObject(cliente5);
             objectOut.writeObject(cliente6);
 
-            //Adicona as vagas;
+            // Adicona as vagas;
             for(Vaga vaga : vagas){
                 objectOut.writeObject(vaga);
             }
             
-            //Adiciona os usos de vagas;
+            // Adiciona os usos de vagas;
             for(UsoDeVaga uso : usos){
                 objectOut.writeObject(uso);
             }
             
-            //Feche o ObjectOutputStream e o FileOutputStream;
+            // Feche o ObjectOutputStream e o FileOutputStream;
             objectOut.close();
             fileOut.close();
         }catch(Exception e){e.printStackTrace();}

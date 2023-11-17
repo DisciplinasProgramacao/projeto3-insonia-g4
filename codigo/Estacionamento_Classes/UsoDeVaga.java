@@ -15,7 +15,7 @@ public class UsoDeVaga implements Serializable {
     private Date data;
     private Cliente cliente;
 
-    // Constructor com a adição do cliente
+    // Constructor com a adição do cliente;
     public UsoDeVaga(Vaga vaga, LocalDateTime entrada, int escolha, Cliente cliente) {
         this.vaga = vaga;
         this.entrada = entrada;
@@ -26,7 +26,7 @@ public class UsoDeVaga implements Serializable {
         this.cliente = cliente;
     }
 
-    // Getters
+    // Getters;
     public double getValorPago() {
         return valorPago;
     }
@@ -47,7 +47,7 @@ public class UsoDeVaga implements Serializable {
         return this.vaga;
     }
 
-    // Método para verificar permissão de saída
+    // Método para verificar permissão de saída;
     public boolean permissaoSaida(LocalDateTime saida) {
         if (servicoContratado != null
                 && Duration.between(entrada, saida).toMinutes() < servicoContratado.getTempoMinimo()) {
@@ -60,7 +60,7 @@ public class UsoDeVaga implements Serializable {
         }
     }
 
-    // Método para sair da vaga
+    // Método para sair da vaga;
     public double sair(LocalDateTime saida) {
         this.saida = saida;
         long minutos = Duration.between(entrada, saida).toMinutes();
@@ -82,7 +82,7 @@ public class UsoDeVaga implements Serializable {
             this.valorPago += servicoContratado.getCustoServico();
         }
 
-        // Ajuste para calcular a cobrança com base na modalidade do cliente
+        // Ajuste para calcular a cobrança com base na modalidade do cliente;
         this.valorPago += cliente.calcularCobranca();
 
         return getValorPago();
