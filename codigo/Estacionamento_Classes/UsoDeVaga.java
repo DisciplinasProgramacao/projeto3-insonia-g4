@@ -27,16 +27,20 @@ public class UsoDeVaga implements Serializable {
     }
 
     // Getters;
+    public LocalDateTime getEntrada() {
+        return this.entrada;
+    }
+
+    public LocalDateTime getSaida() {
+        return this.saida;
+    }
+
     public double getValorPago() {
         return valorPago;
     }
 
     public int getMes() {
         return entrada.getMonthValue();
-    }
-
-    public LocalDateTime getSaida() {
-        return this.saida;
     }
 
     public Date getData() {

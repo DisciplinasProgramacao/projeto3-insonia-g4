@@ -47,11 +47,13 @@ public class Veiculo implements Serializable {
         }
     }
 
+    // Sair da vaga e pagar o valor;
     public double sair() {
         // Implemente o cálculo do valor a pagar ao sair de uma vaga aqui;
         return 0.0;
     }
 
+    // Calcula o total arrecadado pelo veículo;
     public double totalArrecadado() {
         double total = 0.0;
         ordenarUsosPorData();// Ordena os usos por data;
