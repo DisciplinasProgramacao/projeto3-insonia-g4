@@ -1,6 +1,9 @@
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Estacionamento implements Serializable {
 	private String nome;// Nome do estacionamento;
@@ -186,7 +189,7 @@ public class Estacionamento implements Serializable {
 				if (vagaOcupada.sair()) {
 					LocalDateTime saida = LocalDateTime.now();// Obtém a hora de saída do veículo;
 					System.out.println("Veículo com placa " + placa + " saiu da "
-					+ vagaOcupada.id + " no horário " + saida);
+							+ vagaOcupada.id + " no horário " + saida);
 					UsoDeVaga uso = new UsoDeVaga(vagaOcupada, vagaOcupada.getEntrada(), escolha, clienteDoVeiculo);
 					uso.sair(saida);
 					return uso.getValorPago();
