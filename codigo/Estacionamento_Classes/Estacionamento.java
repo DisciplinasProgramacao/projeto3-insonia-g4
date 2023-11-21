@@ -13,14 +13,15 @@ public class Estacionamento implements Serializable {
 	private int vagasPorFileira;// Vagas por fileira;
 
 	// Constructor;
-	public Estacionamento(String ngitome, int fileiras, int vagasPorFila){
+	public Estacionamento(String ngitome, int fileiras, int vagasPorFila) {
 		this.nome = ngitome;
 		this.quantFileiras = fileiras;
 		this.vagasPorFileira = vagasPorFila;
 		this.id = new Cliente[0];// Inicialmente, nenhum cliente registrado;
 		gerarVagas();
 	}
-	public Estacionamento(){
+
+	public Estacionamento() {
 		this.nome = "";
 		this.quantFileiras = 1;
 		this.vagasPorFileira = 1;
@@ -28,13 +29,21 @@ public class Estacionamento implements Serializable {
 		gerarVagas();
 	}
 
-    // Getters;
-    public String getNome() {return nome;}
-	public int getQuantFileiras() {return quantFileiras;}
-	public int getVagasPorFileira() {return vagasPorFileira;}
+	// Getters;
+	public String getNome() {
+		return nome;
+	}
 
-    // Adicionar veículo no estacionamento;
-	public void addVeiculo(Veiculo veiculo, String idCli){
+	public int getQuantFileiras() {
+		return quantFileiras;
+	}
+
+	public int getVagasPorFileira() {
+		return vagasPorFileira;
+	}
+
+	// Adicionar veículo no estacionamento;
+	public void addVeiculo(Veiculo veiculo, String idCli) {
 		// Encontrar o cliente com base no id;
 		Cliente cliente = null;
 		for (Cliente c : id) {
@@ -45,32 +54,31 @@ public class Estacionamento implements Serializable {
 		}
 		if (cliente != null) {
 			cliente.addVeiculo(veiculo);
-		} 
-        else {
+		} else {
 			throw new IllegalArgumentException("Erro - Cliente não encontrado.");
 		}
 	}
 
 	public double arrecadacaoMediaClientesHoristas(int mes) {
-        double totalArrecadadoHoristas = 0;
-        int totalClientesHoristas = 0;
+		double totalArrecadadoHoristas = 0;
+		int totalClientesHoristas = 0;
 
-        for (Cliente cliente : id) {
-            if (cliente.getModalidade() == Modalidade.HORISTA) {
-                totalArrecadadoHoristas += cliente.arrecadadoNoMes(mes);
-                totalClientesHoristas++;
-            }
-        }
+		for (Cliente cliente : id) {
+			if (cliente.getModalidade() == Modalidade.HORISTA) {
+				totalArrecadadoHoristas += cliente.arrecadadoNoMes(mes);
+				totalClientesHoristas++;
+			}
+		}
 
-        // Evita a divisão por zero;
-        if (totalClientesHoristas > 0) {
-            return totalArrecadadoHoristas / totalClientesHoristas;
-        } else {
-            return 0;
-        }
-    }
+		// Evita a divisão por zero;
+		if (totalClientesHoristas > 0) {
+			return totalArrecadadoHoristas / totalClientesHoristas;
+		} else {
+			return 0;
+		}
+	}
 
-    // Adicionar cliente no estacionamento;
+	// Adicionar cliente no estacionamento;
 	public void addCliente(Cliente cliente) {
 		// Verificar se o cliente já existe com base no ID;
 		for (Cliente c : id) {
@@ -87,7 +95,7 @@ public class Estacionamento implements Serializable {
 		id = novaLista;
 	}
 
-    // Gerar as Vagas do estacionamento;
+	// Gerar as Vagas do estacionamento;
 	private void gerarVagas() {
 		if (quantFileiras <= 0 || vagasPorFileira <= 0) {
 			throw new IllegalArgumentException(
@@ -105,16 +113,16 @@ public class Estacionamento implements Serializable {
 		}
 	}
 
-    // Estacionar o veículo no estacionamento;
-	public void estacionar(String placa){
+	// Estacionar o veículo no estacionamento;
+	public void estacionar(String placa) {
 		Veiculo veiculoParaEstacionar = null;
 		Cliente clienteDoVeiculo = null;
 
 		// Procura o cliente por meio do ID;
-		for(Cliente cliente : id){
+		for (Cliente cliente : id) {
 			Veiculo veiculo = cliente.possuiVeiculo(placa);
 			// Caso o veículo seja encontrado;
-			if(veiculo != null){
+			if (veiculo != null) {
 				veiculoParaEstacionar = veiculo;
 				clienteDoVeiculo = cliente;
 				break;
@@ -122,41 +130,84 @@ public class Estacionamento implements Serializable {
 		}
 
 		// Caso o veículo seja encontrado;
-		if(veiculoParaEstacionar != null){
+		if (veiculoParaEstacionar != null) {
 			Vaga vagaDisponivel = null;
-			for(Vaga vaga : vagas){
-				if(vaga.isDisponivel()){
+			for (Vaga vaga : vagas) {
+				if (vaga.isDisponivel()) {
 					vagaDisponivel = vaga;
 					break;
 				}
 			}
 
 			// Caso tenha uma vaga disponível;
-			if(vagaDisponivel != null){
-				if(vagaDisponivel.estacionar(clienteDoVeiculo)){
+			if (vagaDisponivel != null) {
+				if (vagaDisponivel.estacionar(clienteDoVeiculo)) {
 					LocalDateTime entrada = LocalDateTime.now();// Obtém a hora de entrada do veículo;
-					System.out.println("Veículo com placa " + placa + " estacionado na " 
-					+ vagaDisponivel.id + " no horário " + entrada);
+					System.out.println("Veículo com placa " + placa + " estacionado na "
+							+ vagaDisponivel.id + " no horário " + entrada);
 					// Falta alguma coisa aqui? Essa função apenas imprime uma mensagem?;
-				}
-				else{
+				} else {
 					throw new IllegalArgumentException("Erro - A vaga não está disponível.");
 				}
-			}
-			else{
+			} else {
 				throw new IllegalArgumentException("Erro - Não há vagas disponíveis.");
 			}
 		}
 		// Caso o veículo não seja encontrado;
-		else{
+		else {
 			throw new IllegalArgumentException("Erro - Veículo não encontrado.");
 		}
 	}
 
-	//Implementar;
-	/*public double sair(String placa){}*/
+	public double sair(String placa, int escolha) {
+		Veiculo veiculoParaSair = null;
+		Cliente clienteDoVeiculo = null;
 
-    // Total arrecadado pelo estacionamento;
+		// Procura o cliente por meio do ID;
+		for (Cliente cliente : id) {
+			Veiculo veiculo = cliente.possuiVeiculo(placa);
+			// Caso o veículo seja encontrado;
+			if (veiculo != null) {
+				veiculoParaSair = veiculo;
+				clienteDoVeiculo = cliente;
+				break;
+			}
+		}
+
+		// Caso o veículo seja encontrado;
+		if (veiculoParaSair != null) {
+			Vaga vagaOcupada = null;
+			for (Vaga vaga : vagas) {
+				if (!vaga.isDisponivel() && vaga.getUsuario().equals(clienteDoVeiculo.getNome())) {
+					vagaOcupada = vaga;
+					break;
+				}
+			}
+
+			// Caso tenha uma vaga ocupada;
+			if (vagaOcupada != null) {
+				if (vagaOcupada.sair()) {
+					LocalDateTime saida = LocalDateTime.now();// Obtém a hora de saída do veículo;
+					System.out.println("Veículo com placa " + placa + " saiu da "
+					+ vagaOcupada.id + " no horário " + saida);
+					UsoDeVaga uso = new UsoDeVaga(vagaOcupada, vagaOcupada.getEntrada(), escolha, clienteDoVeiculo);
+					uso.sair(saida);
+					return uso.getValorPago();
+				} else {
+					throw new IllegalArgumentException("Erro - A vaga não está ocupada.");
+				}
+			} else {
+				throw new IllegalArgumentException("Erro - Não há vagas ocupadas.");
+			}
+		}
+
+		// Caso o veículo não seja encontrado;
+		else {
+			throw new IllegalArgumentException("Erro - Veículo não encontrado.");
+		}
+	}
+
+	// Total arrecadado pelo estacionamento;
 	public double totalArrecadado() {
 		double valTotal = 0;
 		for (Cliente cliente : id) {
@@ -165,7 +216,7 @@ public class Estacionamento implements Serializable {
 		return valTotal;
 	}
 
-    // Arrecadado pelo estacionamento em um Mês;
+	// Arrecadado pelo estacionamento em um Mês;
 	public double arrecadacaoNoMes(int mes) {
 		double valArrecadado = 0;
 		for (Cliente cliente : id) {
@@ -176,25 +227,25 @@ public class Estacionamento implements Serializable {
 
 	// Media dos clientes mensalisatas no mes corrente;
 	public double mediaClientesMensal() {
-        int mesCorrente = LocalDateTime.now().getMonthValue();
-        double somaArrecadacao = 0.0;
+		int mesCorrente = LocalDateTime.now().getMonthValue();
+		double somaArrecadacao = 0.0;
 		int contadorClientes = 0;
 
-        for (Cliente cliente : id) {
-            double arrecadacaoNoMes = cliente.arrecadadoNoMes(mesCorrente);
-            if (arrecadacaoNoMes > 0) {
-                somaArrecadacao += arrecadacaoNoMes;
-                contadorClientes++;
-            }
-        }
+		for (Cliente cliente : id) {
+			double arrecadacaoNoMes = cliente.arrecadadoNoMes(mesCorrente);
+			if (arrecadacaoNoMes > 0) {
+				somaArrecadacao += arrecadacaoNoMes;
+				contadorClientes++;
+			}
+		}
 
-        if (contadorClientes > 0) {
-            return somaArrecadacao / contadorClientes;
-        } else {
-            System.out.println("Nenhum cliente teve arrecadação no mês corrente.");
-            return 0.0;
-        }
-    }
+		if (contadorClientes > 0) {
+			return somaArrecadacao / contadorClientes;
+		} else {
+			System.out.println("Nenhum cliente teve arrecadação no mês corrente.");
+			return 0.0;
+		}
+	}
 
 	// Média arrecadada;
 	public double valorMedioPorUso() {

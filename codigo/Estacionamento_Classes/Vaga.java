@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class Vaga implements Serializable {
     protected String id;// Id da Vaga;
@@ -24,6 +27,14 @@ public class Vaga implements Serializable {
     }
     public String getUsuario(){
         return this.cliente.getNome();
+    }
+    public String getId() {
+        return this.id;
+    }
+    public int getFila() {
+        String inicial = getId().replace("Vaga ", "");
+        Integer.parseInt(inicial);
+        return Integer.parseInt(inicial.substring(0, 1));
     }
 
     // Verifica o boolean disponivel (se a vaga está ocupada ou não);
@@ -87,5 +98,10 @@ public class Vaga implements Serializable {
             valorCobranca = limiteCobranca;
         }
         return valorCobranca;
+    }
+
+    public LocalDateTime getEntrada() {
+        LocalDateTime entrada = Instant.ofEpochMilli(entradaMillis).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        return entrada;
     }
 }

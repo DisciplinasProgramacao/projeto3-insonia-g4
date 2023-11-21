@@ -10,7 +10,8 @@ public class VeiculoTest {
     public void setUp() {
         vaga = new Vaga(1, 1);
         veiculo = new Veiculo("1234567");
-        veiculo.estacionar(vaga);
+        Cliente cliente = new Cliente("Joao", "1", Modalidade.MENSALISTA);
+        veiculo.estacionar(vaga, 1, cliente );
     }
 
     @Test
@@ -20,13 +21,13 @@ public class VeiculoTest {
 
     @Test
     public void testTotalArrecadado() {
-        assertEquals(1, veiculo.totalArrecadado());
+        assertEquals(0, veiculo.totalArrecadado());
     }
 
     @Test
     public void testArrecadadoNoMes() {
         int mes = 10;
-        assertEquals(1, veiculo.arrecadadoNoMes(mes));
+        assertEquals(0, veiculo.arrecadadoNoMes(mes));
     }
 
     @Test
