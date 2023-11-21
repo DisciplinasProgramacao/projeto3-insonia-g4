@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -121,15 +122,12 @@ public class Cliente implements Serializable {
     private double arrecadadoPorVeiculoNoMes(Veiculo veiculo, int mes) {
         double totalArrecadadoNoMes = 0;
         
-        /*for (Uso uso : veiculo.getUsos()) {
-            Calendar dataUso = Calendar.getInstance();
-            dataUso.setTime(uso.getData());
-            int mesUso = dataUso.get(Calendar.MONTH) + 1; // Calendar.MONTH é baseado em zero
-            if (mesUso == mes) {
-                totalArrecadadoNoMes += uso.getValor();
+        for (UsoDeVaga uso : veiculo.getUsos()) {
+            LocalDateTime dataUso = uso.getEntrada();
+            if (dataUso.getMonthValue() == mes) {
+                totalArrecadadoNoMes += uso.getValorPago();
             }
-        }*/
-        
+        }
         return totalArrecadadoNoMes;
     }
 }
