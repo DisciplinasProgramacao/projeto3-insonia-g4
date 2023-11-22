@@ -148,8 +148,14 @@ public class Main {
                     MyIO.println("Digite o número da vaga: ");
                     int coluna = MyIO.readInt();
                     MyIO.println("Digite a sua escolha de serviço: ");
+                    MyIO.println("Tipo de serviço");
+                    MyIO.println("0-Nenhum");
+                    MyIO.println("1-Manobrista");
+                    MyIO.println("2-Lavagem");
+                    MyIO.println("3-Polimento");
+                    MyIO.println("Digite a sua escolha de serviço: ");
                     int servico = MyIO.readInt();
-
+                    
                     Estacionamento estacionamentoAtual = null;
                     Cliente clienteAtual = null;
                     Veiculo veiculoAtual = null;

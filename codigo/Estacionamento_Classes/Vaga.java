@@ -25,8 +25,8 @@ public class Vaga implements Serializable {
     public List<RegistroHistorico> getHistorico() {
         return historico;
     }
-    public String getUsuario(){
-        return this.cliente.getNome();
+    public Cliente getUsuario(){
+        return this.cliente;
     }
     public String getId() {
         return this.id;
