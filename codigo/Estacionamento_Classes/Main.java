@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 
 public class Main {
 
@@ -34,12 +37,12 @@ public class Main {
         MyIO.println("Digite o ID do cliente: ");
         String idCliente = MyIO.readLine();
 
-        MyIO.println("Escolha a Modalidade: ");
+        MyIO.println("Modalidades Existentes:");
         MyIO.println("1-HORISTA");
         MyIO.println("2-DE_TURNO");
         MyIO.println("3-MENSALISTA");
-        int modalidade = MyIO.readInt();
-
+        MyIO.println("Escolha a Modalidade: ");
+        int modalidade = MyIO.readInt();// Modalidade do Cliente;
         if (modalidade == 1) {
             cliente = new Cliente(nomeCliente, idCliente, Modalidade.HORISTA);
         } else if (modalidade == 2) {
@@ -47,8 +50,11 @@ public class Main {
         } else if (modalidade == 3) {
             cliente = new Cliente(nomeCliente, idCliente, Modalidade.MENSALISTA);
         }
+        else {
+            MyIO.println("Modalidade inválida - Tente de novo;");
+        }
 
-        MyIO.println("Digite a quantidade de veículos:");
+        MyIO.println("Digite a quantidade de veículos: ");
         int qtdVeiculos = MyIO.readInt();
 
         for (int i = 0; i < qtdVeiculos; i++) {
@@ -61,53 +67,69 @@ public class Main {
     }
 
     // Função para Estacionar o Veículo;
-    public static void estacionarVeiculo(Veiculo veiculo, Estacionamento estacionamento, int escolha, Vaga vaga,
-            Cliente cliente) {
+    public static void estacionarVeiculo(Veiculo veiculo, Estacionamento estacionamento, 
+    int escolha, Vaga vaga, Cliente cliente) {
         estacionamento.estacionar(veiculo.getPlaca());
         cliente.possuiVeiculo(veiculo.getPlaca()).estacionar(vaga, escolha, cliente);
     }
 
     // Função para fazer o veículo sair da vaga e do Estacionamento;
-    public static void sairVeiculo(Veiculo veiculo, Estacionamento estacionamento, int escolha, Cliente cliente) {
+    public static void sairVeiculo(Veiculo veiculo, Estacionamento estacionamento, 
+    int escolha, Cliente cliente) {
         estacionamento.sair(veiculo.getPlaca(), escolha);
     }
 
     // Salvar os Dados em um arquivo;
-    public static void salvarDados(List<Estacionamento> estacionamentos,
-            List<Cliente> clientes) throws IOException {
-        // Crie um FileOutputStream para salvar os objetos em um arquivo binário;
-        FileOutputStream estacioOut = new FileOutputStream("estacionamentos.ser");
-        ObjectOutputStream estacioObjectOut = new ObjectOutputStream(estacioOut);
-
-        FileOutputStream clienteOut = new FileOutputStream("clientes.ser");
-        ObjectOutputStream clienteObjectOut = new ObjectOutputStream(clienteOut);
-
-        // Escreve os estacionamentos no arquivo;
-        for (Estacionamento estacionamento : estacionamentos) {
-            estacioObjectOut.writeObject(estacionamento);
+    public static void salvarDados(List<Estacionamento> estacionamentos, 
+    List<Cliente> clientes) throws IOException {
+        try (FileOutputStream fileOut = new FileOutputStream("dados.bin");
+             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
+    
+            // Salvar Estacionamentos;
+            for (Estacionamento estacionamento : estacionamentos) {
+                objectOut.writeObject(estacionamento);
+            }
+    
+            // Salvar Clientes;
+            for (Cliente cliente : clientes) {
+                objectOut.writeObject(cliente);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        // Escreve os clientes no arquivo;
-        for (Cliente cliente : clientes) {
-            clienteObjectOut.writeObject(cliente);
-        }
-
-        // Fecha o arquivo;
-        estacioObjectOut.close();
-        estacioOut.close();
-        clienteObjectOut.close();
-        clienteOut.close();
-    }
+    }    
 
     // Menu de opções de operações;
     public static void menu() {
-        System.out.println("Escolha uma opção: ");
-        System.out.println("1 - Criar estacionamento");
-        System.out.println("2 - Criar cliente");
-        System.out.println("3 - Estacionar veículo");
-        System.out.println("4 - Sair com veículo");
-        System.out.println("5 - Salvar dados");
-        System.out.println("6 - Sair");
+        MyIO.println("Lista de opções:");
+        MyIO.println("1 - Criar estacionamento");
+        MyIO.println("2 - Criar cliente");
+        MyIO.println("3 - Estacionar veículo");
+        MyIO.println("4 - Sair com veículo");
+        MyIO.println("5 - Salvar dados");
+        MyIO.println("6 - Sair");
+    }
+
+    // Função para ler dados do arquivo binário
+    public static void lerDados(List<Estacionamento> estacionamentos, List<Cliente> clientes, List<Veiculo> veiculos) {
+        try (FileInputStream fileInput = new FileInputStream("dados.bin");
+             ObjectInputStream objectInput = new ObjectInputStream(fileInput)) {
+
+            Object obj;
+            while ((obj = objectInput.readObject()) != null) {
+                if (obj instanceof Estacionamento) {
+                    estacionamentos.add((Estacionamento) obj);
+                } else if (obj instanceof Cliente) {
+                    clientes.add((Cliente) obj);
+                } else if (obj instanceof Veiculo) {
+                    veiculos.add((Veiculo) obj);
+                }
+            }
+        } catch (EOFException ignored) {
+            MyIO.println("Erro");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     // Main do Arquivo;
@@ -115,9 +137,13 @@ public class Main {
         List<Estacionamento> estacionamentos = new ArrayList<>();// Lista de Estacionamento;
         List<Cliente> clientes = new ArrayList<>();// Lista de Clientes;
         List<Veiculo> veiculos = new ArrayList<>();// Lista de Veículos;
-        int escolha;// escolha do usuário;
 
+        // Lê o arquivo dados.bin;
+        lerDados(estacionamentos, clientes, veiculos);
+
+        int escolha;// escolha do usuário;
         menu();
+        System.out.println("Escolha uma opção: ");
         escolha = MyIO.readInt();
 
         while (escolha != 6) {
@@ -135,8 +161,8 @@ public class Main {
                     clientes.add(cliente);
                     break;
 
-                // Estacionar o Veículo;
                 case 3:
+                    // Estacionar o Veículo;
                     MyIO.println("Digite a placa do veículo: ");
                     String placa = MyIO.readLine();
                     MyIO.println("Digite o nome do estacionamento: ");
@@ -147,7 +173,7 @@ public class Main {
                     int fila = MyIO.readInt();
                     MyIO.println("Digite o número da vaga: ");
                     int coluna = MyIO.readInt();
-                    MyIO.println("Digite a sua escolha de serviço: ");
+
                     MyIO.println("Tipo de serviço");
                     MyIO.println("0-Nenhum");
                     MyIO.println("1-Manobrista");
@@ -182,8 +208,8 @@ public class Main {
                     System.out.println(vagaAtual.getUsuario());
                     estacionarVeiculo(veiculoAtual, estacionamentoAtual, servico, vagaAtual, clienteAtual);
 
-                    // Sair com o veículo
                 case 4:
+                    // Sair com o veículo;
                     MyIO.println("Digite a placa do veículo: ");
                     String placa1 = MyIO.readLine();
                     MyIO.println("Digite o nome do estacionamento: ");
@@ -215,24 +241,25 @@ public class Main {
                     }
                     sairVeiculo(veiculoAtual1, estacionamentoAtual1, escolha, clienteAtual1);
 
-                    // Salvar o Arquivo;
                 case 5:
+                    // Salvar o Arquivo;
                     salvarDados(estacionamentos, clientes);
                     break;
 
-                // Sair do sistema;
                 case 6:
+                    // Sair do sistema;
                     System.out.println("Saindo...");
                     break;
 
-                // Opção inválida;
                 default:
+                    // Opção inválida;
                     System.out.println("Opção inválida.");
                     break;
             }
             // Ordenar em ordem decrescente;
             Collections.sort(estacionamentos, Comparator.comparingDouble(Estacionamento::totalArrecadado).reversed());
             menu();
+            System.out.println("Escolha uma opção: ");
             escolha = MyIO.readInt();
         }
     }
