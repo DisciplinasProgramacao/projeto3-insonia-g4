@@ -121,6 +121,7 @@ public class Estacionamento implements Serializable {
 		// Procura o cliente por meio do ID;
 		for (Cliente cliente : id) {
 			Veiculo veiculo = cliente.possuiVeiculo(placa);
+			
 			// Caso o veículo seja encontrado;
 			if (veiculo != null) {
 				veiculoParaEstacionar = veiculo;

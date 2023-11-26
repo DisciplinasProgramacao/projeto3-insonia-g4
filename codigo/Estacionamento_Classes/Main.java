@@ -50,19 +50,6 @@ public class Main {
         } else if (modalidade == 3) {
             cliente = new Cliente(nomeCliente, idCliente, Modalidade.MENSALISTA);
         }
-        else {
-            MyIO.println("Modalidade inválida - Tente de novo;");
-        }
-
-        MyIO.println("Digite a quantidade de veículos: ");
-        int qtdVeiculos = MyIO.readInt();
-
-        for (int i = 0; i < qtdVeiculos; i++) {
-            MyIO.println("Digite a placa do veículo: ");
-            String placa = MyIO.readLine();
-            Veiculo veiculo = new Veiculo(placa);
-            cliente.addVeiculo(veiculo);
-        }
         return cliente;
     }
 
@@ -101,17 +88,19 @@ public class Main {
 
     // Menu de opções de operações;
     public static void menu() {
-        MyIO.println("Lista de opções:");
+        MyIO.println("Lista de opcoes:");
         MyIO.println("1 - Criar estacionamento");
         MyIO.println("2 - Criar cliente");
-        MyIO.println("3 - Estacionar veículo");
-        MyIO.println("4 - Sair com veículo");
+        MyIO.println("3 - Estacionar veiculo");
+        MyIO.println("4 - Sair com veiculo");
         MyIO.println("5 - Salvar dados");
         MyIO.println("6 - Sair");
+        MyIO.println("Escolha uma opcao: ");
     }
 
     // Função para ler dados do arquivo binário
-    public static void lerDados(List<Estacionamento> estacionamentos, List<Cliente> clientes, List<Veiculo> veiculos) {
+    public static void lerDados(List<Estacionamento> estacionamentos, List<Cliente> clientes, 
+    List<Veiculo> veiculos) {
         try (FileInputStream fileInput = new FileInputStream("dados.bin");
              ObjectInputStream objectInput = new ObjectInputStream(fileInput)) {
 
@@ -126,7 +115,7 @@ public class Main {
                 }
             }
         } catch (EOFException ignored) {
-            MyIO.println("Erro");
+            MyIO.println("Arquivo aberto com sucesso.");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -143,11 +132,9 @@ public class Main {
 
         int escolha;// escolha do usuário;
         menu();
-        System.out.println("Escolha uma opção: ");
         escolha = MyIO.readInt();
 
         while (escolha != 6) {
-            MyIO.println("escolha foi: " + escolha);
             switch (escolha) {
                 case 1:
                     // Criar Estacionamento;
@@ -159,11 +146,24 @@ public class Main {
                     // Criar Cliente;
                     Cliente cliente = criarCliente();
                     clientes.add(cliente);
+                    
+                    // Criar Veículos;
+                    MyIO.println("Digite a quantidade de veiculos: ");
+                    int qtdVeiculos = MyIO.readInt();
+                    
+                    for (int i = 0; i < qtdVeiculos; i++) {
+                        MyIO.println("Digite a placa do veiculo: ");
+                        String placa = MyIO.readLine();
+                        Veiculo veiculo = new Veiculo(placa);
+                        cliente.addVeiculo(veiculo);
+                        veiculos.add(veiculo);
+                    }
+
                     break;
 
                 case 3:
                     // Estacionar o Veículo;
-                    MyIO.println("Digite a placa do veículo: ");
+                    MyIO.println("Digite a placa do veiculo: ");
                     String placa = MyIO.readLine();
                     MyIO.println("Digite o nome do estacionamento: ");
                     String nomeEstacionamento = MyIO.readLine();
@@ -171,15 +171,15 @@ public class Main {
                     String idCliente = MyIO.readLine();
                     MyIO.println("Digite a fila da vaga: ");
                     int fila = MyIO.readInt();
-                    MyIO.println("Digite o número da vaga: ");
+                    MyIO.println("Digite o numero da vaga: ");
                     int coluna = MyIO.readInt();
 
-                    MyIO.println("Tipo de serviço");
+                    MyIO.println("Tipo de servico");
                     MyIO.println("0-Nenhum");
                     MyIO.println("1-Manobrista");
                     MyIO.println("2-Lavagem");
                     MyIO.println("3-Polimento");
-                    MyIO.println("Digite a sua escolha de serviço: ");
+                    MyIO.println("Digite a sua escolha de servico: ");
                     int servico = MyIO.readInt();
                     
                     Estacionamento estacionamentoAtual = null;
@@ -196,28 +196,36 @@ public class Main {
                     for (Cliente cliente1 : clientes) {
                         if (cliente1.getID().equals(idCliente)) {
                             clienteAtual = cliente1;
+                            estacionamentoAtual.addCliente(clienteAtual);
                             break;
                         }
                     }
                     for (Veiculo veiculo1 : veiculos) {
                         if (veiculo1.getPlaca().equals(placa)) {
-                            veiculoAtual = clienteAtual.possuiVeiculo(veiculo1.getPlaca());
+                            veiculoAtual = veiculo1;
                             break;
                         }
                     }
-                    System.out.println(vagaAtual.getUsuario());
+                    //System.out.println(vagaAtual.getUsuario());
                     estacionarVeiculo(veiculoAtual, estacionamentoAtual, servico, vagaAtual, clienteAtual);
 
                 case 4:
                     // Sair com o veículo;
-                    MyIO.println("Digite a placa do veículo: ");
+                    MyIO.println("Digite a placa do veiculo: ");
                     String placa1 = MyIO.readLine();
                     MyIO.println("Digite o nome do estacionamento: ");
                     String nomeEstacionamento1 = MyIO.readLine();
                     MyIO.println("Digite o ID do cliente: ");
                     String idCliente1 = MyIO.readLine();
-                    MyIO.println("Digite a escolha do cliente: ");
+
+                    MyIO.println("Tipo de servico");
+                    MyIO.println("0-Nenhum");
+                    MyIO.println("1-Manobrista");
+                    MyIO.println("2-Lavagem");
+                    MyIO.println("3-Polimento");
+                    MyIO.println("Digite a sua escolha de servico: ");
                     escolha = MyIO.readInt();
+
                     Estacionamento estacionamentoAtual1 = null;
                     Cliente clienteAtual1 = null;
                     Veiculo veiculoAtual1 = null;
@@ -253,13 +261,12 @@ public class Main {
 
                 default:
                     // Opção inválida;
-                    System.out.println("Opção inválida.");
+                    System.out.println("Opcao invalida.");
                     break;
             }
             // Ordenar em ordem decrescente;
             Collections.sort(estacionamentos, Comparator.comparingDouble(Estacionamento::totalArrecadado).reversed());
             menu();
-            System.out.println("Escolha uma opção: ");
             escolha = MyIO.readInt();
         }
     }
