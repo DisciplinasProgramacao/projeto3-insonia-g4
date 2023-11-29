@@ -1,5 +1,4 @@
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,20 +7,20 @@ enum Modalidade {
 }
 
 public class Cliente implements Serializable {
-    private String nome;// Nome do Cliente;
-    private String id;// Id do Cliente;
-    private Map<String, Veiculo> veiculos;// Lista de veículos do Cliente;
+    private String nome;
+    private String id;
+    private Map<String, Veiculo> veiculos;
     private Modalidade modalidade;
+    private Estacionamento estacionamento;
 
-    // Construtor com a adição da modalidade;
-    public Cliente(String nome, String id, Modalidade modalidade) {
+    public Cliente(String nome, String id, Modalidade modalidade, Estacionamento estacionamento) {
         this.nome = nome;
         this.id = id;
         this.modalidade = modalidade;
         this.veiculos = new HashMap<>();
+        this.estacionamento = estacionamento;
     }
 
-    // Métodos getters;
     public String getNome() {
         return nome;
     }
@@ -34,11 +33,10 @@ public class Cliente implements Serializable {
         return veiculos;
     }
 
-    public Modalidade getModalidade(){
+    public Modalidade getModalidade() {
         return modalidade;
     }
 
-    // Método para adicionar veículo com base na modalidade;
     public void addVeiculo(Veiculo veiculo) {
         if (veiculos.containsKey(veiculo.getPlaca())) {
             throw new IllegalArgumentException("Erro - Carro já inserido.");
@@ -46,7 +44,6 @@ public class Cliente implements Serializable {
         veiculos.put(veiculo.getPlaca(), veiculo);
     }
 
-    // Método para calcular o valor a ser cobrado pelo cliente;
     public double calcularCobranca() {
         switch (modalidade) {
             case HORISTA:
@@ -60,7 +57,6 @@ public class Cliente implements Serializable {
         }
     }
 
-    // Método para calcular a cobrança para clientes horistas;
     private double calcularCobrancaHorista() {
         double totalArrecadado = 0;
         for (Veiculo veiculo : veiculos.values()) {
@@ -69,7 +65,10 @@ public class Cliente implements Serializable {
         return totalArrecadado;
     }
 
-    // Outros métodos permanecem inalterados;
+    public void updateArrecadacao() {
+        double novaArrecadacao = arrecadadoTotal();
+        estacionamento.notifyObservers(this, novaArrecadacao);
+    }
 
     // Método para verificar se o cliente possui um veículo com uma placa específica;
     public Veiculo possuiVeiculo(String placa) {
