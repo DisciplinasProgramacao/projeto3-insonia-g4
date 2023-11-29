@@ -5,29 +5,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Estacionamento implements Serializable {
-	private String nome;// Nome do estacionamento;
-	private Cliente[] id;// Vetor de clientes no estacionamento;
-	private Vaga[] vagas;// Vetor das vagas no estacionamento;
-	private int quantFileiras;// Quantidade de fileiras no estacionamento;
-	private int vagasPorFileira;// Vagas por fileira;
+public class Estacionamento implements Serializable, Subject {
+    private String nome;
+    private Cliente[] id;
+    private Vaga[] vagas;
+    private int quantFileiras;
+    private int vagasPorFileira;
+    private List<Observer> observers;
 
-	// Constructor;
-	public Estacionamento(String ngitome, int fileiras, int vagasPorFila) {
-		this.nome = ngitome;
-		this.quantFileiras = fileiras;
-		this.vagasPorFileira = vagasPorFila;
-		this.id = new Cliente[0];// Inicialmente, nenhum cliente registrado;
-		gerarVagas();
-	}
-
-	public Estacionamento() {
-		this.nome = "";
-		this.quantFileiras = 1;
-		this.vagasPorFileira = 1;
-		this.id = new Cliente[0];
-		gerarVagas();
-	}
+    public Estacionamento(String nome, int fileiras, int vagasPorFila) {
+        this.nome = nome;
+        this.quantFileiras = fileiras;
+        this.vagasPorFileira = vagasPorFila;
+        this.id = new Cliente[0];
+        this.observers = new ArrayList<>();
+        gerarVagas();
+    }
 
 	// Getters;
 	public String getNome() {
@@ -58,6 +51,36 @@ public class Estacionamento implements Serializable {
 			throw new IllegalArgumentException("Erro - Cliente não encontrado.");
 		}
 	}
+	 @Override
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(Cliente cliente, double novaArrecadacao) {
+        for (Observer observer : observers) {
+            observer.updateArrecadacaoCliente(cliente, novaArrecadacao);
+        }
+    }
+
+    public void addCliente(Cliente cliente) {
+        for (Cliente c : id) {
+            if (c.getID().equals(cliente.getID())) {
+                throw new IllegalArgumentException("Erro - Cliente com ID duplicado.");
+            }
+        }
+        Cliente[] novaLista = new Cliente[id.length + 1];
+        System.arraycopy(id, 0, novaLista, 0, id.length);
+        novaLista[novaLista.length - 1] = cliente;
+        id = novaLista;
+
+        addObserver(new Relatorio()); // Adiciona o Relatório como um observer ao adicionar um cliente
+    }
 
 	public double arrecadacaoMediaClientesHoristas(int mes) {
 		double totalArrecadadoHoristas = 0;
