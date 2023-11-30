@@ -54,29 +54,30 @@ public class Main {
     }
 
     // Função para Estacionar o Veículo;
-    public static void estacionarVeiculo(Veiculo veiculo, Estacionamento estacionamento, 
-    int escolha, Vaga vaga, Cliente cliente) {
+    public static void estacionarVeiculo(Veiculo veiculo, Estacionamento estacionamento,
+            int escolha, Vaga vaga, Cliente cliente) {
         estacionamento.estacionar(veiculo.getPlaca());
         cliente.possuiVeiculo(veiculo.getPlaca()).estacionar(vaga, escolha, cliente);
+        cliente.setEscolha(escolha);
     }
 
     // Função para fazer o veículo sair da vaga e do Estacionamento;
-    public static void sairVeiculo(Veiculo veiculo, Estacionamento estacionamento, 
-    int escolha, Cliente cliente) {
+    public static void sairVeiculo(Veiculo veiculo, Estacionamento estacionamento,
+            int escolha, Cliente cliente) {
         estacionamento.sair(veiculo.getPlaca(), escolha);
     }
 
     // Salvar os Dados em um arquivo;
-    public static void salvarDados(List<Estacionamento> estacionamentos, 
-    List<Cliente> clientes) throws IOException {
+    public static void salvarDados(List<Estacionamento> estacionamentos,
+            List<Cliente> clientes) throws IOException {
         try (FileOutputStream fileOut = new FileOutputStream("dados.bin");
-             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
-    
+                ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
+
             // Salvar Estacionamentos;
             for (Estacionamento estacionamento : estacionamentos) {
                 objectOut.writeObject(estacionamento);
             }
-    
+
             // Salvar Clientes;
             for (Cliente cliente : clientes) {
                 objectOut.writeObject(cliente);
@@ -84,7 +85,7 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }    
+    }
 
     // Menu de opções de operações;
     public static void menu() {
@@ -99,10 +100,10 @@ public class Main {
     }
 
     // Função para ler dados do arquivo binário
-    public static void lerDados(List<Estacionamento> estacionamentos, List<Cliente> clientes, 
-    List<Veiculo> veiculos) {
+    public static void lerDados(List<Estacionamento> estacionamentos, List<Cliente> clientes,
+            List<Veiculo> veiculos) {
         try (FileInputStream fileInput = new FileInputStream("dados.bin");
-             ObjectInputStream objectInput = new ObjectInputStream(fileInput)) {
+                ObjectInputStream objectInput = new ObjectInputStream(fileInput)) {
 
             Object obj;
             while ((obj = objectInput.readObject()) != null) {
@@ -146,11 +147,11 @@ public class Main {
                     // Criar Cliente;
                     Cliente cliente = criarCliente();
                     clientes.add(cliente);
-                    
+
                     // Criar Veículos;
                     MyIO.println("Digite a quantidade de veiculos: ");
                     int qtdVeiculos = MyIO.readInt();
-                    
+
                     for (int i = 0; i < qtdVeiculos; i++) {
                         MyIO.println("Digite a placa do veiculo: ");
                         String placa = MyIO.readLine();
@@ -181,7 +182,7 @@ public class Main {
                     MyIO.println("3-Polimento");
                     MyIO.println("Digite a sua escolha de servico: ");
                     int servico = MyIO.readInt();
-                    
+
                     Estacionamento estacionamentoAtual = null;
                     Cliente clienteAtual = null;
                     Veiculo veiculoAtual = null;
@@ -206,8 +207,9 @@ public class Main {
                             break;
                         }
                     }
-                    //System.out.println(vagaAtual.getUsuario());
+                    // System.out.println(vagaAtual.getUsuario());
                     estacionarVeiculo(veiculoAtual, estacionamentoAtual, servico, vagaAtual, clienteAtual);
+                    break;
 
                 case 4:
                     // Sair com o veículo;
@@ -217,14 +219,6 @@ public class Main {
                     String nomeEstacionamento1 = MyIO.readLine();
                     MyIO.println("Digite o ID do cliente: ");
                     String idCliente1 = MyIO.readLine();
-
-                    MyIO.println("Tipo de servico");
-                    MyIO.println("0-Nenhum");
-                    MyIO.println("1-Manobrista");
-                    MyIO.println("2-Lavagem");
-                    MyIO.println("3-Polimento");
-                    MyIO.println("Digite a sua escolha de servico: ");
-                    escolha = MyIO.readInt();
 
                     Estacionamento estacionamentoAtual1 = null;
                     Cliente clienteAtual1 = null;
@@ -247,7 +241,9 @@ public class Main {
                             break;
                         }
                     }
-                    sairVeiculo(veiculoAtual1, estacionamentoAtual1, escolha, clienteAtual1);
+
+                    sairVeiculo(veiculoAtual1, estacionamentoAtual1, clienteAtual1.getEscolha(), clienteAtual1);
+                    break;
 
                 case 5:
                     // Salvar o Arquivo;

@@ -10,7 +10,7 @@ public class Relatorio implements Observer {
     }
 
     @Override
-    public void updateArrecadacaoCliente(Cliente cliente, double novaArrecadacao) {
+    public void updateArrecadacao(Cliente cliente, double novaArrecadacao) {
         top5Clientes.put(cliente, novaArrecadacao);
 
         // Ordena o Top5 pelos valores de arrecadação em ordem decrescente

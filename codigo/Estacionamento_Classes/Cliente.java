@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -6,10 +7,11 @@ enum Modalidade {
     HORISTA, DE_TURNO, MENSALISTA
 }
 
-public class Cliente implements Serializable {
+public class Cliente implements Serializable, Observer {
     private String nome;
     private String id;
     private Map<String, Veiculo> veiculos;
+    private int escolha;
     private Modalidade modalidade;
     private Estacionamento estacionamento;
 
@@ -19,6 +21,26 @@ public class Cliente implements Serializable {
         this.modalidade = modalidade;
         this.veiculos = new HashMap<>();
         this.estacionamento = estacionamento;
+    }
+
+    public Cliente(String nome, String id, Modalidade modalidade) {
+        this.nome = nome;
+        this.id = id;
+        this.modalidade = modalidade;
+        this.veiculos = new HashMap<>();
+        this.estacionamento = null;
+    }
+
+    public void setEstacionamento(Estacionamento estacionamento) {
+        this.estacionamento = estacionamento;
+    }
+
+    public void setEscolha(int escolha) {
+        this.escolha = escolha;
+    }
+
+    public int getEscolha() {
+        return escolha;
     }
 
     public String getNome() {
@@ -65,12 +87,14 @@ public class Cliente implements Serializable {
         return totalArrecadado;
     }
 
-    public void updateArrecadacao() {
-        double novaArrecadacao = arrecadadoTotal();
-        estacionamento.notifyObservers(this, novaArrecadacao);
+    @Override
+    public void updateArrecadacao(Cliente cliente, double novaArrecadacao) {
+        double novaArrecadacaoCliente = arrecadadoTotal() + novaArrecadacao;
+        estacionamento.notifyObservers(this, novaArrecadacaoCliente);
     }
 
-    // Método para verificar se o cliente possui um veículo com uma placa específica;
+    // Método para verificar se o cliente possui um veículo com uma placa
+    // específica;
     public Veiculo possuiVeiculo(String placa) {
         return veiculos.get(placa);
     }
@@ -103,24 +127,26 @@ public class Cliente implements Serializable {
     }
 
     // Método para obter o total arrecadado em um mês;
-    public double arrecadadoNoMes(int mes){
+    public double arrecadadoNoMes(int mes) {
         if (mes < 1 || mes > 12) {
             throw new IllegalArgumentException("Mês inválido. Insira um número de mês entre 1 e 12.");
         }
 
         double totalArrecadadoNoMes = 0;
-        
+
         for (Veiculo veiculo : veiculos.values()) {
             totalArrecadadoNoMes += arrecadadoPorVeiculoNoMes(veiculo, mes);
         }
         return totalArrecadadoNoMes;
     }
 
-    /* Método para obter o valor arrecadado por um veículo com 
-    uma placa específica em um mês específico; */
+    /*
+     * Método para obter o valor arrecadado por um veículo com
+     * uma placa específica em um mês específico;
+     */
     private double arrecadadoPorVeiculoNoMes(Veiculo veiculo, int mes) {
         double totalArrecadadoNoMes = 0;
-        
+
         for (UsoDeVaga uso : veiculo.getUsos()) {
             LocalDateTime dataUso = uso.getEntrada();
             if (dataUso.getMonthValue() == mes) {
@@ -129,4 +155,5 @@ public class Cliente implements Serializable {
         }
         return totalArrecadadoNoMes;
     }
+
 }

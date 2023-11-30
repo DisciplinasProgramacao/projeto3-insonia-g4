@@ -5,22 +5,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Estacionamento implements Serializable, Subject {
-    private String nome;
-    private Cliente[] id;
-    private Vaga[] vagas;
-    private int quantFileiras;
-    private int vagasPorFileira;
-    private List<Observer> observers;
+public class Estacionamento implements Serializable {
+	private String nome;
+	private Cliente[] id;
+	private Vaga[] vagas;
+	private int quantFileiras;
+	private int vagasPorFileira;
+	private List<Observer> observers;
 
-    public Estacionamento(String nome, int fileiras, int vagasPorFila) {
-        this.nome = nome;
-        this.quantFileiras = fileiras;
-        this.vagasPorFileira = vagasPorFila;
-        this.id = new Cliente[0];
-        this.observers = new ArrayList<>();
-        gerarVagas();
-    }
+	public Estacionamento(String nome, int fileiras, int vagasPorFila) {
+		this.nome = nome;
+		this.quantFileiras = fileiras;
+		this.vagasPorFileira = vagasPorFila;
+		this.id = new Cliente[0];
+		this.observers = new ArrayList<>();
+		gerarVagas();
+	}
 
 	// Getters;
 	public String getNome() {
@@ -51,36 +51,34 @@ public class Estacionamento implements Serializable, Subject {
 			throw new IllegalArgumentException("Erro - Cliente não encontrado.");
 		}
 	}
-	 @Override
-    public void addObserver(Observer observer) {
-        observers.add(observer);
-    }
 
-    @Override
-    public void removeObserver(Observer observer) {
-        observers.remove(observer);
-    }
+	public void addObserver(Observer observer) {
+		observers.add(observer);
+	}
 
-    @Override
-    public void notifyObservers(Cliente cliente, double novaArrecadacao) {
-        for (Observer observer : observers) {
-            observer.updateArrecadacaoCliente(cliente, novaArrecadacao);
-        }
-    }
+	public void removeObserver(Observer observer) {
+		observers.remove(observer);
+	}
 
-    public void addCliente(Cliente cliente) {
-        for (Cliente c : id) {
-            if (c.getID().equals(cliente.getID())) {
-                throw new IllegalArgumentException("Erro - Cliente com ID duplicado.");
-            }
-        }
-        Cliente[] novaLista = new Cliente[id.length + 1];
-        System.arraycopy(id, 0, novaLista, 0, id.length);
-        novaLista[novaLista.length - 1] = cliente;
-        id = novaLista;
+	public void notifyObservers(Cliente cliente, double novaArrecadacao) {
+		for (Observer observer : observers) {
+			observer.updateArrecadacao(cliente, novaArrecadacao);
+		}
+	}
 
-        addObserver(new Relatorio()); // Adiciona o Relatório como um observer ao adicionar um cliente
-    }
+	public void addCliente(Cliente cliente) {
+		for (Cliente c : id) {
+			if (c.getID().equals(cliente.getID())) {
+				throw new IllegalArgumentException("Erro - Cliente com ID duplicado.");
+			}
+		}
+		Cliente[] novaLista = new Cliente[id.length + 1];
+		System.arraycopy(id, 0, novaLista, 0, id.length);
+		novaLista[novaLista.length - 1] = cliente;
+		id = novaLista;
+
+		addObserver(new Relatorio()); // Adiciona o Relatório como um observer ao adicionar um cliente
+	}
 
 	public double arrecadacaoMediaClientesHoristas(int mes) {
 		double totalArrecadadoHoristas = 0;
@@ -101,23 +99,6 @@ public class Estacionamento implements Serializable, Subject {
 		}
 	}
 
-	// Adicionar cliente no estacionamento;
-	public void addCliente(Cliente cliente) {
-		// Verificar se o cliente já existe com base no ID;
-		for (Cliente c : id) {
-			if (c.getID().equals(cliente.getID())) {
-				throw new IllegalArgumentException("Erro - Cliente com ID duplicado.");
-			}
-		}
-		// Adicionar o novo cliente à lista de clientes;
-		Cliente[] novaLista = new Cliente[id.length + 1];
-		for (int i = 0; i < id.length; i++) {
-			novaLista[i] = id[i];
-		}
-		novaLista[novaLista.length - 1] = cliente;
-		id = novaLista;
-	}
-
 	// Gerar as Vagas do estacionamento;
 	private void gerarVagas() {
 		if (quantFileiras <= 0 || vagasPorFileira <= 0) {
@@ -136,6 +117,21 @@ public class Estacionamento implements Serializable, Subject {
 		}
 	}
 
+	public void estacionarCarroDoCliente(Cliente cliente, String placa) {
+		List<Veiculo> veiculos = (List<Veiculo>) cliente.getVeiculos();
+		if (cliente.getVeiculos() != null) {
+			for (Veiculo veiculo : veiculos) {
+				if (veiculo.getPlaca().equals(placa)) {
+					estacionar(placa);
+					return;
+				}
+			}
+			throw new IllegalArgumentException("Erro - Cliente não possui veículo com a placa " + placa);
+		} else {
+			throw new IllegalArgumentException("Erro - Cliente não possui veículo.");
+		}
+	}
+
 	// Estacionar o veículo no estacionamento;
 	public void estacionar(String placa) {
 		Veiculo veiculoParaEstacionar = null;
@@ -144,7 +140,7 @@ public class Estacionamento implements Serializable, Subject {
 		// Procura o cliente por meio do ID;
 		for (Cliente cliente : id) {
 			Veiculo veiculo = cliente.possuiVeiculo(placa);
-			
+
 			// Caso o veículo seja encontrado;
 			if (veiculo != null) {
 				veiculoParaEstacionar = veiculo;
@@ -169,7 +165,8 @@ public class Estacionamento implements Serializable, Subject {
 					LocalDateTime entrada = LocalDateTime.now();// Obtém a hora de entrada do veículo;
 					System.out.println("Veículo com placa " + placa + " estacionado na "
 							+ vagaDisponivel.id + " no horário " + entrada);
-					// Falta alguma coisa aqui? Essa função apenas imprime uma mensagem?;
+					vagaDisponivel.estacionar(clienteDoVeiculo);
+
 				} else {
 					throw new IllegalArgumentException("Erro - A vaga não está disponível.");
 				}
