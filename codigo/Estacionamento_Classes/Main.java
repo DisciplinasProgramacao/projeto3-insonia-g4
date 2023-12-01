@@ -37,12 +37,20 @@ public class Main {
         MyIO.println("Digite o ID do cliente: ");
         String idCliente = MyIO.readLine();
 
-        MyIO.println("Modalidades Existentes:");
-        MyIO.println("1-HORISTA");
-        MyIO.println("2-DE_TURNO");
-        MyIO.println("3-MENSALISTA");
-        MyIO.println("Escolha a Modalidade: ");
-        int modalidade = MyIO.readInt();// Modalidade do Cliente;
+        int modalidade;// Modalidade do Cliente;
+        do{
+            MyIO.println("Modalidades Existentes:");
+            MyIO.println("1-HORISTA");
+            MyIO.println("2-DE_TURNO");
+            MyIO.println("3-MENSALISTA");
+            MyIO.println("Escolha a Modalidade: ");
+            modalidade = MyIO.readInt();
+            // Caso uma opção inválida seja selecionada;
+            if (modalidade < 1 || modalidade > 3) {
+                MyIO.println("Opcao invalida. Escolha novamente.");
+            }
+        } while(modalidade < 1 || modalidade > 3);
+        // Cliente é criado baseado na modalidade selecionada;
         if (modalidade == 1) {
             cliente = new Cliente(nomeCliente, idCliente, Modalidade.HORISTA);
         } else if (modalidade == 2) {
@@ -101,7 +109,7 @@ public class Main {
 
     // Função para ler dados do arquivo binário
     public static void lerDados(List<Estacionamento> estacionamentos, List<Cliente> clientes,
-            List<Veiculo> veiculos) {
+            List<Veiculo> veiculos, int tentativas) {
         try (FileInputStream fileInput = new FileInputStream("dados.bin");
                 ObjectInputStream objectInput = new ObjectInputStream(fileInput)) {
 
@@ -118,7 +126,11 @@ public class Main {
         } catch (EOFException ignored) {
             MyIO.println("Arquivo aberto com sucesso.");
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            // Caso o número de tentativas seja maior que 0;
+            if (tentativas > 0) {
+                SalvarArquivo.main(new String[]{});
+                lerDados(estacionamentos, clientes, veiculos, tentativas - 1);
+            } else {e.printStackTrace();}
         }
     }
 
@@ -128,8 +140,10 @@ public class Main {
         List<Cliente> clientes = new ArrayList<>();// Lista de Clientes;
         List<Veiculo> veiculos = new ArrayList<>();// Lista de Veículos;
 
+        int tentativas = 1;// Número de vezes que lerDados pode ser realizado antes de dar erro;
+
         // Lê o arquivo dados.bin;
-        lerDados(estacionamentos, clientes, veiculos);
+        lerDados(estacionamentos, clientes, veiculos, tentativas);
 
         int escolha;// escolha do usuário;
         menu();
