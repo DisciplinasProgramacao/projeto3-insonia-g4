@@ -1,6 +1,8 @@
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 enum Modalidade {
@@ -57,6 +59,10 @@ public class Cliente implements Serializable, Observer {
 
     public Modalidade getModalidade() {
         return modalidade;
+    }
+    
+    public List<Veiculo> getVeiculosAsList() {
+        return new ArrayList<>(veiculos.values());
     }
 
     public void addVeiculo(Veiculo veiculo) {

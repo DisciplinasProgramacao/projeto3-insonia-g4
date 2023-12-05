@@ -118,7 +118,7 @@ public class Estacionamento implements Serializable {
 	}
 
 	public void estacionarCarroDoCliente(Cliente cliente, String placa) {
-		List<Veiculo> veiculos = (List<Veiculo>) cliente.getVeiculos();
+		List<Veiculo> veiculos = cliente.getVeiculosAsList();
 		if (cliente.getVeiculos() != null) {
 			for (Veiculo veiculo : veiculos) {
 				if (veiculo.getPlaca().equals(placa)) {
@@ -180,6 +180,7 @@ public class Estacionamento implements Serializable {
 		}
 	}
 
+	// Tirar o veículo da vaga no estacionamento;
 	public double sair(String placa, int escolha) {
 		Veiculo veiculoParaSair = null;
 		Cliente clienteDoVeiculo = null;
@@ -199,7 +200,7 @@ public class Estacionamento implements Serializable {
 		if (veiculoParaSair != null) {
 			Vaga vagaOcupada = null;
 			for (Vaga vaga : vagas) {
-				if (!vaga.isDisponivel() && vaga.getUsuario().equals(clienteDoVeiculo.getNome())) {
+				if (!vaga.isDisponivel() && vaga.getUsuario().getNome().equals(clienteDoVeiculo.getNome())) {
 					vagaOcupada = vaga;
 					break;
 				}
