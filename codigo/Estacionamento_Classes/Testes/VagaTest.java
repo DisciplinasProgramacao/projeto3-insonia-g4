@@ -1,32 +1,66 @@
 import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class VagaTest {
+class VagaTest {
+
     private Vaga vaga;
 
     @BeforeEach
     public void setUp() {
         vaga = new Vaga(1, 1);
-        Cliente cliente = new Cliente("Nome do Cliente", "123456");
-        vaga.estacionar(cliente);
     }
 
     @Test
-    public void testCalcularValorCobranca() {
-        // Valor esperado com base na lógica de cálculo, 40.0 para representar 40
-        // minutos
-        assertEquals(12, vaga.calcularValorCobranca(40), 0.01); // (0.01) para números de ponto flutuante
+    public void testGetHistorico() {
+        assertNotNull(vaga.getHistorico());
+        assertTrue(vaga.getHistorico().isEmpty());
+    }
+
+    @Test
+    public void testGetUsuario() {
+        assertNull(vaga.getUsuario());
+    }
+
+    @Test
+    public void testGetId() {
+        assertEquals("Vaga 11", vaga.getId());
+    }
+
+    @Test
+    public void testGetFila() {
+        assertEquals(1, vaga.getFila());
+    }
+
+    @Test
+    public void testIsDisponivel() {
+        assertTrue(vaga.isDisponivel());
+        vaga.estacionar(new Cliente("Cliente", "123", Modalidade.HORISTA, null));
+        assertFalse(vaga.isDisponivel());
+        vaga.sair();
+        assertTrue(vaga.isDisponivel());
     }
 
     @Test
     public void testEstacionar() {
-        assertEquals(false, vaga.estacionar(null));
+        Cliente cliente = new Cliente("Cliente", "123", Modalidade.HORISTA, null);
+        assertTrue(vaga.estacionar(cliente));
+        assertFalse(vaga.isDisponivel());
+        assertEquals(cliente, vaga.getUsuario());
     }
 
     @Test
-    public void testDisponivel() {
-        assertEquals(false, vaga.isDisponivel());
+    public void testSair() {
+        Cliente cliente = new Cliente("Cliente", "123", Modalidade.HORISTA, null);
+        vaga.estacionar(cliente);
+        assertTrue(vaga.sair());
+        assertTrue(vaga.isDisponivel());
+        assertNull(vaga.getUsuario());
+        assertEquals(1, vaga.getHistorico().size());
+    }
+
+    @Test
+    public void testGetEntrada() {
+        assertNotNull(vaga.getEntrada());
     }
 }

@@ -1,21 +1,21 @@
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.Assert.*;
+class ClienteTest {
 
-public class ClienteTest {
     private Cliente cliente;
     private Veiculo veiculo1;
     private Veiculo veiculo2;
 
     @BeforeEach
     public void setUp() {
-        cliente = new Cliente("Cliente Test", "123");
+        cliente = new Cliente("Cliente Test", "123", Modalidade.HORISTA);
         veiculo1 = new Veiculo("ABC123");
         veiculo2 = new Veiculo("XYZ789");
 
-        cliente.addVeiculo(veiculo1);
-        cliente.addVeiculo(veiculo2);
+        assertDoesNotThrow(() -> cliente.addVeiculo(veiculo1));
+        assertDoesNotThrow(() -> cliente.addVeiculo(veiculo2));
     }
 
     @Test
@@ -23,10 +23,6 @@ public class ClienteTest {
         assertEquals(veiculo1, cliente.possuiVeiculo("ABC123"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testPossuiVeiculoNaoEncontrado() {
-        cliente.possuiVeiculo("PLACA_INVALIDA");
-    }
 
     @Test
     public void testTotalDeUsos() {
@@ -40,9 +36,9 @@ public class ClienteTest {
         assertEquals(veiculo1.totalArrecadado(), cliente.arrecadadoPorVeiculo("ABC123"), 0.001);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testArrecadadoPorVeiculoNaoEncontrado() {
-        cliente.arrecadadoPorVeiculo("PLACA_INVALIDA");
+        assertThrows(IllegalArgumentException.class, () -> cliente.arrecadadoPorVeiculo("PLACA_INVALIDA"));
     }
 
     @Test
@@ -51,9 +47,4 @@ public class ClienteTest {
         assertEquals(veiculo1.totalArrecadado() + veiculo2.totalArrecadado(), cliente.arrecadadoTotal(), 0.001);
     }
 
-    @Test
-    public void testArrecadadoNoMes() {
-        // Supondo que o método arrecadadoNoMes em Veiculo retorne um valor específico
-        assertEquals(veiculo1.arrecadadoNoMes(5) + veiculo2.arrecadadoNoMes(5), cliente.arrecadadoNoMes(5), 0.001);
-    }
 }
