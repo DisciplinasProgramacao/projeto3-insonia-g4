@@ -10,7 +10,6 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
 public class Main {
-
     // Função para criar o Estacionamento;
     public static Estacionamento criarEstacionamento() {
 
@@ -63,7 +62,7 @@ public class Main {
 
     // Função para Estacionar o Veículo;
     public static void estacionarVeiculo(Veiculo veiculo, Estacionamento estacionamento,
-            int escolha, Vaga vaga, Cliente cliente) {
+    int escolha, Vaga vaga, Cliente cliente){
         estacionamento.estacionar(veiculo.getPlaca());
         cliente.possuiVeiculo(veiculo.getPlaca()).estacionar(vaga, escolha, cliente);
         cliente.setEscolha(escolha);
@@ -71,28 +70,25 @@ public class Main {
 
     // Função para fazer o veículo sair da vaga e do Estacionamento;
     public static void sairVeiculo(Veiculo veiculo, Estacionamento estacionamento,
-            int escolha, Cliente cliente) {
+    int escolha, Cliente cliente) {
         estacionamento.sair(veiculo.getPlaca(), escolha);
     }
 
     // Salvar os Dados em um arquivo;
     public static void salvarDados(List<Estacionamento> estacionamentos,
-            List<Cliente> clientes) throws IOException {
+    List<Cliente> clientes) throws IOException {
         try (FileOutputStream fileOut = new FileOutputStream("dados.bin");
-                ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
-
+        ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
             // Salvar Estacionamentos;
-            for (Estacionamento estacionamento : estacionamentos) {
+            for(Estacionamento estacionamento : estacionamentos){
                 objectOut.writeObject(estacionamento);
             }
-
             // Salvar Clientes;
-            for (Cliente cliente : clientes) {
+            for(Cliente cliente : clientes){
                 objectOut.writeObject(cliente);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } 
+        catch(IOException e){e.printStackTrace();}
     }
 
     // Menu de opções de operações;
@@ -109,17 +105,18 @@ public class Main {
 
     // Função para ler dados do arquivo binário
     public static void lerDados(List<Estacionamento> estacionamentos, List<Cliente> clientes,
-            List<Veiculo> veiculos, int tentativas) {
+    List<Veiculo> veiculos, int tentativas) {
         try (FileInputStream fileInput = new FileInputStream("dados.bin");
-                ObjectInputStream objectInput = new ObjectInputStream(fileInput)) {
-
+        ObjectInputStream objectInput = new ObjectInputStream(fileInput)) {
             Object obj;
-            while ((obj = objectInput.readObject()) != null) {
+            while((obj = objectInput.readObject()) != null){
                 if (obj instanceof Estacionamento) {
                     estacionamentos.add((Estacionamento) obj);
-                } else if (obj instanceof Cliente) {
+                } 
+                else if (obj instanceof Cliente) {
                     clientes.add((Cliente) obj);
-                } else if (obj instanceof Veiculo) {
+                } 
+                else if (obj instanceof Veiculo) {
                     veiculos.add((Veiculo) obj);
                 }
             }
@@ -149,8 +146,8 @@ public class Main {
         menu();
         escolha = MyIO.readInt();
 
-        while (escolha != 6) {
-            switch (escolha) {
+        while(escolha != 6){
+            switch(escolha){
                 case 1:
                     // Criar Estacionamento;
                     Estacionamento estacionamento = criarEstacionamento();
@@ -173,7 +170,6 @@ public class Main {
                         cliente.addVeiculo(veiculo);
                         veiculos.add(veiculo);
                     }
-
                     break;
 
                 case 3:
@@ -255,7 +251,6 @@ public class Main {
                             break;
                         }
                     }
-
                     sairVeiculo(veiculoAtual1, estacionamentoAtual1, clienteAtual1.getEscolha(), clienteAtual1);
                     break;
 

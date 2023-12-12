@@ -33,6 +33,7 @@ public class Cliente implements Serializable, Observer {
         this.estacionamento = null;
     }
 
+    // Setters;
     public void setEstacionamento(Estacionamento estacionamento) {
         this.estacionamento = estacionamento;
     }
@@ -41,6 +42,7 @@ public class Cliente implements Serializable, Observer {
         this.escolha = escolha;
     }
 
+    // Getters;
     public int getEscolha() {
         return escolha;
     }
@@ -65,6 +67,7 @@ public class Cliente implements Serializable, Observer {
         return new ArrayList<>(veiculos.values());
     }
 
+    // Adicionar veiculo na lista do cliente;
     public void addVeiculo(Veiculo veiculo) {
         if (veiculos.containsKey(veiculo.getPlaca())) {
             throw new IllegalArgumentException("Erro - Carro já inserido.");
@@ -99,8 +102,7 @@ public class Cliente implements Serializable, Observer {
         estacionamento.notifyObservers(this, novaArrecadacaoCliente);
     }
 
-    // Método para verificar se o cliente possui um veículo com uma placa
-    // específica;
+    // Método para verificar se o cliente possui um veículo com uma placa específica;
     public Veiculo possuiVeiculo(String placa) {
         return veiculos.get(placa);
     }

@@ -14,7 +14,7 @@ public class UsoDeVaga implements Serializable {
     private Servicos servicoContratado;
     private Date data;
     private Cliente cliente;
-    private Modalidade modalidadeCliente; // Adicionando a modalidade do cliente
+    private Modalidade modalidadeCliente;// Adicionando a modalidade do cliente;
 
     // Constructor com a adição da modalidade do cliente;
     public UsoDeVaga(Vaga vaga, LocalDateTime entrada, int escolha, Cliente cliente) {
@@ -29,29 +29,17 @@ public class UsoDeVaga implements Serializable {
     }
 
     // Getters;
-    public LocalDateTime getEntrada() {
-        return this.entrada;
-    }
+    public LocalDateTime getEntrada(){return this.entrada;}
 
-    public LocalDateTime getSaida() {
-        return this.saida;
-    }
+    public LocalDateTime getSaida(){return this.saida;}
 
-    public double getValorPago() {
-        return valorPago;
-    }
+    public double getValorPago(){return valorPago;}
 
-    public int getMes() {
-        return entrada.getMonthValue();
-    }
+    public int getMes(){return entrada.getMonthValue();}
 
-    public Date getData() {
-        return this.data;
-    }
+    public Date getData(){return this.data;}
 
-    public Vaga getVaga() {
-        return this.vaga;
-    }
+    public Vaga getVaga(){return this.vaga;}
 
     // Método para verificar permissão de saída;
     public boolean permissaoSaida(LocalDateTime saida) {
