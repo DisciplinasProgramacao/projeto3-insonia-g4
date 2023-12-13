@@ -5,7 +5,7 @@ public class Relatorio implements Observer {
     private double arrecadacaoMensal;
 
     public Relatorio() {
-        this.top5Clientes = new LinkedHashMap<>(); // LinkedHashMap para manter a ordem de inserção
+        this.top5Clientes = new LinkedHashMap<>();// LinkedHashMap para manter a ordem de inserção;
         this.arrecadacaoMensal = 0.0;
     }
 
@@ -13,10 +13,10 @@ public class Relatorio implements Observer {
     public void updateArrecadacao(Cliente cliente, double novaArrecadacao) {
         top5Clientes.put(cliente, novaArrecadacao);
 
-        // Ordena o Top5 pelos valores de arrecadação em ordem decrescente
+        // Ordena o Top5 pelos valores de arrecadação em ordem decrescente;
         top5Clientes = sortByValue(top5Clientes);
 
-        // Mantém apenas os 5 primeiros clientes no Top5
+        // Mantém apenas os 5 primeiros clientes no Top5;
         if (top5Clientes.size() > 5) {
             Iterator<Map.Entry<Cliente, Double>> iterator = top5Clientes.entrySet().iterator();
             Map.Entry<Cliente, Double> entry = null;
@@ -28,7 +28,7 @@ public class Relatorio implements Observer {
             }
         }
 
-        // Atualiza a arrecadação mensal
+        // Atualiza a arrecadação mensal;
         arrecadacaoMensal += novaArrecadacao;
     }
 
@@ -40,7 +40,7 @@ public class Relatorio implements Observer {
         return arrecadacaoMensal;
     }
 
-    // Método utilitário para ordenar um Map por valores
+    // Método utilitário para ordenar um Map por valores;
     private <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
         List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
         list.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));

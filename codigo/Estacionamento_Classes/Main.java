@@ -10,17 +10,24 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
 public class Main {
+
     // Função para criar o Estacionamento;
     public static Estacionamento criarEstacionamento() {
-
-        MyIO.println("Digite o nome do estacionamento: ");
-        String nome = MyIO.readLine();
-
-        MyIO.println("Digite a quantidade de fileiras: ");
-        int fileiras = MyIO.readInt();
-
-        MyIO.println("Digite a quantidade de vagas por fileira: ");
-        int vagasPorFileira = MyIO.readInt();
+        String nome;
+        int fileiras;
+        int vagasPorFileira;
+        do{
+            MyIO.println("Digite o nome do estacionamento: ");
+            nome = MyIO.readLine();
+            MyIO.println("Digite a quantidade de fileiras: ");
+            fileiras = MyIO.readInt();
+            MyIO.println("Digite a quantidade de vagas por fileira: ");
+            vagasPorFileira = MyIO.readInt();
+            //Caso de erro;
+            if(fileiras <= 0 || vagasPorFileira <= 0){
+                MyIO.println("Erro - Quantidade de fileiras e vagas por fileira deve ser maior que zero.");
+            }
+        }while(fileiras <= 0 || vagasPorFileira <= 0);
 
         Estacionamento estacionamento = new Estacionamento(nome, fileiras, vagasPorFileira);
         return estacionamento;
@@ -49,6 +56,7 @@ public class Main {
                 MyIO.println("Opcao invalida. Escolha novamente.");
             }
         } while(modalidade < 1 || modalidade > 3);
+        
         // Cliente é criado baseado na modalidade selecionada;
         if (modalidade == 1) {
             cliente = new Cliente(nomeCliente, idCliente, Modalidade.HORISTA);
@@ -74,6 +82,50 @@ public class Main {
         estacionamento.sair(veiculo.getPlaca(), escolha);
     }
 
+    // Função para mudar a modalidade do Cliente;
+    public static void MudarModalidade(String idCliente, List<Cliente> clientes){
+        boolean clienteEncontrado = false;// Determina se o cliente foi encontrado ou não;
+        //Processo de busca do cliente;
+        for (Cliente cliente : clientes) {
+            if (cliente.getID().equals(idCliente)) {
+                // Modificar a modalidade do cliente selecionado;
+                int novaModalidade;
+                do {
+                    MyIO.println("Nova Modalidade:");
+                    MyIO.println("1 - HORISTA");
+                    MyIO.println("2 - DE_TURNO");
+                    MyIO.println("3 - MENSALISTA");
+                    MyIO.println("Escolha a nova modalidade: ");
+                    novaModalidade = MyIO.readInt();
+                    // Caso uma opção inválida seja selecionada;
+                    if (novaModalidade < 1 || novaModalidade > 3) {
+                        MyIO.println("Opção inválida. Escolha novamente.");
+                    }
+                } while (novaModalidade < 1 || novaModalidade > 3);
+    
+                switch (novaModalidade) {
+                    case 1:
+                        cliente.setModalidade(Modalidade.HORISTA);
+                        break;
+                    case 2:
+                        cliente.setModalidade(Modalidade.DE_TURNO);
+                        break;
+                    case 3:
+                        cliente.setModalidade(Modalidade.MENSALISTA);
+                        break;
+                    default:
+                        MyIO.println("Opção inválida. Escolha novamente.");
+                        break;
+                }
+                clienteEncontrado = true;
+                break;
+            }
+        }
+        if(!clienteEncontrado){
+            MyIO.println("Cliente com ID " + idCliente + " não foi encontrado.");
+        }
+    }
+
     // Salvar os Dados em um arquivo;
     public static void salvarDados(List<Estacionamento> estacionamentos,
     List<Cliente> clientes) throws IOException {
@@ -91,19 +143,7 @@ public class Main {
         catch(IOException e){e.printStackTrace();}
     }
 
-    // Menu de opções de operações;
-    public static void menu() {
-        MyIO.println("Lista de opcoes:");
-        MyIO.println("1 - Criar estacionamento");
-        MyIO.println("2 - Criar cliente");
-        MyIO.println("3 - Estacionar veiculo");
-        MyIO.println("4 - Sair com veiculo");
-        MyIO.println("5 - Salvar dados");
-        MyIO.println("6 - Sair");
-        MyIO.println("Escolha uma opcao: ");
-    }
-
-    // Função para ler dados do arquivo binário
+    // Função para ler dados do arquivo binário;
     public static void lerDados(List<Estacionamento> estacionamentos, List<Cliente> clientes,
     List<Veiculo> veiculos, int tentativas) {
         try (FileInputStream fileInput = new FileInputStream("dados.bin");
@@ -131,6 +171,38 @@ public class Main {
         }
     }
 
+    // Menu de opções de operações;
+    public static void menu() {
+        MyIO.println("Lista de opcoes:");
+        MyIO.println("1 - Criar estacionamento");
+        MyIO.println("2 - Criar cliente");
+        MyIO.println("3 - Estacionar veiculo");
+        MyIO.println("4 - Sair com veiculo");
+        MyIO.println("5 - Mudar seu plano");
+        MyIO.println("6 - Gerar Relatorio");
+        MyIO.println("7 - Sair");
+        MyIO.println("Escolha uma opcao: ");
+    }
+
+    // Menu para os relatórios que podem ser gerados;
+    public static void MenuGerarRelatório(){
+        MyIO.println("Lista de Relatorios:");
+        MyIO.println("1 - Historico de uso do estacionamento");
+        MyIO.println("2 - Historico por datas");
+        MyIO.println("3 - Valor total arrecadado por um estacionamento");
+        MyIO.println("4 - Valor arrecadado em um mes");
+        MyIO.println("5 - Valor medio por utilizacao do estacionamento");
+        MyIO.println("6 - Ranking dos 5 clientes que mais geraram arrecadacao em um mes");
+        MyIO.println("7 - Relatorio de arrecadacao de todos os estacionamentos, em ordem decrescente");
+        MyIO.println("8 - Quantas vezes os clientes mensalistas utilizaram um estacionamento no mes corrente");
+        MyIO.println("9 - Arrecadacao media gerada pelos clientes horistas no mes atual");
+        MyIO.println("10 - Cancelar");
+        MyIO.println("Escolha uma opcao: ");
+        int escolha;// escolha do usuário;
+        escolha = MyIO.readInt();
+        //CONTINUAR;
+    }
+
     // Main do Arquivo;
     public static void main(String[] args) throws IOException {
         List<Estacionamento> estacionamentos = new ArrayList<>();// Lista de Estacionamento;
@@ -146,12 +218,14 @@ public class Main {
         menu();
         escolha = MyIO.readInt();
 
-        while(escolha != 6){
+        while(escolha != 7){
             switch(escolha){
                 case 1:
                     // Criar Estacionamento;
                     Estacionamento estacionamento = criarEstacionamento();
                     estacionamentos.add(estacionamento);
+                    // Salvar o Arquivo;
+                    salvarDados(estacionamentos, clientes);
                     break;
 
                 case 2:
@@ -170,6 +244,8 @@ public class Main {
                         cliente.addVeiculo(veiculo);
                         veiculos.add(veiculo);
                     }
+                    // Salvar o Arquivo;
+                    salvarDados(estacionamentos, clientes);
                     break;
 
                 case 3:
@@ -217,7 +293,6 @@ public class Main {
                             break;
                         }
                     }
-                    // System.out.println(vagaAtual.getUsuario());
                     estacionarVeiculo(veiculoAtual, estacionamentoAtual, servico, vagaAtual, clienteAtual);
                     break;
 
@@ -255,11 +330,20 @@ public class Main {
                     break;
 
                 case 5:
+                    // Mudar o plano de utilização do estacionamento;
+                    MyIO.println("Digite o ID do cliente: ");
+                    String ID = MyIO.readLine();
+                    MudarModalidade(ID, clientes);
                     // Salvar o Arquivo;
                     salvarDados(estacionamentos, clientes);
                     break;
 
                 case 6:
+                    // Gerar Relatório;
+                    MenuGerarRelatório();
+                    break;
+
+                case 7:
                     // Sair do sistema;
                     System.out.println("Saindo...");
                     break;
@@ -270,6 +354,7 @@ public class Main {
                     break;
             }
             // Ordenar em ordem decrescente;
+            // Talvez tenha erro no Collections, olhar depois;
             Collections.sort(estacionamentos, Comparator.comparingDouble(Estacionamento::totalArrecadado).reversed());
             menu();
             escolha = MyIO.readInt();

@@ -183,7 +183,7 @@ public class Estacionamento implements Serializable {
 	}
 
 	// Tirar o veículo da vaga no estacionamento;
-	public double sair(String placa, int escolha) {
+	public double sair(String placa, int escolha){
 		try{
 			Veiculo veiculoParaSair = null;
 			Cliente clienteDoVeiculo = null;

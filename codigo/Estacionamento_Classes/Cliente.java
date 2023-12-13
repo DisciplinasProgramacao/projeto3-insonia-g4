@@ -42,28 +42,22 @@ public class Cliente implements Serializable, Observer {
         this.escolha = escolha;
     }
 
+    public void setModalidade(Modalidade modalidade){
+        this.modalidade = modalidade;
+    }
+
     // Getters;
-    public int getEscolha() {
-        return escolha;
-    }
+    public int getEscolha(){return escolha;}
 
-    public String getNome() {
-        return nome;
-    }
+    public String getNome(){return nome;}
 
-    public String getID() {
-        return id;
-    }
+    public String getID(){return id;}
 
-    public Map<String, Veiculo> getVeiculos() {
-        return veiculos;
-    }
+    public Map<String, Veiculo> getVeiculos(){return veiculos;}
 
-    public Modalidade getModalidade() {
-        return modalidade;
-    }
+    public Modalidade getModalidade(){return modalidade;}
     
-    public List<Veiculo> getVeiculosAsList() {
+    public List<Veiculo> getVeiculosAsList(){
         return new ArrayList<>(veiculos.values());
     }
 
@@ -80,9 +74,9 @@ public class Cliente implements Serializable, Observer {
             case HORISTA:
                 return calcularCobrancaHorista();
             case DE_TURNO:
-                return 200; // Mensalidade fixa de R$200;
+                return 200;// Mensalidade fixa de R$200;
             case MENSALISTA:
-                return 500; // Mensalidade fixa de R$500;
+                return 500;// Mensalidade fixa de R$500;
             default:
                 throw new IllegalArgumentException("Modalidade inválida");
         }
@@ -148,10 +142,7 @@ public class Cliente implements Serializable, Observer {
         return totalArrecadadoNoMes;
     }
 
-    /*
-     * Método para obter o valor arrecadado por um veículo com
-     * uma placa específica em um mês específico;
-     */
+    // Método para obter o valor arrecadado por um veículo com uma placa específica em um mês específico;
     private double arrecadadoPorVeiculoNoMes(Veiculo veiculo, int mes) {
         double totalArrecadadoNoMes = 0;
 
@@ -163,5 +154,4 @@ public class Cliente implements Serializable, Observer {
         }
         return totalArrecadadoNoMes;
     }
-
 }

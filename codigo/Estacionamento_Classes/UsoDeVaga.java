@@ -3,7 +3,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.io.Serializable;
 
-public class UsoDeVaga implements Serializable {
+public class UsoDeVaga implements Serializable, UsoDeVagaPrototype{
     private static final double VALOR_FRACAO = 4.0;
     private static final double VALOR_MAXIMO = 50.0;
 
@@ -17,7 +17,7 @@ public class UsoDeVaga implements Serializable {
     private Modalidade modalidadeCliente;// Adicionando a modalidade do cliente;
 
     // Constructor com a adição da modalidade do cliente;
-    public UsoDeVaga(Vaga vaga, LocalDateTime entrada, int escolha, Cliente cliente) {
+    public UsoDeVaga(Vaga vaga, LocalDateTime entrada, int escolha, Cliente cliente){
         this.vaga = vaga;
         this.entrada = entrada;
         this.saida = null;
@@ -25,7 +25,7 @@ public class UsoDeVaga implements Serializable {
         this.servicoContratado = Servicos.selecionarServico(escolha);
         this.data = new Date();
         this.cliente = cliente;
-        this.modalidadeCliente = cliente.getModalidade(); // Setando a modalidade do cliente
+        this.modalidadeCliente = cliente.getModalidade();// Setando a modalidade do cliente;
     }
 
     // Getters;
@@ -43,15 +43,13 @@ public class UsoDeVaga implements Serializable {
 
     // Método para verificar permissão de saída;
     public boolean permissaoSaida(LocalDateTime saida) {
-        if (servicoContratado != null
-                && Duration.between(entrada, saida).toMinutes() < servicoContratado.getTempoMinimo()) {
+        if (servicoContratado != null && Duration.between(entrada, saida).toMinutes() < servicoContratado.getTempoMinimo()) {
             long minutosRestantes = servicoContratado.getTempoMinimo() - Duration.between(entrada, saida).toMinutes();
             System.err.print("Seu veículo ainda está no(a) " + servicoContratado.getNomeDoServico()
-                    + "! Ele estará disponível em " + minutosRestantes + " minutos.");
+            + "! Ele estará disponível em " + minutosRestantes + " minutos.");
             return false;
-        } else {
-            return true;
-        }
+        } 
+        else{return true;}
     }
 
     // Método para sair da vaga;
@@ -61,7 +59,8 @@ public class UsoDeVaga implements Serializable {
 
         if (minutos <= 15) {
             this.valorPago = 0.0;
-        } else {
+        } 
+        else {
             int horas = (int) Math.ceil((double) minutos / 60);
             if (horas <= 1) {
                 this.valorPago = VALOR_FRACAO;
@@ -78,7 +77,21 @@ public class UsoDeVaga implements Serializable {
 
         // Ajuste para calcular a cobrança com base na modalidade do cliente;
         this.valorPago += cliente.calcularCobranca();
-
         return getValorPago();
+    }
+
+    // Implementação do método clonar() para criar uma cópia do objeto UsoDeVaga;
+    @Override
+    public UsoDeVaga clonar(){
+        UsoDeVaga copia = new UsoDeVaga(this.vaga, this.entrada, 0, this.cliente);
+        copia.vaga = this.vaga;
+        copia.entrada = this.entrada;
+        copia.saida = this.saida;
+        copia.valorPago = this.valorPago;
+        copia.servicoContratado = this.servicoContratado;
+        copia.data = this.data;
+        copia.cliente = this.cliente;
+        copia.modalidadeCliente = this.modalidadeCliente;
+        return copia;
     }
 }
