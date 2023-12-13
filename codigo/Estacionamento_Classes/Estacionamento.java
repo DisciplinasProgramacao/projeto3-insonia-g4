@@ -28,7 +28,7 @@ public class Estacionamento implements Serializable {
 
 	public int getQuantFileiras(){return quantFileiras;}
 
-	public int getVagasPorFileira() {return vagasPorFileira;}
+	public int getVagasPorFileira(){return vagasPorFileira;}
 
 	// Adicionar veículo no estacionamento;
 	public void addVeiculo(Veiculo veiculo, String idCli){
@@ -58,9 +58,21 @@ public class Estacionamento implements Serializable {
 	}
 
 	// Recomeça o programa no Main;
+	private boolean restartNeeded = false;
 	private void restartMainProcess(){
-        try{Main.main(new String[]{});} 
-		catch(IOException e){e.printStackTrace();}
+		try{
+            if(!restartNeeded){
+                restartNeeded = true;
+                Main.main(new String[]{});
+            } else {
+                System.out.println("Programa já está sendo reiniciado. Evitando loop infinito.");
+            }
+        } catch (IOException e) {e.printStackTrace();} 
+		finally{
+			// Resetando a bandeira depois de reiniciar o programa;
+            restartNeeded = false;
+        }
+
     }
 
 	// Cuida dos erros;

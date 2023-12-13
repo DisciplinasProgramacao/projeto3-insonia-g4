@@ -3,7 +3,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.io.Serializable;
 
-public class UsoDeVaga implements Serializable, UsoDeVagaPrototype{
+public class UsoDeVaga implements Serializable, UsoDeVagaPrototype, Comparable<UsoDeVaga>{
     private static final double VALOR_FRACAO = 4.0;
     private static final double VALOR_MAXIMO = 50.0;
 
@@ -94,4 +94,10 @@ public class UsoDeVaga implements Serializable, UsoDeVagaPrototype{
         copia.modalidadeCliente = this.modalidadeCliente;
         return copia;
     }
+
+    @Override
+    public int compareTo(UsoDeVaga other) {
+        return this.data.compareTo(other.data);
+    }
+
 }

@@ -1,6 +1,7 @@
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class Veiculo implements Serializable {
     private String placa;// Placa do veículo;
@@ -16,7 +17,7 @@ public class Veiculo implements Serializable {
 
     // Método para ordenar usos de vaga por data
     public void ordenarUsosPorData() {
-        Arrays.sort(usos, 0, totalUsos);
+        Arrays.sort(usos, 0, totalUsos, Comparator.naturalOrder());
     }
 
     // Getters;

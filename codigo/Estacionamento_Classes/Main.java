@@ -99,7 +99,7 @@ public class Main {
                     novaModalidade = MyIO.readInt();
                     // Caso uma opção inválida seja selecionada;
                     if (novaModalidade < 1 || novaModalidade > 3) {
-                        MyIO.println("Opção inválida. Escolha novamente.");
+                        MyIO.println("Opcao invalida. Escolha novamente.");
                     }
                 } while (novaModalidade < 1 || novaModalidade > 3);
     
@@ -114,10 +114,11 @@ public class Main {
                         cliente.setModalidade(Modalidade.MENSALISTA);
                         break;
                     default:
-                        MyIO.println("Opção inválida. Escolha novamente.");
+                        MyIO.println("Opcao invalida. Escolha novamente.");
                         break;
                 }
                 clienteEncontrado = true;
+                MyIO.println("Modalidade mudada para: " + cliente.getModalidade());
                 break;
             }
         }
@@ -200,7 +201,32 @@ public class Main {
         MyIO.println("Escolha uma opcao: ");
         int escolha;// escolha do usuário;
         escolha = MyIO.readInt();
-        //CONTINUAR;
+        switch (escolha){
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+            case 10:
+                MyIO.println("Processo Cancelado.");
+                break;
+            default:
+                MyIO.println("Opcao invalida.");
+                break;
+        }
     }
 
     // Main do Arquivo;
@@ -354,7 +380,6 @@ public class Main {
                     break;
             }
             // Ordenar em ordem decrescente;
-            // Talvez tenha erro no Collections, olhar depois;
             Collections.sort(estacionamentos, Comparator.comparingDouble(Estacionamento::totalArrecadado).reversed());
             menu();
             escolha = MyIO.readInt();
