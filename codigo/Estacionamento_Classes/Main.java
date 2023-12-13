@@ -79,7 +79,9 @@ public class Main {
     // Função para fazer o veículo sair da vaga e do Estacionamento;
     public static void sairVeiculo(Veiculo veiculo, Estacionamento estacionamento,
     int escolha, Cliente cliente) {
-        estacionamento.sair(veiculo.getPlaca(), escolha);
+        double valorPago;
+        valorPago = estacionamento.sair(veiculo.getPlaca(), escolha);
+        MyIO.println("Valor Pago: " + valorPago);
     }
 
     // Função para mudar a modalidade do Cliente;
@@ -186,41 +188,78 @@ public class Main {
     }
 
     // Menu para os relatórios que podem ser gerados;
-    public static void MenuGerarRelatório(){
+    public static void MenuGerarRelatório(List<Estacionamento> estacionamentos, List<Cliente> clientes, 
+    List<Veiculo> veiculos){
         MyIO.println("Lista de Relatorios:");
         MyIO.println("1 - Historico de uso do estacionamento");
         MyIO.println("2 - Historico por datas");
-        MyIO.println("3 - Valor total arrecadado por um estacionamento");
-        MyIO.println("4 - Valor arrecadado em um mes");
-        MyIO.println("5 - Valor medio por utilizacao do estacionamento");
-        MyIO.println("6 - Ranking dos 5 clientes que mais geraram arrecadacao em um mes");
-        MyIO.println("7 - Relatorio de arrecadacao de todos os estacionamentos, em ordem decrescente");
-        MyIO.println("8 - Quantas vezes os clientes mensalistas utilizaram um estacionamento no mes corrente");
-        MyIO.println("9 - Arrecadacao media gerada pelos clientes horistas no mes atual");
-        MyIO.println("10 - Cancelar");
+        MyIO.println("3 - Relatórios de utilização: ordem crescente de data ou decrescente de valor;");
+        MyIO.println("4 - Valor total arrecadado por um estacionamento");
+        MyIO.println("5 - Valor arrecadado em um mes");
+        MyIO.println("6 - Valor medio por utilizacao do estacionamento");
+        MyIO.println("7 - Ranking dos 5 clientes que mais geraram arrecadacao em um mes");
+        MyIO.println("8 - Relatorio de arrecadacao de todos os estacionamentos, em ordem decrescente");
+        MyIO.println("9 - Quantas vezes os clientes mensalistas utilizaram um estacionamento no mes corrente");
+        MyIO.println("10 - Arrecadacao media gerada pelos clientes horistas no mes atual");
+        MyIO.println("11 - Cancelar");
         MyIO.println("Escolha uma opcao: ");
         int escolha;// escolha do usuário;
         escolha = MyIO.readInt();
         switch (escolha){
             case 1:
+                MyIO.println("Digite o ID do cliente: ");
+                String idCliente1 = MyIO.readLine();
+                Cliente clienteSelecionado = null;
+                for (Cliente cliente1 : clientes) {
+                        if (cliente1.getID().equals(idCliente1)) {
+                            clienteSelecionado = cliente1;
+                            break;
+                        }
+                }
+                UsoDeVagaGerarRelatorio.HistoricoUsoEstacionamento(clienteSelecionado);
                 break;
             case 2:
+                MyIO.println("Digite o ID do cliente: ");
+                String idCliente2 = MyIO.readLine();
+                Cliente clienteSelecionado2 = null;
+                for (Cliente cliente1 : clientes) {
+                        if (cliente1.getID().equals(idCliente2)) {
+                            clienteSelecionado2 = cliente1;
+                            break;
+                        }
+                }
+                UsoDeVagaGerarRelatorio.HistoricoPorDatas(clienteSelecionado2);
                 break;
             case 3:
                 break;
             case 4:
+                MyIO.println("Digite o Nome do Estacionamento: ");
+                String nomeEstacionamento = MyIO.readLine();
+                Estacionamento estacionamentoAtual = null;
+                for (Estacionamento estacionamento1 : estacionamentos) {
+                        if (estacionamento1.getNome().equals(nomeEstacionamento)) {
+                            estacionamentoAtual = estacionamento1;
+                            break;
+                        }
+                }
+                UsoDeVagaGerarRelatorio.TotalArrecadadoEstacionamento(estacionamentoAtual);
                 break;
             case 5:
+                //UsoDeVagaGerarRelatorio.ArrecadadoPorMes();
                 break;
             case 6:
+                //UsoDeVagaGerarRelatorio.MediaUtilizacaoEstacionamento();
                 break;
             case 7:
+                //UsoDeVagaGerarRelatorio.Ranking5Clientes();
                 break;
             case 8:
                 break;
             case 9:
                 break;
             case 10:
+                break;
+            case 11:
                 MyIO.println("Processo Cancelado.");
                 break;
             default:
@@ -358,15 +397,15 @@ public class Main {
                 case 5:
                     // Mudar o plano de utilização do estacionamento;
                     MyIO.println("Digite o ID do cliente: ");
-                    String ID = MyIO.readLine();
-                    MudarModalidade(ID, clientes);
+                    String idCliente2 = MyIO.readLine();
+                    MudarModalidade(idCliente2, clientes);
                     // Salvar o Arquivo;
                     salvarDados(estacionamentos, clientes);
                     break;
 
                 case 6:
                     // Gerar Relatório;
-                    MenuGerarRelatório();
+                    MenuGerarRelatório(estacionamentos, clientes, veiculos);
                     break;
 
                 case 7:

@@ -27,7 +27,7 @@ public class UsoDeVaga implements Serializable, UsoDeVagaPrototype, Comparable<U
         this.cliente = cliente;
         this.modalidadeCliente = cliente.getModalidade();// Setando a modalidade do cliente;
     }
-
+    
     // Getters;
     public LocalDateTime getEntrada(){return this.entrada;}
 
@@ -40,6 +40,8 @@ public class UsoDeVaga implements Serializable, UsoDeVagaPrototype, Comparable<U
     public Date getData(){return this.data;}
 
     public Vaga getVaga(){return this.vaga;}
+
+    public Cliente getCliente(){return this.cliente;}
 
     // Método para verificar permissão de saída;
     public boolean permissaoSaida(LocalDateTime saida) {
@@ -77,6 +79,7 @@ public class UsoDeVaga implements Serializable, UsoDeVagaPrototype, Comparable<U
 
         // Ajuste para calcular a cobrança com base na modalidade do cliente;
         this.valorPago += cliente.calcularCobranca();
+
         return getValorPago();
     }
 
