@@ -9,7 +9,7 @@ enum Modalidade {
     HORISTA, DE_TURNO, MENSALISTA
 }
 
-public class Cliente implements Serializable, Observer {
+public class Cliente implements Serializable, Observer{
     private String nome;
     private String id;
     private Map<String, Veiculo> veiculos;
@@ -17,7 +17,8 @@ public class Cliente implements Serializable, Observer {
     private Modalidade modalidade;
     private Estacionamento estacionamento;
 
-    public Cliente(String nome, String id, Modalidade modalidade, Estacionamento estacionamento) {
+    // Construtores;
+    public Cliente(String nome, String id, Modalidade modalidade, Estacionamento estacionamento){
         this.nome = nome;
         this.id = id;
         this.modalidade = modalidade;
@@ -25,7 +26,7 @@ public class Cliente implements Serializable, Observer {
         this.estacionamento = estacionamento;
     }
 
-    public Cliente(String nome, String id, Modalidade modalidade) {
+    public Cliente(String nome, String id, Modalidade modalidade){
         this.nome = nome;
         this.id = id;
         this.modalidade = modalidade;
@@ -34,31 +35,39 @@ public class Cliente implements Serializable, Observer {
     }
 
     // Setters;
-    public void setEstacionamento(Estacionamento estacionamento) {
-        this.estacionamento = estacionamento;
-    }
+    public void setNome(String nome){this.nome = nome;}
 
-    public void setEscolha(int escolha) {
-        this.escolha = escolha;
-    }
+    public void setID(String id){this.id = id;}
+
+    public void setEscolha(int escolha){this.escolha = escolha;}
 
     public void setModalidade(Modalidade modalidade){
         this.modalidade = modalidade;
     }
 
-    // Getters;
-    public int getEscolha(){return escolha;}
+    public void setEstacionamento(Estacionamento estacionamento){
+        this.estacionamento = estacionamento;
+    }
 
+    // Getters;
     public String getNome(){return nome;}
 
     public String getID(){return id;}
 
     public Map<String, Veiculo> getVeiculos(){return veiculos;}
 
+    public int getEscolha(){return escolha;}
+
     public Modalidade getModalidade(){return modalidade;}
-    
+
+    public Estacionamento getEstacionamento(){return estacionamento;}
+
     public List<Veiculo> getVeiculosAsList(){
         return new ArrayList<>(veiculos.values());
+    }
+
+    public Veiculo possuiVeiculo(String placa) {
+        return veiculos.get(placa);
     }
 
     // Adicionar veiculo na lista do cliente;
@@ -94,11 +103,6 @@ public class Cliente implements Serializable, Observer {
     public void updateArrecadacao(Cliente cliente, double novaArrecadacao) {
         double novaArrecadacaoCliente = arrecadadoTotal() + novaArrecadacao;
         estacionamento.notifyObservers(this, novaArrecadacaoCliente);
-    }
-
-    // Método para verificar se o cliente possui um veículo com uma placa específica;
-    public Veiculo possuiVeiculo(String placa) {
-        return veiculos.get(placa);
     }
 
     // Método para obter o total de usos;

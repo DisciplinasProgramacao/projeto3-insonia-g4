@@ -1,132 +1,135 @@
-import java.time.LocalDateTime;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SalvarArquivo{
-    public static void main(String[] args){
+    // Salvamento dos objetos em arquivo binário;
+    public static void salvarObjetos(Estacionamento[] estacionamentos, Cliente[] clientes){
         try{
-            // Criando 3 estacionamentos;
-            Estacionamento estacionamento1 = new Estacionamento("Estacionamento 1", 10, 14);
-            Estacionamento estacionamento2 = new Estacionamento("Estacionamento 2", 10, 14);
-            Estacionamento estacionamento3 = new Estacionamento("Estacionamento 3", 10, 14);
-
-            // Criando 6 clientes;
-            Cliente cliente1 = new Cliente("Cliente 1", "12345", Modalidade.HORISTA);
-            Cliente cliente2 = new Cliente("Cliente 2", "54321", Modalidade.HORISTA);
-            Cliente cliente3 = new Cliente("Cliente 3", "53367", Modalidade.DE_TURNO);
-            Cliente cliente4 = new Cliente("Cliente 4", "74829", Modalidade.DE_TURNO);
-            Cliente cliente5 = new Cliente("Cliente 5", "23679", Modalidade.MENSALISTA);
-            Cliente cliente6 = new Cliente("Cliente 6", "17241", Modalidade.MENSALISTA);
-
-            // Adicionando clientes ao estacionamento;
-            estacionamento1.addCliente(cliente1);
-            estacionamento1.addCliente(cliente2);
-            estacionamento2.addCliente(cliente3);
-            estacionamento2.addCliente(cliente4);
-            estacionamento3.addCliente(cliente5);
-            estacionamento3.addCliente(cliente6);
-
-            // Criando 6 veículos;
-            Veiculo veiculo1 = new Veiculo("ABC123");
-            Veiculo veiculo2 = new Veiculo("XYZ789");
-            Veiculo veiculo3 = new Veiculo("AEZ919");
-            Veiculo veiculo4 = new Veiculo("IYO762");
-            Veiculo veiculo5 = new Veiculo("AEC691");
-            Veiculo veiculo6 = new Veiculo("HTJ571");
-
-            // Adicionando veículos aos clientes;
-            cliente1.addVeiculo(veiculo1);
-            cliente2.addVeiculo(veiculo2);
-            cliente3.addVeiculo(veiculo3);
-            cliente4.addVeiculo(veiculo4);
-            cliente5.addVeiculo(veiculo5);
-            cliente6.addVeiculo(veiculo6);
-
-            // Estacionando veículos;
-            estacionamento1.estacionar(veiculo1.getPlaca());
-            estacionamento1.estacionar(veiculo2.getPlaca());
-            estacionamento2.estacionar(veiculo3.getPlaca());
-            estacionamento2.estacionar(veiculo4.getPlaca());
-            estacionamento3.estacionar(veiculo5.getPlaca());
-            estacionamento3.estacionar(veiculo6.getPlaca());
-
-            // Crie uma lista para armazenar as vagas;
-            List<Vaga> vagas = new ArrayList<>();
-            
-            // Crie uma lista para armazenar os usos de vagas;
-            List<UsoDeVaga> usos = new ArrayList<>();
-            
-            // Criar e adicionar vagas, usos e registros;
-            int registrosPerClient = 10;
-            for(int clienteIndex = 0; clienteIndex < 6; clienteIndex++){
-                Cliente cliente = null;
-                String placa = null;
-                switch(clienteIndex){
-                    case 0:
-                        cliente = cliente1;
-                        placa = veiculo1.getPlaca();
-                        break;
-                    case 1:
-                        cliente = cliente2;
-                        placa = veiculo2.getPlaca();
-                        break;
-                    case 2:
-                        cliente = cliente3;
-                        placa = veiculo3.getPlaca();
-                        break;
-                    case 3:
-                        cliente = cliente4;
-                        placa = veiculo4.getPlaca();
-                        break;
-                    case 4:
-                        cliente = cliente5;
-                        placa = veiculo5.getPlaca();
-                        break;
-                    case 5:
-                        cliente = cliente6;
-                        placa = veiculo6.getPlaca();
-                        break;
-                }
-                for(int i = 0; i < registrosPerClient; i++){
-                    Vaga vaga = new Vaga(i, i);
-                    vagas.add(vaga);
-                    UsoDeVaga uso = new UsoDeVaga(vaga, LocalDateTime.now(), 0, cliente);
-                    usos.add(uso);
-                }
-            }
-
             // Crie um FileOutputStream para salvar os objetos em um arquivo binário;
             FileOutputStream fileOut = new FileOutputStream("dados.bin");
 
             // Crie um ObjectOutputStream para escrever objetos no arquivo;
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 
-            // Escreva os objetos no arquivo;
-            objectOut.writeObject(estacionamento1);
-            objectOut.writeObject(cliente1);
-            objectOut.writeObject(cliente2);
-            objectOut.writeObject(estacionamento2);
-            objectOut.writeObject(cliente3);
-            objectOut.writeObject(cliente4);
-            objectOut.writeObject(estacionamento3);
-            objectOut.writeObject(cliente5);
-            objectOut.writeObject(cliente6);
+            //Inserir Estacionamentos;
+            for (Estacionamento estacionamento : estacionamentos) {
+                objectOut.writeObject(estacionamento);
+            }
 
-            // Adicona as vagas;
-            for(Vaga vaga : vagas){
-                objectOut.writeObject(vaga);
+            //Inserir Clientes;
+            for (Cliente cliente : clientes) {
+                objectOut.writeObject(cliente);
             }
-            
-            // Adiciona os usos de vagas;
-            for(UsoDeVaga uso : usos){
-                objectOut.writeObject(uso);
-            }
-            
+
             // Feche o ObjectOutputStream e o FileOutputStream;
             objectOut.close();
             fileOut.close();
         }catch(Exception e){e.printStackTrace();}
+    }
+
+    // Função Main;
+    public static void main(String[] args){
+        // Criando 3 estacionamentos;
+        Estacionamento[] estacionamentos = new Estacionamento[3];
+        estacionamentos[0] = new Estacionamento("Estacionamento 1", 5, 15);
+        estacionamentos[1] = new Estacionamento("Estacionamento 2", 5, 15);
+        estacionamentos[2] = new Estacionamento("Estacionamento 3", 5, 15);
+
+        // Criando 10 clientes;
+        Cliente[] clientes = new Cliente[10];
+        clientes[0] = new Cliente("Cliente 1", "12345", Modalidade.HORISTA);
+        clientes[1] = new Cliente("Cliente 2", "54321", Modalidade.HORISTA);
+        clientes[2] = new Cliente("Cliente 3", "53367", Modalidade.DE_TURNO);
+        clientes[3] = new Cliente("Cliente 4", "74829", Modalidade.DE_TURNO);
+        clientes[4] = new Cliente("Cliente 5", "23679", Modalidade.MENSALISTA);
+        clientes[5] = new Cliente("Cliente 6", "17241", Modalidade.MENSALISTA);
+        clientes[6] = new Cliente("Cliente 7", "27549", Modalidade.MENSALISTA);
+        clientes[7] = new Cliente("Cliente 8", "34681", Modalidade.MENSALISTA);
+        clientes[8] = new Cliente("Cliente 9", "90231", Modalidade.DE_TURNO);
+        clientes[9] = new Cliente("Cliente 10", "17439", Modalidade.HORISTA);
+
+        // Adicionando clientes aos estacionamentos;
+        estacionamentos[0].addCliente(clientes[0]);
+        estacionamentos[0].addCliente(clientes[1]);
+        estacionamentos[0].addCliente(clientes[2]);
+        estacionamentos[0].addCliente(clientes[3]);
+        estacionamentos[1].addCliente(clientes[4]);
+        estacionamentos[1].addCliente(clientes[5]);
+        estacionamentos[2].addCliente(clientes[6]);
+        estacionamentos[2].addCliente(clientes[7]);
+        estacionamentos[2].addCliente(clientes[8]);
+        estacionamentos[2].addCliente(clientes[9]);
+
+        // Criando 15 veículos;
+        Veiculo[] veiculos = new Veiculo[15];
+        veiculos[0] = new Veiculo("ABC123");
+        veiculos[1] = new Veiculo("XYZ789");
+        veiculos[2] = new Veiculo("AEZ919");
+        veiculos[3] = new Veiculo("IYO762");
+        veiculos[4] = new Veiculo("AEC691");
+        veiculos[5] = new Veiculo("HTJ571");
+        veiculos[6] = new Veiculo("RTE673");
+        veiculos[7] = new Veiculo("OPW823");
+        veiculos[8] = new Veiculo("LKO513");
+        veiculos[9] = new Veiculo("KLR283");
+        veiculos[10] = new Veiculo("MLN793");
+        veiculos[11] = new Veiculo("YMN898");
+        veiculos[12] = new Veiculo("RWI456");
+        veiculos[13] = new Veiculo("UYI821");
+        veiculos[14] = new Veiculo("TEW957");
+
+        // Adicionando veículos aos clientes;
+        clientes[0].addVeiculo(veiculos[0]);
+        clientes[1].addVeiculo(veiculos[1]);
+        clientes[2].addVeiculo(veiculos[2]);
+        clientes[3].addVeiculo(veiculos[3]);
+        clientes[4].addVeiculo(veiculos[4]);
+        clientes[5].addVeiculo(veiculos[5]);
+        clientes[6].addVeiculo(veiculos[6]);
+        clientes[7].addVeiculo(veiculos[7]);
+        clientes[8].addVeiculo(veiculos[8]);
+        clientes[9].addVeiculo(veiculos[9]);
+        clientes[9].addVeiculo(veiculos[10]);
+        clientes[9].addVeiculo(veiculos[11]);
+        clientes[9].addVeiculo(veiculos[12]);
+        clientes[9].addVeiculo(veiculos[13]);
+        clientes[9].addVeiculo(veiculos[14]);
+
+        // 60 usos de estacionamento;
+        int registrosPorCliente = 4;
+        int clienteIndex = 0;
+        do {
+            Cliente clienteAtual;
+            String placaAtual;
+            Estacionamento estacionamentoAtual;
+            // Estacionamento;
+            if (clienteIndex < 4) {
+                estacionamentoAtual = estacionamentos[0];
+            } else if (clienteIndex < 6) {
+                estacionamentoAtual = estacionamentos[1];
+            } else {
+                estacionamentoAtual = estacionamentos[2];
+            }
+            // Cliente e veiculo;
+            if (clienteIndex < 10) {
+                clienteAtual = clientes[clienteIndex];
+                placaAtual = veiculos[clienteIndex].getPlaca();
+            } else {
+                clienteAtual = clientes[9];
+                placaAtual = veiculos[clienteIndex].getPlaca();
+            }
+            // Realizar a entrada e saída do estacionamento;
+            for (int i = 0; i < registrosPorCliente; i++) {
+                Vaga vaga = new Vaga(i, i);
+                estacionamentoAtual.estacionar(placaAtual);
+                clienteAtual.possuiVeiculo(placaAtual).estacionar(vaga, 0, clienteAtual);
+                clienteAtual.setEscolha(0);
+                estacionamentoAtual.sair(placaAtual, 0);
+            }
+            clienteIndex++;
+        } while (clienteIndex < 15);
+
+        // Criar um arquivo para salvar os dados;
+        salvarObjetos(estacionamentos, clientes);
     }
 }
