@@ -328,12 +328,12 @@ public class Main{
 
                 case 7:
                     // Sair do sistema;
-                    System.out.println("Saindo...");
+                    MyIO.println("Saindo...");
                     break;
 
                 default:
                     // Opção inválida;
-                    System.out.println("Opcao invalida.");
+                    MyIO.println("Opcao invalida.");
                     break;
             }
             // Ordenar em ordem decrescente;

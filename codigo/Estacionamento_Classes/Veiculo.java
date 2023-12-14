@@ -3,7 +3,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class Veiculo implements Serializable {
+public class Veiculo implements Serializable{
     private String placa;// Placa do veículo;
     private UsoDeVaga[] usos;// Lista de usos do veículo;
     private int totalUsos;// Total de usos do veículo;
@@ -15,32 +15,23 @@ public class Veiculo implements Serializable {
         this.totalUsos = 0;
     }
 
-    // Método para ordenar usos de vaga por data
+    // Getters;
+    public String getPlaca(){return this.placa;}
+
+    public UsoDeVaga[] getUsos(){return this.usos;}
+
+    public int getTotalUsos(){return this.totalUsos;}
+
+    public int totalDeUsos(){return this.totalUsos;}
+
+    // Método para ordenar usos de vaga por data;
     public void ordenarUsosPorData() {
         Arrays.sort(usos, 0, totalUsos, Comparator.naturalOrder());
     }
 
-    // Getters;
-    public String getPlaca() {
-        return placa;
-    }
-
-    public UsoDeVaga[] getUsos() {
-        return usos;
-    }
-
-    public int getTotalUsos() {
-        return this.totalUsos;
-    }
-
-    // Retorna o número total de usos do veiculo;
-    public int totalDeUsos() {
-        return totalUsos;
-    }
-
     // Estacionar o veículo;
-    public void estacionar(Vaga vaga, int escolha, Cliente cliente) {
-        if (totalUsos < usos.length) {
+    public void estacionar(Vaga vaga, int escolha, Cliente cliente){
+        if(totalUsos < usos.length){
             usos[totalUsos] = new UsoDeVaga(vaga, LocalDateTime.now(), escolha, cliente);
             totalUsos++;
         } else {
@@ -49,10 +40,12 @@ public class Veiculo implements Serializable {
     }
 
     // Sair da vaga e pagar o valor;
-    public double sair() {
+    /*public double sair() {
         // Implemente o cálculo do valor a pagar ao sair de uma vaga aqui;
         return 0.0;
-    }
+    }*/
+
+    //***********Código para os relátorios***********
 
     // Calcula o total arrecadado pelo veículo;
     public double totalArrecadado() {
@@ -64,6 +57,7 @@ public class Veiculo implements Serializable {
         return total;
     }
 
+    // Calcula o total arrecadado pelo veículo em um mês;
     public double arrecadadoNoMes(int mes) {
         double totalMes = 0.0;
         ordenarUsosPorData();// Ordena os usos por data;

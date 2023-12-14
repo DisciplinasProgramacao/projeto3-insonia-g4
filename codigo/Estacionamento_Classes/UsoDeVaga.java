@@ -33,9 +33,9 @@ public class UsoDeVaga implements Serializable, UsoDeVagaPrototype, Comparable<U
 
     public LocalDateTime getSaida(){return this.saida;}
 
-    public double getValorPago(){return valorPago;}
+    public double getValorPago(){return this.valorPago;}//mudou isso;
 
-    public int getMes(){return entrada.getMonthValue();}
+    public int getMes(){return this.entrada.getMonthValue();}//mudou isso;
 
     public Date getData(){return this.data;}
 
@@ -47,18 +47,18 @@ public class UsoDeVaga implements Serializable, UsoDeVagaPrototype, Comparable<U
     public boolean permissaoSaida(LocalDateTime saida) {
         if (servicoContratado != null && Duration.between(entrada, saida).toMinutes() < servicoContratado.getTempoMinimo()) {
             long minutosRestantes = servicoContratado.getTempoMinimo() - Duration.between(entrada, saida).toMinutes();
-            System.err.print("Seu veículo ainda está no(a) " + servicoContratado.getNomeDoServico()
-            + "! Ele estará disponível em " + minutosRestantes + " minutos.");
+            System.err.print("Seu veiculo ainda esta no(a) " + servicoContratado.getNomeDoServico()
+            + "! Ele estara disponivel em " + minutosRestantes + " minutos.");
             return false;
         } 
         else{return true;}
     }
 
     // Método para sair da vaga;
-    public double sair(LocalDateTime saida) {
+    public double sair(LocalDateTime saida){
         this.saida = saida;
         long minutos = Duration.between(entrada, saida).toMinutes();
-
+        // Ficou estacionado por menos de 15 minutos;
         if (minutos <= 15) {
             this.valorPago = 0.0;
         } 
@@ -72,17 +72,21 @@ public class UsoDeVaga implements Serializable, UsoDeVagaPrototype, Comparable<U
                 this.valorPago = VALOR_FRACAO + (horas - 1) * VALOR_FRACAO;
             }
         }
-
+        
         if (servicoContratado != null) {
             this.valorPago += servicoContratado.getCustoServico();
         }
-
         // Ajuste para calcular a cobrança com base na modalidade do cliente;
         this.valorPago += cliente.calcularCobranca();
-
         return getValorPago();
     }
 
+    @Override
+    public int compareTo(UsoDeVaga other) {
+        return this.data.compareTo(other.data);
+    }
+
+    //**********Prototype (em Construção)***********/
     // Implementação do método clonar() para criar uma cópia do objeto UsoDeVaga;
     @Override
     public UsoDeVaga clonar(){
@@ -97,10 +101,4 @@ public class UsoDeVaga implements Serializable, UsoDeVagaPrototype, Comparable<U
         copia.modalidadeCliente = this.modalidadeCliente;
         return copia;
     }
-
-    @Override
-    public int compareTo(UsoDeVaga other) {
-        return this.data.compareTo(other.data);
-    }
-
 }

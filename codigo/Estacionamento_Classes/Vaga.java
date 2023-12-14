@@ -22,29 +22,28 @@ public class Vaga implements Serializable {
     }
 
     // Getters;
-    public List<RegistroHistorico> getHistorico() {
-        return historico;
+    public String getId(){return this.id;}
+
+    public boolean isDisponivel(){return disponivel;}
+    
+    public Cliente getUsuario(){return this.cliente;}
+
+    public List<RegistroHistorico> getHistorico() {return historico;}
+
+    public LocalDateTime getEntrada() {
+        LocalDateTime entrada = Instant.ofEpochMilli(entradaMillis).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        return entrada;
     }
-    public Cliente getUsuario(){
-        return this.cliente;
-    }
-    public String getId() {
-        return this.id;
-    }
+
     public int getFila() {
         String inicial = getId().replace("Vaga ", "");
         Integer.parseInt(inicial);
         return Integer.parseInt(inicial.substring(0, 1));
     }
 
-    // Verifica o boolean disponivel (se a vaga está ocupada ou não);
-    public boolean isDisponivel(){
-        return disponivel;
-    }
-
-    // Ocupar Vaga;
+    // Ocupar a Vaga;
     public boolean estacionar(Cliente cliente){
-        if (disponivel) {
+        if(disponivel){
             this.cliente = cliente;
             this.disponivel = false;
             this.entradaMillis = System.currentTimeMillis();
@@ -55,9 +54,9 @@ public class Vaga implements Serializable {
         }
     }
 
-    // Liberar Vaga;
-    public boolean sair() {
-        if (!disponivel) {
+    // Liberar a Vaga;
+    public boolean sair(){
+        if (!disponivel){
             // Calcular o tempo em que o cliente ficou estacionado e calcular a cobrança;
             double tempoEstacionado = calcularTempoEstacionado();
             double valorCobranca = calcularValorCobranca(tempoEstacionado);
@@ -70,14 +69,14 @@ public class Vaga implements Serializable {
             this.disponivel = true;
             return true;
         } 
-        else {
+        else{
             return false;// A vaga já está vazia;
         }
     }
 
     // Calcula o tempo que o veículo ficou estacionado;
-    private double calcularTempoEstacionado() {
-        if (cliente == null) {
+    private double calcularTempoEstacionado(){
+        if(cliente == null){
             return 0.0;
         }
         long tempoSaidaMillis = System.currentTimeMillis();
@@ -98,10 +97,5 @@ public class Vaga implements Serializable {
             valorCobranca = limiteCobranca;
         }
         return valorCobranca;
-    }
-
-    public LocalDateTime getEntrada() {
-        LocalDateTime entrada = Instant.ofEpochMilli(entradaMillis).atZone(ZoneId.systemDefault()).toLocalDateTime();
-        return entrada;
     }
 }
