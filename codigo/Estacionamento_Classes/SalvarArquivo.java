@@ -12,17 +12,17 @@ public class SalvarArquivo{
             // Crie um ObjectOutputStream para escrever objetos no arquivo;
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 
-            //Inserir Estacionamentos;
+            // Inserir Estacionamentos;
             for (Estacionamento estacionamento : estacionamentos) {
                 objectOut.writeObject(estacionamento);
             }
 
-            //Inserir Clientes;
+            // Inserir Clientes;
             for (Cliente cliente : clientes) {
                 objectOut.writeObject(cliente);
             }
 
-            //Inserir Veículos;
+            // Inserir Veículos;
             for (Veiculo veiculo : veiculos) {
                 objectOut.writeObject(veiculo);
             }

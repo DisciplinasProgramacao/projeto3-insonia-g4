@@ -48,7 +48,7 @@ public class Veiculo implements Serializable{
     //***********Código para os relátorios***********
 
     // Calcula o total arrecadado pelo veículo;
-    public double totalArrecadado() {
+    public double totalArrecadado(){
         double total = 0.0;
         ordenarUsosPorData();// Ordena os usos por data;
         for (int i = 0; i < totalUsos; i++) {

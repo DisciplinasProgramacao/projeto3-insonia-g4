@@ -5,9 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-enum Modalidade {
-    HORISTA, DE_TURNO, MENSALISTA
-}
+enum Modalidade{HORISTA, DE_TURNO, MENSALISTA}
 
 public class Cliente implements Serializable, Observer{
     private String nome;
@@ -71,7 +69,7 @@ public class Cliente implements Serializable, Observer{
         return veiculos.get(placa);
     }
 
-    // Adicionar veiculo na lista do cliente;
+    // Adicionar Veículo na lista do Cliente;
     public void addVeiculo(Veiculo veiculo){
         if(veiculos.containsKey(veiculo.getPlaca())){
             MyIO.println("Erro - Carro ja inserido.");
@@ -95,15 +93,6 @@ public class Cliente implements Serializable, Observer{
         }
     }
 
-    // Calcular a Cobrança de Clientes da Modalidade Horista;
-    private double calcularCobrancaHorista(){
-        double totalArrecadado = 0;
-        for(Veiculo veiculo : veiculos.values()){
-            totalArrecadado += veiculo.totalArrecadado();
-        }
-        return totalArrecadado;
-    }
-
     // Fazer um update do valor da Arrecadação;
     @Override
     public void updateArrecadacao(Cliente cliente, double novaArrecadacao){
@@ -112,7 +101,25 @@ public class Cliente implements Serializable, Observer{
     }
 
     //***********Código para os relátorios***********
+    
+    // Método para obter o total arrecadado pelo cliente;
+    public double arrecadadoTotal(){
+        double totalArrecadado = 0;
+        for(Veiculo veiculo : veiculos.values()){
+            totalArrecadado += veiculo.totalArrecadado();
+        }
+        return totalArrecadado;
+    }
 
+    // Calcular a Cobrança de Clientes da Modalidade Horista;
+    private double calcularCobrancaHorista(){
+        double totalArrecadado = 0;
+        for(Veiculo veiculo : veiculos.values()){
+            totalArrecadado += veiculo.totalArrecadado();
+        }
+        return totalArrecadado;
+    }
+    
     // Método para obter o total de usos;
     public int totalDeUsos(){
         int totalDeUsos = 0;
@@ -133,15 +140,6 @@ public class Cliente implements Serializable, Observer{
         else{
             return veiculo.totalArrecadado();
         }
-    }
-
-    // Método para obter o total arrecadado pelo cliente;
-    public double arrecadadoTotal(){
-        double totalArrecadado = 0;
-        for(Veiculo veiculo : veiculos.values()){
-            totalArrecadado += veiculo.totalArrecadado();
-        }
-        return totalArrecadado;
     }
 
     // Método para obter o total arrecadado em um mês;

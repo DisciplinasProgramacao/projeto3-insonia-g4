@@ -47,7 +47,7 @@ public class UsoDeVaga implements Serializable, UsoDeVagaPrototype, Comparable<U
     public boolean permissaoSaida(LocalDateTime saida) {
         if (servicoContratado != null && Duration.between(entrada, saida).toMinutes() < servicoContratado.getTempoMinimo()) {
             long minutosRestantes = servicoContratado.getTempoMinimo() - Duration.between(entrada, saida).toMinutes();
-            System.err.print("Seu veiculo ainda esta no(a) " + servicoContratado.getNomeDoServico()
+            System.err.println("Seu veiculo ainda esta no(a) " + servicoContratado.getNomeDoServico()
             + "! Ele estara disponivel em " + minutosRestantes + " minutos.");
             return false;
         } 

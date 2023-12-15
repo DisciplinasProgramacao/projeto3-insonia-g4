@@ -7,7 +7,8 @@ public class RegistroHistorico implements Serializable{
     private double valorCobranca;// Valor cobrado ao cliente;
 
     // Constructor;
-    public RegistroHistorico(Cliente cliente, String id, double tempoEstacionado, double valorCobranca){
+    public RegistroHistorico(Cliente cliente, String id, 
+    double tempoEstacionado, double valorCobranca){
         this.cliente = cliente;
         this.id = id;
         this.tempoEstacionado = tempoEstacionado;

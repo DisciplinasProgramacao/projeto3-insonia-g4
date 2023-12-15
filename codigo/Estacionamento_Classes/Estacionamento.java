@@ -136,7 +136,6 @@ public class Estacionamento implements Serializable{
 
 	// Tirar o veículo da vaga no estacionamento;
 	public double sair(Veiculo veiculo, Cliente cliente, Vaga vaga){
-		//IMPLEMENTAR O SISTEMA DE TEMPO Mínimo;
 		// Tentativa de sair com um carro que não está estacionado (notificando e ignorando a operação);
 		UsoDeVaga[] usosVeiculo = veiculo.getUsos();
 		int totalUsosVeiculo = veiculo.getTotalUsos();
@@ -146,11 +145,12 @@ public class Estacionamento implements Serializable{
 			if (saida != null) {
 				MyIO.println("Veiculo com placa " + veiculo.getPlaca() + " nao esta estacionado.");
 				return 0.0;
-			}	
+			}
 		}
 		// Verifica as Vagas;
 		Vaga vagaOcupada = null;
 		for (Vaga vaga1 : vagas) {
+			//IMPORTANTE: Instalar uma variavel veículo em Vaga;
 			if (!vaga1.isDisponivel() && vaga1.getId().equals(vaga.getId())
 			&& vaga1.getUsuario().getNome().equals(cliente.getNome())){
 				vagaOcupada = vaga1;
@@ -161,11 +161,16 @@ public class Estacionamento implements Serializable{
 		if (vagaOcupada != null) {
 			if (vagaOcupada.sair()) {
 				LocalDateTime saida = LocalDateTime.now();// Obtém a hora de saída do veículo;
-				System.out.println("Veiculo com placa " + veiculo.getPlaca() + " saiu da " + vagaOcupada.id + " no horario " + saida);
+				// Verifica se o serviço terminou;
 				UsoDeVaga UltimoUso = usosVeiculo[totalUsosVeiculo - 1];
-				UltimoUso.sair(saida);
-				//veiculo.sair(veiculo, saida);
-				return UltimoUso.getValorPago();
+				boolean permissaoSaida = UltimoUso.permissaoSaida(saida);
+				if(permissaoSaida){
+					MyIO.println("Veiculo com placa " + veiculo.getPlaca() + " saiu da " + vagaOcupada.id + " no horario " + saida);
+					UltimoUso.sair(saida);
+					//veiculo.sair(veiculo, saida);
+					return UltimoUso.getValorPago();
+				}
+				else {return 0;}
 			}
 			else{
 				MyIO.println("Erro - A vaga nao esta ocupada.");
@@ -176,6 +181,15 @@ public class Estacionamento implements Serializable{
 	}
 
 	//***********Código para os relátorios***********
+	
+	// Total arrecadado pelo estacionamento;
+	public double totalArrecadado(){
+		double valTotal = 0;
+		for(Cliente cliente : id){
+			valTotal += cliente.arrecadadoTotal();
+		}
+		return valTotal;
+	}
 
 	// Arrecadação média dos Clientes Horistas;
 	public double arrecadacaoMediaClientesHoristas(int mes){
@@ -196,14 +210,6 @@ public class Estacionamento implements Serializable{
 		else{return 0;}
 	}
 
-	// Total arrecadado pelo estacionamento;
-	public double totalArrecadado(){
-		double valTotal = 0;
-		for(Cliente cliente : id){
-			valTotal += cliente.arrecadadoTotal();
-		}
-		return valTotal;
-	}
 
 	// Arrecadado pelo estacionamento em um Mês;
 	public double arrecadacaoNoMes(int mes){
