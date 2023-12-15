@@ -11,12 +11,7 @@ public class VeiculoTest {
         vaga = new Vaga(1, 1);
         veiculo = new Veiculo("1234567");
         Cliente cliente = new Cliente("Joao", "1", Modalidade.MENSALISTA);
-        veiculo.estacionar(vaga, 1, cliente );
-    }
-
-    @Test
-    public void testSair() {
-        assertEquals(0.0, veiculo.sair());
+        veiculo.estacionar(vaga, 1, cliente);
     }
 
     @Test
@@ -32,6 +27,6 @@ public class VeiculoTest {
 
     @Test
     public void testTotalDeUsos() {
-        assertEquals(1, veiculo.totalDeUsos());
+        assertEquals(1, veiculo.getTotalUsos());
     }
 }

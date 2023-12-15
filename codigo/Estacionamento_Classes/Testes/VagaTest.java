@@ -3,7 +3,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class VagaTest {
-
     private Vaga vaga;
 
     @BeforeEach

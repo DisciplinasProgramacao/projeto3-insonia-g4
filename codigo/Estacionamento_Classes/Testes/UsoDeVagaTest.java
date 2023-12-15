@@ -1,11 +1,9 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.time.LocalDateTime;
 
 class UsoDeVagaTest {
-
     private Vaga vaga;
     private Cliente cliente;
 
@@ -26,7 +24,6 @@ class UsoDeVagaTest {
     void testGetSaida() {
         LocalDateTime entrada = LocalDateTime.now();
         UsoDeVaga uso = new UsoDeVaga(vaga, entrada, 1, cliente);
-
         // Simulando uma saída após 30 minutos
         LocalDateTime saida = entrada.plusMinutes(30);
         uso.sair(saida);
@@ -88,5 +85,4 @@ class UsoDeVagaTest {
         saida = LocalDateTime.now().plusMinutes(60);
         assertTrue(uso.permissaoSaida(saida));
     }
-
 }

@@ -8,12 +8,11 @@ class EstacionamentoTest {
     private Cliente cliente;
 
     @BeforeEach
-    void setUp() {
+    void setUp(){
         estacionamento = new Estacionamento("Nome", 5, 10);
         cliente = new Cliente("Cliente1", "ID1", Modalidade.HORISTA);
         estacionamento.addCliente(cliente);
     }
-
 
     @Test
     void testArrecadacaoMediaClientesHoristas() {
@@ -22,15 +21,13 @@ class EstacionamentoTest {
         assertEquals(0.0, arrecadacaoMedia);
     }
 
-
     @Test
     void testEstacionar() {
         Veiculo veiculo = new Veiculo("ABC123");
         cliente.addVeiculo(veiculo);
-
-        assertDoesNotThrow(() -> estacionamento.estacionar("ABC123"));
+        Vaga vaga = new Vaga(1, 1);
+        assertDoesNotThrow(() -> estacionamento.estacionar(veiculo, estacionamento, cliente, vaga));
     }
-
 
     @Test
     void testTotalArrecadado() {
@@ -52,7 +49,6 @@ class EstacionamentoTest {
         double mediaClientesMensal = estacionamento.mediaClientesMensal();
         assertEquals(0.0, mediaClientesMensal);
     }
-
 
     @Test
     void testTop5Clientes() {
