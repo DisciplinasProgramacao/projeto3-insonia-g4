@@ -426,14 +426,19 @@ public class Main{
                 UsoDeVagaGerarRelatorio.ArrecadadoMes();
                 break;
             case 6:
+                UsoDeVagaGerarRelatorio.MediaUtilizacaoEstacionamento();
                 break;
             case 7:
+                UsoDeVagaGerarRelatorio.Ranking5Clientes();
                 break;
             case 8:
+                UsoDeVagaGerarRelatorio.RelatorioArrecadacaoDecrescente();
                 break;
             case 9:
+                UsoDeVagaGerarRelatorio.ClientesMensalistasMesCorrente();
                 break;
             case 10:
+                UsoDeVagaGerarRelatorio.ArrecadacaoMediaHoristasAtual();
                 break;
             case 11:
                 MyIO.println("Cancelado.");
@@ -523,45 +528,3 @@ public class Main{
         salvarDados(estacionamentos, clientes, veiculos);
     }
 }
-/*
- * 
- * 
-            UsoDeVagaGerarRelatorio.HistoricoUsoEstacionamento(clienteSelecionado);
-            break;
-        case 2:
-            MyIO.println("Digite o ID do cliente: ");
-            String idCliente2 = MyIO.readLine();
-            Cliente clienteSelecionado2 = null;
-            for (Cliente cliente1 : clientes) {
-                    if (cliente1.getID().equals(idCliente2)) {
-                        clienteSelecionado2 = cliente1;
-                        break;
-                    }
-            }
-            UsoDeVagaGerarRelatorio.HistoricoPorDatas(clienteSelecionado2);
-            break;
-        case 3:
-            break;
-        case 4:
-            MyIO.println("Digite o Nome do Estacionamento: ");
-            String nomeEstacionamento = MyIO.readLine();
-            Estacionamento estacionamentoAtual = null;
-            for (Estacionamento estacionamento1 : estacionamentos) {
-                    if (estacionamento1.getNome().equals(nomeEstacionamento)) {
-                        estacionamentoAtual = estacionamento1;
-                        break;
-                    }
-            }
-            UsoDeVagaGerarRelatorio.TotalArrecadadoEstacionamento(estacionamentoAtual);
-            break;
-        case 5:
-            //UsoDeVagaGerarRelatorio.ArrecadadoPorMes();
-            break;
-        case 6:
-            //UsoDeVagaGerarRelatorio.MediaUtilizacaoEstacionamento();
-            break;
-        case 7:
-            //UsoDeVagaGerarRelatorio.Ranking5Clientes();
-            break;
-
-*/

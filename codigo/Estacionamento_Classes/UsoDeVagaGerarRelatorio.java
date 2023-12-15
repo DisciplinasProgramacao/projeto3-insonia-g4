@@ -130,4 +130,32 @@ public class UsoDeVagaGerarRelatorio implements Serializable{
     public static void ArrecadadoMes(){
         return;
     }
+
+    // Valor médio por utilização do estacionamento;
+    public static void MediaUtilizacaoEstacionamento(){
+        return;
+    }
+
+    // Ranking dos 5 clientes que mais geraram arrecadação em um mês;
+    public static void Ranking5Clientes(){
+        return;
+    }
+
+    // Relatório de arrecadação de todos os estacionamentos, em ordem decrescente;
+    public static void RelatorioArrecadacaoDecrescente(){
+        return;
+    }
+
+    /*
+    * Quantas vezes os clientes mensalistas utilizaram um estacionamento no mês corrente, 
+    * em valores absolutos e em porcentagem de uso.
+    */
+    public static void ClientesMensalistasMesCorrente(){
+        return;
+    }
+
+    // Arrecadação média gerada pelos clientes horistas no mês atual;
+    public static void ArrecadacaoMediaHoristasAtual(){
+        return;
+    }
 }
