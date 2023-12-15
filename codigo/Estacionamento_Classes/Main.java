@@ -11,35 +11,52 @@ import java.io.ObjectInputStream;
 
 public class Main{
     // Função para criar o Estacionamento;
-    public static Estacionamento criarEstacionamento(){
+    public static Estacionamento criarEstacionamento(List<Estacionamento> estacionamentos){
         String nome;
         int fileiras;
         int vagasPorFileira;
+        boolean estacionamentoExiste;// Define se o Estacionamento já existe na lista;
         do{
+            estacionamentoExiste = false;
             MyIO.println("Digite o nome do estacionamento: ");
             nome = MyIO.readLine();
             MyIO.println("Digite a quantidade de fileiras: ");
             fileiras = MyIO.readInt();
             MyIO.println("Digite a quantidade de vagas por fileira: ");
             vagasPorFileira = MyIO.readInt();
-            // Caso de erro;
+            // Número de fileiras ou vagasPorFileira errado;
             if(fileiras <= 0 || vagasPorFileira <= 0){
                 MyIO.println("Erro - Quantidade de fileiras e vagas deve ser maior que zero.");
+                continue;
             }
-        } while(fileiras <= 0 || vagasPorFileira <= 0);
+            // Verifica se o Estacionamento já existe;
+            for(Estacionamento estacionamento1 : estacionamentos){
+                if(estacionamento1.getNome().equals(nome)){
+                    MyIO.println("Erro - Estacionamento " + nome + " ja existe.");
+                    estacionamentoExiste = true;
+                    break;
+                }
+            }
+        }while(fileiras <= 0 || vagasPorFileira <= 0 || estacionamentoExiste);
         Estacionamento estacionamento = new Estacionamento(nome, fileiras, vagasPorFileira);
         return estacionamento;
     }
 
     // Função para criar o Cliente;
-    public static Cliente criarCliente(){
+    public static Cliente criarCliente(List<Cliente> clientes){
         Cliente cliente = null;
-        MyIO.println("Digite o nome do cliente: ");
-        String nomeCliente = MyIO.readLine();
-        MyIO.println("Digite o ID do cliente: ");
-        String idCliente = MyIO.readLine();
+        String nomeCliente;
+        String idCliente;
         int modalidade;
+        boolean clienteExiste;// Define se o Cliente já existe na lista;
         do{
+            clienteExiste = false;
+            // Inserir dados;
+            MyIO.println("Digite o nome do cliente: ");
+            nomeCliente = MyIO.readLine();
+            MyIO.println("Digite o ID do cliente: ");
+            idCliente = MyIO.readLine();
+            // Seleção de Modalidade;
             MyIO.println("Modalidades Existentes:");
             MyIO.println("1-HORISTA");
             MyIO.println("2-DE_TURNO");
@@ -49,8 +66,17 @@ public class Main{
             // Caso uma opção inválida seja selecionada;
             if (modalidade < 1 || modalidade > 3) {
                 MyIO.println("Opcao invalida. Escolha novamente.");
+                continue;
             }
-        } while(modalidade < 1 || modalidade > 3);
+            // Verifica se o Cliente já existe;
+            for(Cliente cliente1 : clientes){
+                if(cliente1.getID().equals(idCliente)){
+                    MyIO.println("Erro - Cliente com ID " + idCliente + " ja existe.");
+                    clienteExiste = true;
+                    break;
+                }
+            }
+        }while(modalidade < 1 || modalidade > 3 || clienteExiste);
         // Cliente é criado baseado na modalidade selecionada;
         if(modalidade == 1){
             cliente = new Cliente(nomeCliente, idCliente, Modalidade.HORISTA);
@@ -67,17 +93,68 @@ public class Main{
     // Função para Estacionar o Veículo;
     public static void estacionarVeiculo(List<Estacionamento> estacionamentos, 
     List<Cliente> clientes, List<Veiculo> veiculos){
-        // Inserir informações;
-        MyIO.println("Digite a placa do veiculo: ");
-        String placa = MyIO.readLine();
-        MyIO.println("Digite o nome do estacionamento: ");
-        String nomeEstacionamento = MyIO.readLine();
-        MyIO.println("Digite o ID do cliente: ");
-        String idCliente = MyIO.readLine();
-        MyIO.println("Digite a fila da vaga: ");
-        int fila = MyIO.readInt();
-        MyIO.println("Digite o numero da vaga: ");
-        int coluna = MyIO.readInt();
+        String placa;
+        String nomeEstacionamento;
+        String idCliente;
+        Veiculo veiculoAtual = null;
+        Estacionamento estacionamentoAtual = null;
+        Cliente clienteAtual = null;
+        do{
+            // Verifica se o estacionamento existe;
+            MyIO.println("Digite o nome do estacionamento: ");
+            nomeEstacionamento = MyIO.readLine();
+            for(Estacionamento estacionamento1 : estacionamentos){
+                if(estacionamento1.getNome().equals(nomeEstacionamento)){
+                    estacionamentoAtual = estacionamento1;
+                    break;
+                }
+            }
+            if(estacionamentoAtual == null){
+                MyIO.println("Erro - Estacionamento nao existe.");
+                continue;
+            }
+            // Verifica se o cliente existe;
+            MyIO.println("Digite o ID do cliente: ");
+            idCliente = MyIO.readLine();
+            for(Cliente cliente1 : clientes){
+                if(cliente1.getID().equals(idCliente)){
+                    clienteAtual = cliente1;
+                    break;
+                }
+            }
+            if(clienteAtual == null){
+                MyIO.println("Erro - Cliente nao encontrado, O cadastro foi feito?");
+                continue;
+            }
+            // Verifica se o veículo existe;
+            MyIO.println("Digite a placa do veiculo: ");
+            placa = MyIO.readLine();
+            for(Veiculo veiculo1 : veiculos){
+                if(veiculo1.getPlaca().equals(placa)){
+                    veiculoAtual = veiculo1;
+                    break;
+                }
+            }
+            /* 
+             * Tentativa de estacionar um veículo que não existe; 
+             * (perguntando se o cadastro deve ser feito); 
+            */
+            if(veiculoAtual == null){
+                MyIO.println("Erro - Veiculo nao encontrado.");
+                MyIO.println("Deseja fazer o cadastro?");
+                MyIO.println("1 - SIM");
+                MyIO.println("2 - NAO");
+                int opc = MyIO.readInt();
+                if(opc == 1){
+                    Veiculo NovoVeiculo = new Veiculo(placa);
+                    clienteAtual.addVeiculo(NovoVeiculo);
+                    veiculos.add(NovoVeiculo);
+                    veiculoAtual = NovoVeiculo;
+                }
+                else{continue;}
+            }
+            estacionamentoAtual.addCliente(clienteAtual);
+        } while (veiculoAtual == null || estacionamentoAtual == null || clienteAtual == null);
         // Seleção de serviço;
         int servico;
         do{
@@ -89,41 +166,25 @@ public class Main{
             MyIO.println("Digite a sua escolha de servico: ");
             servico = MyIO.readInt();
             // Caso uma opção inválida seja selecionada;
-            if (servico < 0 || servico > 3){
+            if(servico < 0 || servico > 3){
                 MyIO.println("Opcao invalida. Escolha novamente.");
             }   
-        } while(servico < 0 || servico > 3);
-
-        Estacionamento estacionamentoAtual = null;
-        Cliente clienteAtual = null;
-        Veiculo veiculoAtual = null;
+        } while (servico < 0 || servico > 3);
+        // Cria uma Vaga;
+        MyIO.println("Digite a fila da vaga: ");
+        int fila = MyIO.readInt();
+        MyIO.println("Digite o numero da vaga: ");
+        int coluna = MyIO.readInt();
         Vaga vagaAtual = new Vaga(fila, coluna);
-        for(Estacionamento estacionamento1 : estacionamentos){
-            if(estacionamento1.getNome().equals(nomeEstacionamento)){
-                estacionamentoAtual = estacionamento1;
-                break;
-            }
-        }
-        for(Cliente cliente1 : clientes){
-            if(cliente1.getID().equals(idCliente)){
-                clienteAtual = cliente1;
-                estacionamentoAtual.addCliente(clienteAtual);
-                break;
-            }
-        }
-        for(Veiculo veiculo1 : veiculos){
-            if(veiculo1.getPlaca().equals(placa)){
-                veiculoAtual = veiculo1;
-                break;
-            }
-        }
         // Realiza as operações de Estacionamento;
-        estacionamentoAtual.estacionar(veiculoAtual.getPlaca());
-        clienteAtual.possuiVeiculo(veiculoAtual.getPlaca()).estacionar(vagaAtual, servico, clienteAtual);
-        clienteAtual.setEscolha(servico);
+        boolean certo = estacionamentoAtual.estacionar(veiculoAtual, estacionamentoAtual, clienteAtual, vagaAtual);
+        if(certo){
+            clienteAtual.possuiVeiculo(veiculoAtual.getPlaca()).estacionar(vagaAtual, servico, clienteAtual);
+            clienteAtual.setEscolha(servico);
+        }
     }
 
-    // Função para fazer o veículo sair da vaga e do Estacionamento;
+    // Função para fazer o Veículo sair da Vaga e do Estacionamento;
     public static void sairVeiculo(List<Estacionamento> estacionamentos, 
     List<Cliente> clientes, List<Veiculo> veiculos){
         // Inserir informações;
@@ -234,7 +295,7 @@ public class Main{
             while((obj = objectInput.readObject()) != null){
                 if (obj instanceof Estacionamento) {
                     estacionamentos.add((Estacionamento) obj);
-                } 
+                }
                 else if (obj instanceof Cliente) {
                     clientes.add((Cliente) obj);
                 } 
@@ -286,13 +347,13 @@ public class Main{
             switch(escolha){
                 case 1:
                     // Criar Estacionamento;
-                    Estacionamento estacionamento = criarEstacionamento();
+                    Estacionamento estacionamento = criarEstacionamento(estacionamentos);
                     estacionamentos.add(estacionamento);
                     break;
 
                 case 2:
                     // Criar Cliente;
-                    Cliente cliente = criarCliente();
+                    Cliente cliente = criarCliente(clientes);
                     clientes.add(cliente);
                     // Criar Veículos;
                     MyIO.println("Digite a quantidade de veiculos: ");

@@ -111,7 +111,6 @@ public class Cliente implements Serializable, Observer{
         estacionamento.notifyObservers(this, novaArrecadacaoCliente);
     }
 
-
     //***********Código para os relátorios***********
 
     // Método para obter o total de usos;
@@ -119,7 +118,7 @@ public class Cliente implements Serializable, Observer{
         int totalDeUsos = 0;
         // Soma o número de vezes, cada veículo do Cliente foi estacionado; 
         for (Veiculo veiculo : veiculos.values()){
-            totalDeUsos += veiculo.totalDeUsos();
+            totalDeUsos += veiculo.getTotalUsos();
         }
         return totalDeUsos;
     }

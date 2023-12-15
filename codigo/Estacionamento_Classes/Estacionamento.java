@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Estacionamento implements Serializable {
+public class Estacionamento implements Serializable{
 	private String nome;
 	private Cliente[] id;
 	private Vaga[] vagas;
@@ -13,6 +13,7 @@ public class Estacionamento implements Serializable {
 	private int vagasPorFileira;
 	private List<Observer> observers;
 
+	// Construtor;
 	public Estacionamento(String nome, int fileiras, int vagasPorFila){
 		this.nome = nome;
 		this.quantFileiras = fileiras;
@@ -24,24 +25,8 @@ public class Estacionamento implements Serializable {
 
 	// Getters;
 	public String getNome(){return nome;}
-
 	public int getQuantFileiras(){return quantFileiras;}
-
 	public int getVagasPorFileira(){return vagasPorFileira;}
-
-	// Adicionar veículo no estacionamento;
-	public void addVeiculo(Veiculo veiculo, String idCli){
-		// Encontrar o cliente com base no id;
-		Cliente cliente = null;
-		for(Cliente c : id){
-			if(c.getID().equals(idCli)){
-				cliente = c;
-				break;
-			}
-		}
-		if(cliente != null){cliente.addVeiculo(veiculo);} 
-		else{throw new IllegalArgumentException("Erro - Cliente não encontrado.");}
-	}
 
 	// Adiciona Observer;
 	public void addObserver(Observer observer){observers.add(observer);}
@@ -56,48 +41,34 @@ public class Estacionamento implements Serializable {
 		}
 	}
 
+	// Adicionar veículo no estacionamento;
+	public void addVeiculo(Veiculo veiculo, String idCli){
+		// Encontrar o cliente com base no id;
+		Cliente cliente = null;
+		for(Cliente c : id){
+			if(c.getID().equals(idCli)){
+				cliente = c;
+				break;
+			}
+		}
+		if(cliente != null){cliente.addVeiculo(veiculo);} 
+		else{MyIO.println("Erro - Cliente nao encontrado.");}
+	}
+
 	// Adiciona Cliente no Estacionamento;
 	public void addCliente(Cliente cliente){
-		/*for (Cliente c : id) {
-			if (c.getID().equals(cliente.getID())) {
-				throw new IllegalArgumentException("Erro - Cliente com ID duplicado.");
-			}
-		}*/
 		Cliente[] novaLista = new Cliente[id.length + 1];
 		System.arraycopy(id, 0, novaLista, 0, id.length);
 		novaLista[novaLista.length - 1] = cliente;
 		id = novaLista;
-		addObserver(new Relatorio());// Adiciona o Relatório como um observer ao adicionar um cliente;
-	}
-
-	public double arrecadacaoMediaClientesHoristas(int mes){
-		double totalArrecadadoHoristas = 0;
-		int totalClientesHoristas = 0;
-
-		for(Cliente cliente : id){
-			if(cliente.getModalidade() == Modalidade.HORISTA){
-				totalArrecadadoHoristas += cliente.arrecadadoNoMes(mes);
-				totalClientesHoristas++;
-			}
-		}
-
-		// Evita a divisão por zero;
-		if(totalClientesHoristas > 0){
-			return totalArrecadadoHoristas / totalClientesHoristas;
-		}
-		else{return 0;}
+		// Adiciona o Relatório como um observer ao adicionar um cliente;
+		addObserver(new Relatorio());
 	}
 
 	// Gerar as Vagas do estacionamento;
 	private void gerarVagas(){
-		//Mudei o programa, Talvez remover isso?
-		if(quantFileiras <= 0 || vagasPorFileira <= 0){
-			throw new IllegalArgumentException("Erro - Quantidade de fileiras e vagas por fileira deve ser maior que zero.");
-		}
-
 		int totalVagas = quantFileiras * vagasPorFileira;
 		vagas = new Vaga[totalVagas];
-
 		// Criar as vagas;
 		for(int i = 0; i < totalVagas; i++){
 			int fila = i / vagasPorFileira + 1;// Calcula a fila com base no número de vagas por fileira;
@@ -106,7 +77,8 @@ public class Estacionamento implements Serializable {
 		}
 	}
 
-	public void estacionarCarroDoCliente(Cliente cliente, String placa){
+	// Estacionar Carro do Cliente;
+	/*public void estacionarCarroDoCliente(Cliente cliente, String placa){
 		List<Veiculo> veiculos = cliente.getVeiculosAsList();
 		if(cliente.getVeiculos() != null){
 			for(Veiculo veiculo : veiculos){
@@ -119,58 +91,49 @@ public class Estacionamento implements Serializable {
 		} else {
 			throw new IllegalArgumentException("Erro - Cliente não possui veículo.");
 		}
-	}
+	}*/
 	
 	// Estacionar o veículo no estacionamento;
-	public void estacionar(String placa) {
-		if(placa == null){
-			MyIO.println("Erro - Veiculo nao encontrado, Ele foi cadastrado?");
+	public boolean estacionar(Veiculo veiculo, Estacionamento estacionamento, 
+	Cliente cliente, Vaga vaga){
+		// Tentativa de estacionar um veículo que já está estacionado (notificando e ignorando a operação);
+		UsoDeVaga[] usosVeiculo = veiculo.getUsos();
+		int totalUsosVeiculo = veiculo.getTotalUsos();
+		if (totalUsosVeiculo > 0) {
+			UsoDeVaga UltimoUso = usosVeiculo[totalUsosVeiculo - 1];
+			LocalDateTime saida = UltimoUso.getSaida();
+			if (saida == null) {
+				MyIO.println("Veiculo com placa " + veiculo.getPlaca() + " ja esta estacionado.");
+				return false;
+			}	
 		}
-		
-		Veiculo veiculoParaEstacionar = null;
-		Cliente clienteDoVeiculo = null;
-	
-		// Procura o cliente por meio do ID;
-		for (Cliente cliente : id) {
-			Veiculo veiculo = cliente.possuiVeiculo(placa);
-			if (veiculo != null) {
-				veiculoParaEstacionar = veiculo;
-				clienteDoVeiculo = cliente;
+		// Verifica se a Vaga selecionada está disponível;
+		Vaga vagaDisponivel = null;
+		for(Vaga vaga1 : vagas){
+			if (vaga1.getId().equals(vaga.getId()) 
+			&& vaga1.isDisponivel()){
+				vagaDisponivel = vaga1;
 				break;
 			}
 		}
-
-		//Caso o Veiculo e Cliente sejam achados;
-		if (veiculoParaEstacionar != null && clienteDoVeiculo != null) {
-			Vaga vagaDisponivel = null;
-			for (Vaga vaga : vagas) {
-				if (vaga.isDisponivel()) {
-					vagaDisponivel = vaga;
-					break;
-				}
-			}
-			//Caso a vaga esteja disponivel;
-			if (vagaDisponivel != null) {
-				if (vagaDisponivel.estacionar(clienteDoVeiculo)) {
-					LocalDateTime entrada = LocalDateTime.now(); // Obtém a hora de entrada do veículo;
-					MyIO.println("Veiculo com placa " + placa + " estacionado na "
-							+ vagaDisponivel.getId() + " no horario " + entrada);
-				} 
-				else {MyIO.println("Erro - A vaga nao esta disponivel.");}
+		if(vagaDisponivel == null){
+			MyIO.println("Erro - A vaga nao esta disponivel.");
+			return false;
+		}
+		else{
+			if(vagaDisponivel.estacionar(cliente)){
+				LocalDateTime entrada = LocalDateTime.now(); // Obtém a hora de entrada do veículo;
+				MyIO.println("Veiculo com placa " + veiculo.getPlaca() + " estacionado na "
+				+ vagaDisponivel.getId() + " no horario " + entrada);
+				return true;
 			} 
-			else {MyIO.println("Erro - A vaga nao esta disponivel. O Veiculo ja pode estar estacionado.");}
-		} 
-		else {
-			if(veiculoParaEstacionar == null){
-				MyIO.println("Erro - Veiculo nao encontrado, Ele foi cadastrado?");
+			else{
+				MyIO.println("Erro - A vaga nao esta disponivel.");
+				return false;
 			}
-			else if(clienteDoVeiculo == null){
-				MyIO.println("Erro - Cliente nao encontrado, O cadastro foi feito?");
-			}
-			else{MyIO.println("Erro - Desconhecido");}
 		}
 	}
-	
+
 	// Tirar o veículo da vaga no estacionamento;
 	public double sair(String placa, int escolha){
 		Veiculo veiculoParaSair = null;
@@ -198,39 +161,60 @@ public class Estacionamento implements Serializable {
 			if (vagaOcupada != null) {
 				if (vagaOcupada.sair()) {
 					LocalDateTime saida = LocalDateTime.now();// Obtém a hora de saída do veículo;
-					System.out.println("Veículo com placa " + placa + " saiu da " + vagaOcupada.id + " no horário " + saida);
+					System.out.println("Veiculo com placa " + placa + " saiu da " + vagaOcupada.id + " no horario " + saida);
 					UsoDeVaga uso = new UsoDeVaga(vagaOcupada, vagaOcupada.getEntrada(), escolha, clienteDoVeiculo);
 					uso.sair(saida);
 					return uso.getValorPago();
 				} 
 				else{
-					MyIO.println("Erro - A vaga não está ocupada.");
+					MyIO.println("Erro - A vaga nao esta ocupada.");
 				}
 			} 
 			else {
-				MyIO.println("Erro - Não há vagas ocupadas.");
+				MyIO.println("Erro - Nao ha vagas ocupadas.");
 			}
 		}
 		// Caso o veículo não seja encontrado;
 		else {
-			MyIO.println("Erro - Veículo não encontrado. Ele não foi estacionado.");
+			MyIO.println("Erro - Veiculo nao encontrado. Ele nao foi estacionado.");
 		}
 		return 0.0;
 	}
 
+	//***********Código para os relátorios***********
+
+	// Arrecadação média dos Clientes Horistas;
+	public double arrecadacaoMediaClientesHoristas(int mes){
+		double totalArrecadadoHoristas = 0;
+		int totalClientesHoristas = 0;
+
+		for(Cliente cliente : id){
+			if(cliente.getModalidade() == Modalidade.HORISTA){
+				totalArrecadadoHoristas += cliente.arrecadadoNoMes(mes);
+				totalClientesHoristas++;
+			}
+		}
+
+		// Evita a divisão por zero;
+		if(totalClientesHoristas > 0){
+			return totalArrecadadoHoristas / totalClientesHoristas;
+		}
+		else{return 0;}
+	}
+
 	// Total arrecadado pelo estacionamento;
-	public double totalArrecadado() {
+	public double totalArrecadado(){
 		double valTotal = 0;
-		for (Cliente cliente : id) {
+		for(Cliente cliente : id){
 			valTotal += cliente.arrecadadoTotal();
 		}
 		return valTotal;
 	}
 
 	// Arrecadado pelo estacionamento em um Mês;
-	public double arrecadacaoNoMes(int mes) {
+	public double arrecadacaoNoMes(int mes){
 		double valArrecadado = 0;
-		for (Cliente cliente : id) {
+		for(Cliente cliente : id){
 			valArrecadado += cliente.arrecadadoNoMes(mes);
 		}
 		return valArrecadado;

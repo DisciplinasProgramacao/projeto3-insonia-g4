@@ -22,7 +22,7 @@ public class Veiculo implements Serializable{
 
     public int getTotalUsos(){return this.totalUsos;}
 
-    public int totalDeUsos(){return this.totalUsos;}
+    //public int totalDeUsos(){return this.totalUsos;}
 
     // Método para ordenar usos de vaga por data;
     public void ordenarUsosPorData() {

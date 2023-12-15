@@ -121,10 +121,13 @@ public class SalvarArquivo{
             // Realizar a entrada e saída do estacionamento;
             for (int i = 0; i < registrosPorCliente; i++) {
                 Vaga vaga = new Vaga(i, i);
-                estacionamentoAtual.estacionar(placaAtual);
-                clienteAtual.possuiVeiculo(placaAtual).estacionar(vaga, 0, clienteAtual);
-                clienteAtual.setEscolha(0);
-                estacionamentoAtual.sair(placaAtual, 0);
+                boolean certo = estacionamentoAtual.estacionar(clienteAtual.possuiVeiculo(placaAtual),
+                estacionamentoAtual, clienteAtual, vaga);
+                if(certo){
+                    clienteAtual.possuiVeiculo(placaAtual).estacionar(vaga, 0, clienteAtual);
+                    clienteAtual.setEscolha(0);
+                    estacionamentoAtual.sair(placaAtual, 0);
+                }
             }
             clienteIndex++;
         } while (clienteIndex < 15);
