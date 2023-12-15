@@ -141,7 +141,7 @@ public class Estacionamento implements Serializable{
 		int totalUsosVeiculo = veiculo.getTotalUsos();
 		if(totalUsosVeiculo > 0){
 			UsoDeVaga UltimoUso = usosVeiculo[totalUsosVeiculo - 1];
-			LocalDateTime saida = UltimoUso.getSaida();
+			LocalDateTime saida = UltimoyUso.getSaida();
 			if (saida != null) {
 				MyIO.println("Veiculo com placa " + veiculo.getPlaca() + " nao esta estacionado.");
 				return 0.0;
