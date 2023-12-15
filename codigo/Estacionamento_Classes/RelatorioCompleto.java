@@ -1,5 +1,6 @@
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.io.Serializable;
 
 public class RelatorioCompleto implements Observer, Serializable {
     private Map<Cliente, Double> top5Clientes;

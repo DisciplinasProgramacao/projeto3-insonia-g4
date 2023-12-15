@@ -68,7 +68,7 @@ public class Vaga implements Serializable {
             this.cliente = null;
             this.disponivel = true;
             return true;
-        } 
+        }
         else{
             return false;// A vaga já está vazia;
         }

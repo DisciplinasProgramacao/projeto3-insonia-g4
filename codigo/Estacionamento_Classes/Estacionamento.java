@@ -62,7 +62,7 @@ public class Estacionamento implements Serializable{
 		novaLista[novaLista.length - 1] = cliente;
 		id = novaLista;
 		// Adiciona o Relatório como um observer ao adicionar um cliente;
-		addObserver(new Relatorio());
+		addObserver(new RelatorioCompleto());
 	}
 
 	// Gerar as Vagas do estacionamento;
@@ -77,22 +77,6 @@ public class Estacionamento implements Serializable{
 		}
 	}
 
-	// Estacionar Carro do Cliente;
-	/*public void estacionarCarroDoCliente(Cliente cliente, String placa){
-		List<Veiculo> veiculos = cliente.getVeiculosAsList();
-		if(cliente.getVeiculos() != null){
-			for(Veiculo veiculo : veiculos){
-				if(veiculo.getPlaca().equals(placa)){
-					estacionar(placa);
-					return;
-				}
-			}
-			throw new IllegalArgumentException("Erro - Cliente não possui veículo com a placa " + placa);
-		} else {
-			throw new IllegalArgumentException("Erro - Cliente não possui veículo.");
-		}
-	}*/
-	
 	// Estacionar o veículo no estacionamento;
 	public boolean estacionar(Veiculo veiculo, Estacionamento estacionamento, 
 	Cliente cliente, Vaga vaga){
@@ -105,7 +89,7 @@ public class Estacionamento implements Serializable{
 			if (saida == null) {
 				MyIO.println("Veiculo com placa " + veiculo.getPlaca() + " ja esta estacionado.");
 				return false;
-			}	
+			}
 		}
 		// Verifica se a Vaga selecionada está disponível;
 		Vaga vagaDisponivel = null;
@@ -209,7 +193,6 @@ public class Estacionamento implements Serializable{
 		}
 		else{return 0;}
 	}
-
 
 	// Arrecadado pelo estacionamento em um Mês;
 	public double arrecadacaoNoMes(int mes){

@@ -411,34 +411,24 @@ public class Main{
         escolha = MyIO.readInt();
         switch(escolha){
             case 1:
-                UsoDeVagaGerarRelatorio.HistoricoUsoEstacionamento(clientes);
                 break;
             case 2:
-                UsoDeVagaGerarRelatorio.HistoricoPorDatas(clientes);
                 break;
             case 3:
-                UsoDeVagaGerarRelatorio.RelatorioUtilizacao();
                 break;
             case 4:
-                UsoDeVagaGerarRelatorio.TotalArrecadadoEstacionamento(estacionamentos);
                 break;
             case 5:
-                UsoDeVagaGerarRelatorio.ArrecadadoMes();
                 break;
             case 6:
-                UsoDeVagaGerarRelatorio.MediaUtilizacaoEstacionamento();
                 break;
             case 7:
-                UsoDeVagaGerarRelatorio.Ranking5Clientes();
                 break;
             case 8:
-                UsoDeVagaGerarRelatorio.RelatorioArrecadacaoDecrescente();
                 break;
             case 9:
-                UsoDeVagaGerarRelatorio.ClientesMensalistasMesCorrente();
                 break;
             case 10:
-                UsoDeVagaGerarRelatorio.ArrecadacaoMediaHoristasAtual();
                 break;
             case 11:
                 MyIO.println("Cancelado.");

@@ -37,14 +37,6 @@ public class Veiculo implements Serializable{
         }
     }
 
-    // Sair da vaga;
-    /*public void sair(Veiculo veiculo, LocalDateTime saida){
-        UsoDeVaga[] usosVeiculo = veiculo.getUsos();
-        int totalUsosVeiculo = veiculo.getTotalUsos();
-        UsoDeVaga UltimoUso = usosVeiculo[totalUsosVeiculo - 1];
-
-    }*/
-
     //***********Código para os relátorios***********
 
     // Calcula o total arrecadado pelo veículo;

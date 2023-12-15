@@ -33,9 +33,9 @@ public class UsoDeVaga implements Serializable, UsoDeVagaPrototype, Comparable<U
 
     public LocalDateTime getSaida(){return this.saida;}
 
-    public double getValorPago(){return this.valorPago;}//mudou isso;
+    public double getValorPago(){return this.valorPago;}
 
-    public int getMes(){return this.entrada.getMonthValue();}//mudou isso;
+    public int getMes(){return this.entrada.getMonthValue();}
 
     public Date getData(){return this.data;}
 
@@ -86,7 +86,6 @@ public class UsoDeVaga implements Serializable, UsoDeVagaPrototype, Comparable<U
         return this.data.compareTo(other.data);
     }
 
-    //**********Prototype (em Construção)***********/
     // Implementação do método clonar() para criar uma cópia do objeto UsoDeVaga;
     @Override
     public UsoDeVaga clonar(){
