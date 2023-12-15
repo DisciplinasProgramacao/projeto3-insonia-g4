@@ -126,7 +126,7 @@ public class SalvarArquivo{
                 if(certo){
                     clienteAtual.possuiVeiculo(placaAtual).estacionar(vaga, 0, clienteAtual);
                     clienteAtual.setEscolha(0);
-                    estacionamentoAtual.sair(placaAtual, 0);
+                    estacionamentoAtual.sair(clienteAtual.possuiVeiculo(placaAtual), clienteAtual, vaga);
                 }
             }
             clienteIndex++;

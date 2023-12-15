@@ -187,38 +187,62 @@ public class Main{
     // Função para fazer o Veículo sair da Vaga e do Estacionamento;
     public static void sairVeiculo(List<Estacionamento> estacionamentos, 
     List<Cliente> clientes, List<Veiculo> veiculos){
-        // Inserir informações;
-        MyIO.println("Digite a placa do veiculo: ");
-        String placa = MyIO.readLine();
-        MyIO.println("Digite o nome do estacionamento: ");
-        String nomeEstacionamento = MyIO.readLine();
-        MyIO.println("Digite o ID do cliente: ");
-        String idCliente = MyIO.readLine();
-        
+        String placa;
+        String nomeEstacionamento;
+        String idCliente;
+        Veiculo veiculoAtual = null;
         Estacionamento estacionamentoAtual = null;
         Cliente clienteAtual = null;
-        Veiculo veiculoAtual = null;
-        for(Estacionamento estacionamento1 : estacionamentos){
-            if (estacionamento1.getNome().equals(nomeEstacionamento)){
-                estacionamentoAtual = estacionamento1;
-                break;
+        do{
+            // Verifica se o Veículo existe;
+            MyIO.println("Digite a placa do veiculo: ");
+            placa = MyIO.readLine();
+            for(Veiculo veiculo1 : veiculos){
+                if(veiculo1.getPlaca().equals(placa)){
+                    veiculoAtual = veiculo1;
+                    break;
+                }
             }
-        }
-        for(Cliente cliente1 : clientes){
-            if (cliente1.getID().equals(idCliente)){
-                clienteAtual = cliente1;
-                break;
+            if(veiculoAtual == null){
+                MyIO.println("Erro - Veiculo nao encontrado.");
+                continue;
             }
-        }
-        for(Veiculo veiculo1 : veiculos){
-            if(veiculo1.getPlaca().equals(placa)){
-                veiculoAtual = veiculo1;
-                break;
+            // Verifica se o Estacionamento existe;
+            MyIO.println("Digite o nome do estacionamento: ");
+            nomeEstacionamento = MyIO.readLine();
+            for(Estacionamento estacionamento1 : estacionamentos){
+                if (estacionamento1.getNome().equals(nomeEstacionamento)){
+                    estacionamentoAtual = estacionamento1;
+                    break;
+                }
             }
-        }
+            if(estacionamentoAtual == null){
+                MyIO.println("Erro - Estacionamento nao encontrado.");
+                continue;
+            }
+            // Verifica se o Cliente existe;
+            MyIO.println("Digite o ID do cliente: ");
+            idCliente = MyIO.readLine();
+            for(Cliente cliente1 : clientes){
+                if (cliente1.getID().equals(idCliente)){
+                    clienteAtual = cliente1;
+                    break;
+                }
+            }
+            if(clienteAtual == null){
+                MyIO.println("Erro - Cliente nao encontrado.");
+                continue;
+            }
+        } while (veiculoAtual == null || estacionamentoAtual == null || clienteAtual == null);
+        // Cria uma Vaga;
+        MyIO.println("Digite a fila da vaga: ");
+        int fila = MyIO.readInt();
+        MyIO.println("Digite o numero da vaga: ");
+        int coluna = MyIO.readInt();
+        Vaga vagaAtual = new Vaga(fila, coluna);
         // Realiza as operações de sair da vaga;
         double valorPago;
-        valorPago = estacionamentoAtual.sair(veiculoAtual.getPlaca(), clienteAtual.getEscolha());
+        valorPago = estacionamentoAtual.sair(veiculoAtual, clienteAtual, vagaAtual);
         MyIO.println("Valor Pago: " + valorPago);
     }
 

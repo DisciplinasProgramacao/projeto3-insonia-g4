@@ -135,49 +135,42 @@ public class Estacionamento implements Serializable{
 	}
 
 	// Tirar o veículo da vaga no estacionamento;
-	public double sair(String placa, int escolha){
-		Veiculo veiculoParaSair = null;
-		Cliente clienteDoVeiculo = null;
-		// Procura o cliente por meio do ID;
-		for (Cliente cliente : id) {
-			Veiculo veiculo = cliente.possuiVeiculo(placa);
-			// Caso o veículo seja encontrado;
-			if (veiculo != null) {
-				veiculoParaSair = veiculo;
-				clienteDoVeiculo = cliente;
+	public double sair(Veiculo veiculo, Cliente cliente, Vaga vaga){
+		//IMPLEMENTAR O SISTEMA DE TEMPO Mínimo;
+		// Tentativa de sair com um carro que não está estacionado (notificando e ignorando a operação);
+		UsoDeVaga[] usosVeiculo = veiculo.getUsos();
+		int totalUsosVeiculo = veiculo.getTotalUsos();
+		if(totalUsosVeiculo > 0){
+			UsoDeVaga UltimoUso = usosVeiculo[totalUsosVeiculo - 1];
+			LocalDateTime saida = UltimoUso.getSaida();
+			if (saida != null) {
+				MyIO.println("Veiculo com placa " + veiculo.getPlaca() + " não está estacionado.");
+				return 0.0;
+			}	
+		}
+		// Verifica as Vagas;
+		Vaga vagaOcupada = null;
+		for (Vaga vaga1 : vagas) {
+			if (!vaga1.isDisponivel() && vaga1.getId().equals(vaga.getId())
+			&& vaga1.getUsuario().getNome().equals(cliente.getNome())){
+				vagaOcupada = vaga1;
 				break;
 			}
 		}
-		// Caso o veículo seja encontrado;
-		if (veiculoParaSair != null) {
-			Vaga vagaOcupada = null;
-			for (Vaga vaga : vagas) {
-				if (!vaga.isDisponivel() && vaga.getUsuario().getNome().equals(clienteDoVeiculo.getNome())) {
-					vagaOcupada = vaga;
-					break;
-				}
+		// Caso tenha uma vaga ocupada;
+		if (vagaOcupada != null) {
+			if (vagaOcupada.sair()) {
+				LocalDateTime saida = LocalDateTime.now();// Obtém a hora de saída do veículo;
+				System.out.println("Veiculo com placa " + veiculo.getPlaca() + " saiu da " + vagaOcupada.id + " no horario " + saida);
+				UsoDeVaga uso = new UsoDeVaga(vagaOcupada, vagaOcupada.getEntrada(), cliente.getEscolha(), cliente);
+				uso.sair(saida);
+				return uso.getValorPago();
 			}
-			// Caso tenha uma vaga ocupada;
-			if (vagaOcupada != null) {
-				if (vagaOcupada.sair()) {
-					LocalDateTime saida = LocalDateTime.now();// Obtém a hora de saída do veículo;
-					System.out.println("Veiculo com placa " + placa + " saiu da " + vagaOcupada.id + " no horario " + saida);
-					UsoDeVaga uso = new UsoDeVaga(vagaOcupada, vagaOcupada.getEntrada(), escolha, clienteDoVeiculo);
-					uso.sair(saida);
-					return uso.getValorPago();
-				} 
-				else{
-					MyIO.println("Erro - A vaga nao esta ocupada.");
-				}
-			} 
-			else {
-				MyIO.println("Erro - Nao ha vagas ocupadas.");
+			else{
+				MyIO.println("Erro - A vaga nao esta ocupada.");
 			}
-		}
-		// Caso o veículo não seja encontrado;
-		else {
-			MyIO.println("Erro - Veiculo nao encontrado. Ele nao foi estacionado.");
-		}
+		} 
+		else{MyIO.println("Erro - Nao ha vagas ocupadas.");}
 		return 0.0;
 	}
 
