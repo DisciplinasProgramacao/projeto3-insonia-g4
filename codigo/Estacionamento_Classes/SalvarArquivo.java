@@ -3,7 +3,8 @@ import java.io.ObjectOutputStream;
 
 public class SalvarArquivo{
     // Salvamento dos objetos em arquivo binário;
-    public static void salvarObjetos(Estacionamento[] estacionamentos, Cliente[] clientes){
+    public static void salvarObjetos(Estacionamento[] estacionamentos, Cliente[] clientes, 
+    Veiculo[] veiculos){
         try{
             // Crie um FileOutputStream para salvar os objetos em um arquivo binário;
             FileOutputStream fileOut = new FileOutputStream("dados.bin");
@@ -21,6 +22,11 @@ public class SalvarArquivo{
                 objectOut.writeObject(cliente);
             }
 
+            //Inserir Veículos;
+            for (Veiculo veiculo : veiculos) {
+                objectOut.writeObject(veiculo);
+            }
+
             // Feche o ObjectOutputStream e o FileOutputStream;
             objectOut.close();
             fileOut.close();
@@ -31,9 +37,9 @@ public class SalvarArquivo{
     public static void main(String[] args){
         // Criando 3 estacionamentos;
         Estacionamento[] estacionamentos = new Estacionamento[3];
-        estacionamentos[0] = new Estacionamento("Estacionamento 1", 5, 15);
-        estacionamentos[1] = new Estacionamento("Estacionamento 2", 5, 15);
-        estacionamentos[2] = new Estacionamento("Estacionamento 3", 5, 15);
+        estacionamentos[0] = new Estacionamento("Estacionamento 1", 1, 15);
+        estacionamentos[1] = new Estacionamento("Estacionamento 2", 1, 15);
+        estacionamentos[2] = new Estacionamento("Estacionamento 3", 1, 15);
 
         // Criando 10 clientes;
         Cliente[] clientes = new Cliente[10];
@@ -120,7 +126,7 @@ public class SalvarArquivo{
             }
             // Realizar a entrada e saída do estacionamento;
             for (int i = 0; i < registrosPorCliente; i++) {
-                Vaga vaga = new Vaga(i, i);
+                Vaga vaga = new Vaga(1, i + 1);
                 boolean certo = estacionamentoAtual.estacionar(clienteAtual.possuiVeiculo(placaAtual),
                 estacionamentoAtual, clienteAtual, vaga);
                 if(certo){
@@ -133,6 +139,6 @@ public class SalvarArquivo{
         } while (clienteIndex < 15);
 
         // Criar um arquivo para salvar os dados;
-        salvarObjetos(estacionamentos, clientes);
+        salvarObjetos(estacionamentos, clientes, veiculos);
     }
 }

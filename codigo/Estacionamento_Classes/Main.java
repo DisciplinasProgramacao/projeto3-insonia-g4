@@ -295,7 +295,7 @@ public class Main{
 
     // Salvar os Dados em um arquivo;
     public static void salvarDados(List<Estacionamento> estacionamentos,
-    List<Cliente> clientes) throws IOException {
+    List<Cliente> clientes, List<Veiculo> veiculos) throws IOException {
         try (FileOutputStream fileOut = new FileOutputStream("dados.bin");
         ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
             // Salvar Estacionamentos;
@@ -305,6 +305,10 @@ public class Main{
             // Salvar Clientes;
             for(Cliente cliente : clientes){
                 objectOut.writeObject(cliente);
+            }
+            // Salvar Veículos;
+            for(Veiculo veiculo: veiculos){
+                objectOut.writeObject(veiculo);
             }
         } 
         catch(IOException e){e.printStackTrace();}
@@ -426,7 +430,7 @@ public class Main{
             menu();
             escolha = MyIO.readInt();
         }
-        salvarDados(estacionamentos, clientes);
+        salvarDados(estacionamentos, clientes, veiculos);
     }
 }
 /*// Menu para os relatórios que podem ser gerados;

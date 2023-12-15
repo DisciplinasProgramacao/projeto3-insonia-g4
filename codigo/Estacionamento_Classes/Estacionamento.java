@@ -126,7 +126,7 @@ public class Estacionamento implements Serializable{
 				MyIO.println("Veiculo com placa " + veiculo.getPlaca() + " estacionado na "
 				+ vagaDisponivel.getId() + " no horario " + entrada);
 				return true;
-			} 
+			}
 			else{
 				MyIO.println("Erro - A vaga nao esta disponivel.");
 				return false;
@@ -144,7 +144,7 @@ public class Estacionamento implements Serializable{
 			UsoDeVaga UltimoUso = usosVeiculo[totalUsosVeiculo - 1];
 			LocalDateTime saida = UltimoUso.getSaida();
 			if (saida != null) {
-				MyIO.println("Veiculo com placa " + veiculo.getPlaca() + " não está estacionado.");
+				MyIO.println("Veiculo com placa " + veiculo.getPlaca() + " nao esta estacionado.");
 				return 0.0;
 			}	
 		}
@@ -162,15 +162,16 @@ public class Estacionamento implements Serializable{
 			if (vagaOcupada.sair()) {
 				LocalDateTime saida = LocalDateTime.now();// Obtém a hora de saída do veículo;
 				System.out.println("Veiculo com placa " + veiculo.getPlaca() + " saiu da " + vagaOcupada.id + " no horario " + saida);
-				UsoDeVaga uso = new UsoDeVaga(vagaOcupada, vagaOcupada.getEntrada(), cliente.getEscolha(), cliente);
-				uso.sair(saida);
-				return uso.getValorPago();
+				UsoDeVaga UltimoUso = usosVeiculo[totalUsosVeiculo - 1];
+				UltimoUso.sair(saida);
+				//veiculo.sair(veiculo, saida);
+				return UltimoUso.getValorPago();
 			}
 			else{
 				MyIO.println("Erro - A vaga nao esta ocupada.");
 			}
-		} 
-		else{MyIO.println("Erro - Nao ha vagas ocupadas.");}
+		}
+		else{MyIO.println("Erro - A vaga nao esta ocupada.");}
 		return 0.0;
 	}
 

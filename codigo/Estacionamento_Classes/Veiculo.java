@@ -22,8 +22,6 @@ public class Veiculo implements Serializable{
 
     public int getTotalUsos(){return this.totalUsos;}
 
-    //public int totalDeUsos(){return this.totalUsos;}
-
     // Método para ordenar usos de vaga por data;
     public void ordenarUsosPorData() {
         Arrays.sort(usos, 0, totalUsos, Comparator.naturalOrder());
@@ -39,10 +37,12 @@ public class Veiculo implements Serializable{
         }
     }
 
-    // Sair da vaga e pagar o valor;
-    /*public double sair() {
-        // Implemente o cálculo do valor a pagar ao sair de uma vaga aqui;
-        return 0.0;
+    // Sair da vaga;
+    /*public void sair(Veiculo veiculo, LocalDateTime saida){
+        UsoDeVaga[] usosVeiculo = veiculo.getUsos();
+        int totalUsosVeiculo = veiculo.getTotalUsos();
+        UsoDeVaga UltimoUso = usosVeiculo[totalUsosVeiculo - 1];
+
     }*/
 
     //***********Código para os relátorios***********

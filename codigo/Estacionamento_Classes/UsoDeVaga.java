@@ -27,7 +27,7 @@ public class UsoDeVaga implements Serializable, UsoDeVagaPrototype, Comparable<U
         this.cliente = cliente;
         this.modalidadeCliente = cliente.getModalidade();// Setando a modalidade do cliente;
     }
-    
+
     // Getters;
     public LocalDateTime getEntrada(){return this.entrada;}
 
