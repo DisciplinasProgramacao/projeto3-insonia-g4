@@ -27,7 +27,8 @@ public class Estacionamento implements Serializable{
 	public String getNome(){return nome;}
 	public int getQuantFileiras(){return quantFileiras;}
 	public int getVagasPorFileira(){return vagasPorFileira;}
-
+	public Cliente[] getClientes(){return id;}
+	
 	// Adiciona Observer;
 	public void addObserver(Observer observer){observers.add(observer);}
 

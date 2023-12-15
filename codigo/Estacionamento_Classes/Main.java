@@ -395,6 +395,7 @@ public class Main{
     public static void MenuGerarRelatório(List<Estacionamento> estacionamentos, List<Cliente> clientes, 
     List<Veiculo> veiculos){
         MyIO.println("Lista de Relatorios:");
+        MyIO.println("0 - Gerar Relatorio");
         MyIO.println("1 - Historico de uso do estacionamento");
         MyIO.println("2 - Historico por datas");
         MyIO.println("3 - Relatorios de utilizacao: ordem crescente de data ou decrescente de valor;");
@@ -410,25 +411,38 @@ public class Main{
         int escolha;// escolha do usuário;
         escolha = MyIO.readInt();
         switch(escolha){
+            case 0:
+                RelatorioCompleto.gerarRelatorio(veiculos);
+                break;
             case 1:
+                RelatorioCompleto.gerarHistoricoEstacionamento(estacionamentos);// Implementar;
                 break;
             case 2:
+                RelatorioCompleto.HistoricoPorDatas(clientes);
                 break;
             case 3:
+                RelatorioCompleto.RelatorioUtilizacao();// Implementar;
                 break;
             case 4:
+                RelatorioCompleto.TotalArrecadadoEstacionamento(estacionamentos);
                 break;
             case 5:
+                RelatorioCompleto.ArrecadadoMes();// Implementar;
                 break;
             case 6:
+                RelatorioCompleto.MediaUtilizacaoEstacionamento();// Implementar;
                 break;
             case 7:
+                RelatorioCompleto.Ranking5Clientes();// Implementar;
                 break;
             case 8:
+                RelatorioCompleto.RelatorioArrecadacaoDecrescente();// Implementar;
                 break;
             case 9:
+                RelatorioCompleto.ClientesMensalistasMesCorrente();// Implementar;
                 break;
             case 10:
+                RelatorioCompleto.ArrecadacaoMediaHoristasAtual();// Implementar;
                 break;
             case 11:
                 MyIO.println("Cancelado.");
