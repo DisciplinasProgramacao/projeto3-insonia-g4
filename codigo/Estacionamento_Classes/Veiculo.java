@@ -27,6 +27,16 @@ public class Veiculo implements Serializable{
         Arrays.sort(usos, 0, totalUsos, Comparator.naturalOrder());
     }
 
+    // Método para ordenar usos de vaga por valor;
+    public void ordenarUsosPorValor(){
+        Arrays.sort(usos, 0, totalUsos, new Comparator<UsoDeVaga>() {
+            @Override
+            public int compare(UsoDeVaga uso1, UsoDeVaga uso2) {
+                return Double.compare(uso2.getValorPago(), uso1.getValorPago());
+            }
+        });
+    }
+
     // Estacionar o veículo;
     public void estacionar(Vaga vaga, int escolha, Cliente cliente){
         if(totalUsos < usos.length){

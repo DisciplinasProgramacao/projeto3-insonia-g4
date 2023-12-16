@@ -32,7 +32,7 @@ public class Estacionamento implements Serializable{
 	// Adiciona Observer;
 	public void addObserver(Observer observer){observers.add(observer);}
 
-	// Remove Observer; 
+	// Remove Observer;
 	public void removeObserver(Observer observer){observers.remove(observer);}
 
 	// Notifica o Observer;
@@ -187,7 +187,6 @@ public class Estacionamento implements Serializable{
 				totalClientesHoristas++;
 			}
 		}
-
 		// Evita a divisão por zero;
 		if(totalClientesHoristas > 0){
 			return totalArrecadadoHoristas / totalClientesHoristas;
@@ -198,7 +197,8 @@ public class Estacionamento implements Serializable{
 	// Arrecadado pelo estacionamento em um Mês;
 	public double arrecadacaoNoMes(int mes){
 		double valArrecadado = 0;
-		for(Cliente cliente : id){
+		Cliente[] ID = this.getClientes();
+		for(Cliente cliente : ID){
 			valArrecadado += cliente.arrecadadoNoMes(mes);
 		}
 		return valArrecadado;
@@ -238,12 +238,15 @@ public class Estacionamento implements Serializable{
 	}
 
 	// Os 5 clientes que mais gastaram;
-	public String top5Clientes(int mes) {
+	public static String top5Clientes(int mes, List<Estacionamento> estacionamentos) {
 		Map<Cliente, Double> gastosPorCliente = new HashMap<>();
-		for (Cliente cliente : id) {
-			double gastos = cliente.arrecadadoNoMes(mes);
-			if (gastos > 0) {
-				gastosPorCliente.put(cliente, gastos);
+		for(Estacionamento estacionamento1 : estacionamentos){
+			Cliente[] ID = estacionamento1.getClientes();
+			for (Cliente cliente : ID) {
+				double gastos = cliente.arrecadadoNoMes(mes);
+				if (gastos > 0) {
+					gastosPorCliente.put(cliente, gastos);
+				}
 			}
 		}
 

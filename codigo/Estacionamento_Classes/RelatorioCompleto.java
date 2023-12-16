@@ -76,7 +76,7 @@ public class RelatorioCompleto implements Observer, Serializable {
             UsoDeVaga uso = veiculo.getUsos()[i];
             Date data = uso.getData();
             String dataFormatada = dateFormat.format(data);
-            System.out.println("Data: " + dataFormatada + " - Vaga: " + uso.getVaga().toString());
+            System.out.println("Data: " + dataFormatada + " - Vaga: " + uso.getVaga().getId());
         }
     }
 
@@ -164,7 +164,53 @@ public class RelatorioCompleto implements Observer, Serializable {
     }
 
     // 3 - Relatórios de Utilização: ordem crescente de data ou decrescente de valor;
-    public static void RelatorioUtilizacao(){
+    public static void RelatorioUtilizacao(List<Cliente> clientes){
+        MyIO.println("Digite o ID do cliente: ");
+        String idCliente1 = MyIO.readLine();
+        Cliente clienteSelecionado = null;
+        for (Cliente cliente1 : clientes) {
+            if (cliente1.getID().equals(idCliente1)) {
+                clienteSelecionado = cliente1;
+                break;
+            }
+        }
+        // Verifica se o Cliente Existe;
+        if(clienteSelecionado == null){
+            MyIO.println("Cliente nao existe.");
+            return;
+        }
+        List<Veiculo> veiculos = clienteSelecionado.getVeiculosAsList();
+        // Caso o Cliente não possua veículos;
+        if (veiculos.isEmpty()){
+            MyIO.println("O cliente nao possui veiculos.");
+            return;
+        }
+        // Ordem crescente de data;
+        MyIO.println("Relatorios de Utilizacao: Ordem Crescente de Data:");
+        for(Veiculo veiculo1 : veiculos){
+            veiculo1.ordenarUsosPorData();
+            System.out.println("Relatorio de Usos de Vaga para o Veiculo de Placa: " + veiculo1.getPlaca());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            for (int i = 0; i < veiculo1.getTotalUsos(); i++) {
+                UsoDeVaga uso = veiculo1.getUsos()[i];
+                Date data = uso.getData();
+                String dataFormatada = dateFormat.format(data);
+                System.out.println("Data: " + dataFormatada + " - Vaga: " + uso.getVaga().getId());
+            }
+        }
+        //Ordem decrescente de valor;
+        MyIO.println("Relatorios de Utilizacao: Ordem Decrescente de Valor:");
+        for(Veiculo veiculo1 : veiculos){
+            veiculo1.ordenarUsosPorValor();
+            System.out.println("Relatorio de Usos de Vaga para o Veiculo de Placa: " + veiculo1.getPlaca());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            for (int i = 0; i < veiculo1.getTotalUsos(); i++) {
+                UsoDeVaga uso = veiculo1.getUsos()[i];
+                Date data = uso.getData();
+                String dataFormatada = dateFormat.format(data);
+                System.out.println("Data: " + dataFormatada + " - Vaga: " + uso.getVaga().getId());
+            }
+        }
         return;
     }
 
@@ -188,18 +234,62 @@ public class RelatorioCompleto implements Observer, Serializable {
     }
 
     // 5 - Valor arrecadado em um mes;
-    public static void ArrecadadoMes(){
+    public static void ArrecadadoMes(List<Estacionamento> estacionamentos){
+        MyIO.println("Digite o nome do estacionamento: ");
+        String nomeEstacionamento = MyIO.readLine();
+        Estacionamento estacionamentoAtual = null;
+        for(Estacionamento estacionamento1 : estacionamentos){
+            if (estacionamento1.getNome().equals(nomeEstacionamento)){
+                estacionamentoAtual = estacionamento1;
+                break;
+            }
+        }
+        if(estacionamentoAtual == null){
+            MyIO.println("Erro - Estacionamento nao encontrado.");
+            return;
+        }
+        MyIO.println("Digite um mes: ");
+        int mes = MyIO.readInt();
+        if(mes < 1 || mes > 12){
+            MyIO.println("Erro - Mes invalido, valor deve estar entre 1 e 12.");
+            return;
+        }
+        double arrecadado = estacionamentoAtual.arrecadacaoNoMes(mes);
+        MyIO.println("No Mes: " + mes + " - O Estacionamento: " + estacionamentoAtual.getNome() 
+        + " - Arrecadou: " + arrecadado);
         return;
     }
 
     // 6 - Valor médio por utilização do estacionamento;
-    public static void MediaUtilizacaoEstacionamento(){
+    public static void MediaUtilizacaoEstacionamento(List<Estacionamento> estacionamentos){
+        MyIO.println("Digite o nome do estacionamento: ");
+        String nomeEstacionamento = MyIO.readLine();
+        Estacionamento estacionamentoAtual = null;
+        for(Estacionamento estacionamento1 : estacionamentos){
+            if (estacionamento1.getNome().equals(nomeEstacionamento)){
+                estacionamentoAtual = estacionamento1;
+                break;
+            }
+        }
+        if(estacionamentoAtual == null){
+            MyIO.println("Erro - Estacionamento nao encontrado.");
+            return;
+        }
+        double Media = estacionamentoAtual.valorMedioPorUso();
+        MyIO.println("Media por utilizacao: " + Media);
         return;
     }
 
     // 7 - Ranking dos 5 clientes que mais geraram arrecadação em um mês;
-    public static void Ranking5Clientes(){
-        return;
+    public static void Ranking5Clientes(List<Estacionamento> estacionamentos){
+        MyIO.println("Digite um mes: ");
+        int mes = MyIO.readInt();
+        if(mes < 1 || mes > 12){
+            MyIO.println("Erro - Mes invalido, valor deve estar entre 1 e 12.");
+            return;
+        }
+        String Top5 = Estacionamento.top5Clientes(mes, estacionamentos);
+        MyIO.println(Top5);
     }
 
     // 8 - Relatório de arrecadação de todos os estacionamentos, em ordem decrescente;

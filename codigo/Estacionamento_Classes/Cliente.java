@@ -144,32 +144,27 @@ public class Cliente implements Serializable, Observer{
 
     // Método para obter o total arrecadado em um mês;
     public double arrecadadoNoMes(int mes){
-        if(mes < 1 || mes > 12){
-            MyIO.println("Mes invalido. Insira um numero entre 1 e 12.");
-            return 0;
+        // Soma o total arrecadado por cada veículo no mês escolhido;
+        double totalArrecadadoNoMes = 0;
+        for(Veiculo veiculo : veiculos.values()){
+            totalArrecadadoNoMes += arrecadadoPorVeiculoNoMes(veiculo, mes);
         }
-        else{
-            // Soma o total arrecadado por cada veículo no mês escolhido;
-            double totalArrecadadoNoMes = 0;
-            for(Veiculo veiculo : veiculos.values()){
-                totalArrecadadoNoMes += arrecadadoPorVeiculoNoMes(veiculo, mes);
-            }
-            return totalArrecadadoNoMes;
-        }
+        return totalArrecadadoNoMes;
     }
 
     // Método para obter o valor arrecadado por um veículo, com uma placa específica, em um mês específico;
     private double arrecadadoPorVeiculoNoMes(Veiculo veiculo, int mes){
-        if(mes < 1 || mes > 12){
-            MyIO.println("Mes invalido. Insira um numero entre 1 e 12.");
-            return 0;
-        }
         double totalArrecadadoNoMes = 0;
-        for (UsoDeVaga uso : veiculo.getUsos()) {
-            LocalDateTime dataUso = uso.getEntrada();
-            if (dataUso.getMonthValue() == mes) {
-                totalArrecadadoNoMes += uso.getValorPago();
-            }
+        UsoDeVaga[] usos = veiculo.getUsos();
+        if(usos != null){
+            for (UsoDeVaga uso : usos) {
+                if (uso != null) { // Verifica se o elemento do array não é nulo
+                    LocalDateTime dataUso = uso.getEntrada();
+                    if (dataUso.getMonthValue() == mes) {
+                        totalArrecadadoNoMes += uso.getValorPago();
+                    }
+                }
+            }    
         }
         return totalArrecadadoNoMes;
     }

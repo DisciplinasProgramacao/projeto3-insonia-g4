@@ -395,18 +395,18 @@ public class Main{
     public static void MenuGerarRelatório(List<Estacionamento> estacionamentos, List<Cliente> clientes, 
     List<Veiculo> veiculos){
         MyIO.println("Lista de Relatorios:");
-        MyIO.println("0 - Gerar Relatorio");
-        MyIO.println("1 - Historico de uso do estacionamento");
-        MyIO.println("2 - Historico por datas");
+        MyIO.println("0 - Gerar Relatorio;");
+        MyIO.println("1 - Historico de uso do estacionamento;");
+        MyIO.println("2 - Historico por datas;");
         MyIO.println("3 - Relatorios de utilizacao: ordem crescente de data ou decrescente de valor;");
-        MyIO.println("4 - Valor total arrecadado por um estacionamento");
-        MyIO.println("5 - Valor arrecadado em um mes");
-        MyIO.println("6 - Valor medio por utilizacao do estacionamento");
-        MyIO.println("7 - Ranking dos 5 clientes que mais geraram arrecadacao em um mes");
-        MyIO.println("8 - Relatorio de arrecadacao de todos os estacionamentos, em ordem decrescente");
-        MyIO.println("9 - Quantas vezes os clientes mensalistas utilizaram um estacionamento no mes corrente");
-        MyIO.println("10 - Arrecadacao media gerada pelos clientes horistas no mes atual");
-        MyIO.println("11 - Cancelar");
+        MyIO.println("4 - Valor total arrecadado por um estacionamento;");
+        MyIO.println("5 - Valor arrecadado em um mes;");
+        MyIO.println("6 - Valor medio por utilizacao do estacionamento;");
+        MyIO.println("7 - Ranking dos 5 clientes que mais geraram arrecadacao em um mes;");
+        MyIO.println("8 - Relatorio de arrecadacao de todos os estacionamentos, em ordem decrescente;");
+        MyIO.println("9 - Quantas vezes os clientes mensalistas utilizaram um estacionamento no mes corrente;");
+        MyIO.println("10 - Arrecadacao media gerada pelos clientes horistas no mes atual;");
+        MyIO.println("11 - Cancelar.");
         MyIO.println("Escolha uma opcao: ");
         int escolha;// escolha do usuário;
         escolha = MyIO.readInt();
@@ -421,19 +421,19 @@ public class Main{
                 RelatorioCompleto.HistoricoPorDatas(clientes);
                 break;
             case 3:
-                RelatorioCompleto.RelatorioUtilizacao();// Implementar;
+                RelatorioCompleto.RelatorioUtilizacao(clientes);
                 break;
             case 4:
                 RelatorioCompleto.TotalArrecadadoEstacionamento(estacionamentos);
                 break;
             case 5:
-                RelatorioCompleto.ArrecadadoMes();// Implementar;
+                RelatorioCompleto.ArrecadadoMes(estacionamentos);
                 break;
             case 6:
-                RelatorioCompleto.MediaUtilizacaoEstacionamento();// Implementar;
+                RelatorioCompleto.MediaUtilizacaoEstacionamento(estacionamentos);
                 break;
             case 7:
-                RelatorioCompleto.Ranking5Clientes();// Implementar;
+                RelatorioCompleto.Ranking5Clientes(estacionamentos);
                 break;
             case 8:
                 RelatorioCompleto.RelatorioArrecadacaoDecrescente();// Implementar;
