@@ -164,7 +164,7 @@ public class Cliente implements Serializable, Observer{
                         totalArrecadadoNoMes += uso.getValorPago();
                     }
                 }
-            }    
+            }
         }
         return totalArrecadadoNoMes;
     }

@@ -172,10 +172,7 @@ public class Main{
                     break;
                 }
             }
-            /* 
-             * Tentativa de estacionar um veículo que não existe; 
-             * (perguntando se o cadastro deve ser feito); 
-            */
+            //Tentativa de estacionar um veículo que não existe, perguntando se o cadastro deve ser feito;
             if(veiculoAtual == null){
                 MyIO.println("Erro - Veiculo nao encontrado.");
                 MyIO.println("Deseja fazer o cadastro?");
@@ -442,7 +439,7 @@ public class Main{
                 RelatorioCompleto.ClientesMensalistasMesCorrente();// Implementar;
                 break;
             case 10:
-                RelatorioCompleto.ArrecadacaoMediaHoristasAtual();// Implementar;
+                RelatorioCompleto.ArrecadacaoMediaHoristasAtual(clientes, estacionamentos);
                 break;
             case 11:
                 MyIO.println("Cancelado.");

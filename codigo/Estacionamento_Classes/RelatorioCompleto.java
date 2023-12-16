@@ -1,6 +1,7 @@
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.*;
 import java.io.Serializable;
 
@@ -82,28 +83,7 @@ public class RelatorioCompleto implements Observer, Serializable {
 
     // 1 - Cliente tem acesso ao histórico de uso do estacionamento;
     public static void gerarHistoricoEstacionamento(List<Estacionamento> estacionamentos){
-        MyIO.println("Digite o nome do estacionamento: ");
-        String nomeEstacionamento = MyIO.readLine();
-        Estacionamento estacionamentoAtual = null;
-        for(Estacionamento estacionamento1 : estacionamentos){
-            if (estacionamento1.getNome().equals(nomeEstacionamento)){
-                estacionamentoAtual = estacionamento1;
-                break;
-            }
-        }
-        if(estacionamentoAtual == null){
-            MyIO.println("Erro - Estacionamento nao encontrado.");
-            return;
-        }
-        Cliente[] clientes = estacionamentoAtual.getClientes();
-        for (Cliente cliente : clientes){
-            List<Veiculo> veiculos = cliente.getVeiculosAsList();
-            for(Veiculo veiculo : veiculos){
-                UsoDeVaga[] usos = veiculo.getUsos();
-                //IMPORTANTE;
-                //UsoDeVaga não possui variável que marca qual é o seu Estacionamento;
-            }
-        }
+        return;
     }
 
     // Método auxiliar para verificar se uma data está dentro de um interval;
@@ -255,8 +235,8 @@ public class RelatorioCompleto implements Observer, Serializable {
             return;
         }
         double arrecadado = estacionamentoAtual.arrecadacaoNoMes(mes);
-        MyIO.println("No Mes: " + mes + " - O Estacionamento: " + estacionamentoAtual.getNome() 
-        + " - Arrecadou: " + arrecadado);
+        MyIO.println("No Mes " + mes + " - O Estacionamento " + estacionamentoAtual.getNome() 
+        + " - Arrecadou " + arrecadado);
         return;
     }
 
@@ -306,7 +286,16 @@ public class RelatorioCompleto implements Observer, Serializable {
     }
 
     // 10 - Arrecadação média gerada pelos clientes horistas no mês atual;
-    public static void ArrecadacaoMediaHoristasAtual(){
-        return;
+    public static void ArrecadacaoMediaHoristasAtual(List<Cliente> clientes, List<Estacionamento> estacionamentos){
+        // Obtém a data atual
+        LocalDate dataAtual = LocalDate.now();
+        
+        // Obtém o mês atual a partir da data atual
+        Month mesAtual = dataAtual.getMonth();
+        
+        // Obtém o número do mês atual (se preferir)
+        int numeroMesAtual = mesAtual.getValue();
+        double horistaArrecadado = Estacionamento.arrecadacaoMediaClientesHoristas(numeroMesAtual, estacionamentos);
+        MyIO.println("Media gerada pelos clientes horistas no mes atual: " + horistaArrecadado);
     }
 }

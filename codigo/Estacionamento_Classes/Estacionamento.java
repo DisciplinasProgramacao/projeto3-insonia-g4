@@ -177,14 +177,16 @@ public class Estacionamento implements Serializable{
 	}
 
 	// Arrecadação média dos Clientes Horistas;
-	public double arrecadacaoMediaClientesHoristas(int mes){
+	public static double arrecadacaoMediaClientesHoristas(int mes, List<Estacionamento> estacionamentos){
 		double totalArrecadadoHoristas = 0;
 		int totalClientesHoristas = 0;
-
-		for(Cliente cliente : id){
-			if(cliente.getModalidade() == Modalidade.HORISTA){
-				totalArrecadadoHoristas += cliente.arrecadadoNoMes(mes);
-				totalClientesHoristas++;
+		for(Estacionamento estacionamento1 : estacionamentos){
+			Cliente[] ID = estacionamento1.getClientes();
+			for(Cliente cliente : ID){
+				if(cliente.getModalidade() == Modalidade.HORISTA){
+					totalArrecadadoHoristas += cliente.arrecadadoNoMes(mes);
+					totalClientesHoristas++;
+				}
 			}
 		}
 		// Evita a divisão por zero;
@@ -209,7 +211,7 @@ public class Estacionamento implements Serializable{
 		int mesCorrente = LocalDateTime.now().getMonthValue();
 		double somaArrecadacao = 0.0;
 		int contadorClientes = 0;
-
+		
 		for (Cliente cliente : id) {
 			double arrecadacaoNoMes = cliente.arrecadadoNoMes(mesCorrente);
 			if (arrecadacaoNoMes > 0) {
@@ -217,7 +219,6 @@ public class Estacionamento implements Serializable{
 				contadorClientes++;
 			}
 		}
-
 		if (contadorClientes > 0) {
 			return somaArrecadacao / contadorClientes;
 		} else {
