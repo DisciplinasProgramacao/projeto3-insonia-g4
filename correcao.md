@@ -7,6 +7,9 @@
   - Requisitos (classes e testes): 6/12 pontos;
   - Documentação: 2,5/3 pontos;
   - Tarefas nas aulas: 5 pontos;
+  - 01/11 (Gabriel, Gustavo)
+  - 08/11 (Gabriel, Gabrielle, Gustavo, Luiz, Rafael)
+  - 15/11 (Gabriel, Gabrielle, Guilherme, Rafael)
   - Atraso nos artefatos: desconto de 1 a 4 pontos por semana.
 
 ## Requisitos
