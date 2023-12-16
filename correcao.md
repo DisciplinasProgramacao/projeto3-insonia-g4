@@ -2,7 +2,9 @@
 
 - Contribuições e tarefas em aula
 - Tarefas nas aulas ao longo do projeto: 5 pontos;
-
+- 04/10 (Gabriel, Guilherme, Luiz, Rafael)
+- 11/10 (Gabrielle, Gustavo)
+- 18/10 (Gabriel, Gabrielle, Gustavo, Luiz, Rafael)
 
 - Requisitos : 7/12 pontos;
 - Documentação: 2/3 pontos;
